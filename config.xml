@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="io.okhealth.shapeyourfuture" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>OK Health</name>
+    <description>
+        An app designed to improve the health of Oklahomans.
+    </description>
+    <author email="ashinpaugh@gmail.com" href="http://moop.ly">
+        Austin Shinpaugh & Jonathan Fasking
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+</widget>
