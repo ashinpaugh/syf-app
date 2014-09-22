@@ -9,12 +9,15 @@
   height: 4em;
   font-size: 2em;
 }
-.pedometer-wrapper .counter-wrapper {
-  width: 20%;
-  background: #FFF;
+.pedometer-wrapper .counters {
+  margin: 0 auto;
 }
-.pedometer-wrapper .counter-wrapper .counter {
+.pedometer-wrapper .counters .counter-wrapper {
+  margin: 0.25em 0.5em;
+  background: #FFF;
+  display: inline-block;
+}
+.pedometer-wrapper .counters .counter-wrapper .counter {
   color: #000;
-  margin: 1em 0.5em;
-  font-size: 5em;
+  margin: 0.5em 0.25em;
 }

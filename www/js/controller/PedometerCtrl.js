@@ -6,56 +6,54 @@
 
 "use strict";
 
-okHealth.controller('PedometerCtrl', ['$scope', function ($scope)
+okHealth.controller('PedometerCtrl', ['$scope', '$interval', function ($scope, $interval)
 {
-    $scope.tracking   = false;
-    $scope.steps      = 0;
+    $scope.Pedometer = new Pedometer();
+    $scope.display   = '00:00:00';
+
+    /**
+     * Is the Pedometer enabled.
+     * @returns {Pedometer.is_tracking}
+     */
+    $scope.isTracking = function ()
+    {
+        return $scope.Pedometer.is_tracking;
+    };
     
-    $scope.timer      = null;
-    $scope.started_on = null;
-    $scope.ended_on   = null;
-    $scope.display    = "00:00:00";
+    $scope.getSteps = function ()
+    {
+        return $scope.Pedometer.steps;
+    };
     
+    /*$scope.getElapsedTime = function ()
+    {
+        console.log($scope.Pedometer.getElapsedTime());
+        return $scope.Pedometer.getElapsedTime();
+    };*/
+    
+    var appTick, tickStop;
     $scope.toggleTimer = function ()
     {
-        if ($scope.tracking) {
-            $scope.tracking = false;
-            $scope.ended_on = new Date();
-            clearInterval($scope.timer);
+        if ($scope.isTracking()) {
+            tickStop();
             return;
         }
         
-        $scope.tracking   = true;
-        $scope.ended_on   = null;
-        $scope.started_on = new Date();
-        $scope.timer      = setInterval($scope.getElapsedTime, 1000);
-    };
-    
-    $scope.getElapsedTime = function ()
-    {
-        var now, started, diff, sec, min, hr;
-        
-        now     = new Date();
-        started = $scope.started_on ? $scope.started_on : now;
-        
-        diff = (now - started) / 1000;
-        sec  = Math.round((now - started) / 1000) % 60;
-        min  = diff / 60;
-        hr   = diff / 3600;
-        
-        var timerRound = function (num) {
-            num = Math.floor(num);
-            
-            return ("00" + num).slice(-2);
+        tickStop = function () {
+            $interval.cancel(appTick);
+            $scope.Pedometer.stop();
         };
         
-        $scope.display = timerRound(hr)
-            + ':' + timerRound(min)
-            + ':' + timerRound(sec)
-        ;
+        appTick = $interval(function () {
+            $('#timer').text($scope.Pedometer.getElapsedTime());
+        }, 1000);
         
-        $('#timer').text($scope.display);
-        
-        return $scope.display;
+        $scope.Pedometer.start();
     };
+    
+    $scope.$on('$destroy', function () {
+        if (angular.isDefined(tickStop)) {
+            tickStop();
+        }
+    });
 }]);
