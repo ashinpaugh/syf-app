@@ -1,23 +1,37 @@
-.pedometer-wrapper {
+body {
   background: #000;
+}
+body .pedometer-wrapper {
   color: #FFF;
   text-align: center;
 }
-.pedometer-wrapper .pedo-button button {
+body .pedometer-wrapper .pedo-button button {
   width: 90%;
   margin: 0.5em;
   height: 4em;
   font-size: 2em;
 }
-.pedometer-wrapper .counters {
-  margin: 0 auto;
-}
-.pedometer-wrapper .counters .counter-wrapper {
+body .pedometer-wrapper .counters .counter-wrapper {
   margin: 0.25em 0.5em;
-  background: #FFF;
   display: inline-block;
+  background: #FFF;
 }
-.pedometer-wrapper .counters .counter-wrapper .counter {
+body .pedometer-wrapper .counters .counter-wrapper .counter {
   color: #000;
   margin: 0.5em 0.25em;
+}
+body .pedometer-wrapper .statistics {
+  width: 85%;
+  color: #FFF;
+  margin: 0 auto;
+}
+body .pedometer-wrapper .statistics div.row div {
+  display: inline-block;
+}
+body .pedometer-wrapper .statistics .label {
+  text-align: left;
+  width: 45%;
+}
+body .pedometer-wrapper .statistics .stat {
+  width: 45%;
 }

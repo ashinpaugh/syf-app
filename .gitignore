@@ -1,2 +1,3 @@
 .idea/*
-platforms/*
+platforms/android/assets/www/*
+
