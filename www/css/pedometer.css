@@ -1,14 +1,14 @@
-body {
-  background: #000;
+body .exercise-links {
+  list-style: none;
 }
 body .pedometer-wrapper {
   color: #FFF;
   text-align: center;
 }
 body .pedometer-wrapper .pedo-button button {
-  width: 90%;
+  width: 80%;
   margin: 0.5em;
-  height: 4em;
+  height: 3em;
   font-size: 2em;
 }
 body .pedometer-wrapper .counters .counter-wrapper {

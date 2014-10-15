@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="okHealth">
+<html ng-app="okHealthApp">
     <head>
         <meta charset="utf-8" />
         <meta name="format-detection" content="telephone=no" />
@@ -9,9 +9,11 @@
         
         <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
         <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css" />
-        <link rel="stylesheet" type="text/css" href="css/pedometer.css" />
+        <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
+        <link rel="stylesheet" type="text/css" href="css/core.css" />
         
         <script type="text/javascript" src="js/jQuery-2.1.1.min.js"></script>
+        <script type="text/javascript" src="js/jquery.mobile.custom.min.js"></script>
         <script type="text/javascript" src="js/bootstrap.min.js"></script>
         
         <title>Shape your Future</title>
@@ -19,68 +21,26 @@
     
     <body>
         <div class="container-fluid">
-            <div class="row pedometer-wrapper" ng-controller="PedometerCtrl">
-                <div class="col-md-12">
-                    <div class="pedo-button" ng-click="toggleTimer()">
-                        <button class="btn btn-lg btn-primary" ng-show="!isTracking()">
-                            Start!
-                        </button>
-                        
-                        <button class="btn btn-lg btn-warning" ng-show="isTracking()">
-                            Stop!
-                        </button>
-                    </div>
-                    
-                    <div class="row counters">
-                        <div class="col-md-3 counter-wrapper">
-                            <h3 class="counter">
-                                {{getSteps()}}
-                            </h3>
-                        </div>
-                        
-                        <div class="col-md-3 counter-wrapper">
-                            <h3 class="counter">
-                                {{getSteps()}}
-                            </h3>
-                        </div>
-                        
-                        <div class="col-md-3 counter-wrapper">
-                            <h3 class="counter">
-                                {{getSteps()}}
-                            </h3>
-                        </div>
-                        
-                        <div class="col-md-3 counter-wrapper">
-                            <h3 class="counter">
-                                {{getSteps()}}
-                            </h3>
+            <div class="row">
+                
+                <div class="app-nav-wrapper col-xs-6" data-state="closed">
+                    <app-nav></app-nav>
+                </div>
+                
+                <div class="col-xs-12 main-content">
+                   <div class="row">
+                        <div class="col-xs-12 header-wrapper">
+                            <h1 id="header"></h1>
+                            
+                            <hr />
                         </div>
                     </div>
                     
-                    <div class="statistics">
-                        <div class="row calories-wrapper">
-                            <div class="col-md-8 label">
-                                <h4>Calories burned:</h4>
-                            </div>
-                            
-                            <div class="col-md-4 stat">
-                                <h4 id="calories">-</h4>
-                            </div>
-                        </div>
-                        
-                        <div class="row timer-wrapper">
-                            <div class="col-md-8 label">
-                                <h4>Time elapsed:</h4>
-                            </div>
-                            
-                            <div class="col-md-4 stat">
-                                <h4 id="timer">
-                                    {{Pedometer.getElapsedTime()}}
-                                </h4>
-                            </div>
-                        </div>
+                    <div class="row content">
+                        <div ng-view></div>
                     </div>
                 </div>
+                
             </div>
         </div>
         
@@ -95,14 +55,10 @@
         <script type="text/javascript" src="cordova.js"></script>
         
         <script type="text/javascript" src="js/core.js"></script>
-        <script type="text/javascript" src="js/controller/PedometerCtrl.js"></script>
-        <script type="text/javascript" src="js/Pedometer.js"></script>
+        <script type="text/javascript" src="js/app.js"></script>
         
-        <!--
-        <script type="text/javascript" src="js/index.js"></script>
-        <script type="text/javascript">
-            app.initialize();
-        </script>
-        -->
+        <script type="text/javascript" src="js/controller/DashboardCtrl.js"></script>
+        <script type="text/javascript" src="js/controller/PedometerCtrl.js"></script>
+        <script type="text/javascript" src="js/controller/NutritionCtrl.js"></script>
     </body>
 </html>

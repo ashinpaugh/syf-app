@@ -1,4 +1,4 @@
-/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-gen/io/cordova/hellocordova/R.java \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-gen/io/okhealth/shapeyourfuture/R.java \
  : /Users/ashinpaugh/development/ok-health/mobile/platforms/android/res/drawable/icon.png \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/res/drawable-hdpi/icon.png \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/res/drawable-land-hdpi/screen.png \

@@ -6,6 +6,13 @@
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/cordova/hellocordova/R$string.class \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/cordova/hellocordova/R$xml.class \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/cordova/hellocordova/R.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/BuildConfig.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/HelloCordova.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/R$attr.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/R$drawable.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/R$string.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/R$xml.class \
+/Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/io/okhealth/shapeyourfuture/R.class \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener$1.class \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/classes/org/apache/cordova/devicemotion/AccelListener.class \
 /Users/ashinpaugh/development/ok-health/mobile/platforms/android/ant-build/dexedLibs/classes-da531979ad23e5692b1d9480931c4a8c.jar \

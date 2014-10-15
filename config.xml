@@ -5,7 +5,7 @@
         An app designed to improve the health of Oklahomans.
     </description>
     <author email="ashinpaugh@gmail.com" href="http://moop.ly">
-        Austin Shinpaugh & Jonathan Fasking
+        Austin Shinpaugh
     </author>
     <content src="index.html" />
     <access origin="*" />

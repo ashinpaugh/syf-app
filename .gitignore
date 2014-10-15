@@ -1,3 +1,7 @@
 .idea/*
 platforms/android/assets/www/*
+platforms/android/ant*
+platforms/android/CordovaLib/*
+
+www/css/*
 

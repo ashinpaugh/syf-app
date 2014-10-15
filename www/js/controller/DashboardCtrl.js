@@ -6,7 +6,18 @@
 
 "use strict";
 
-okHealth.controller('DashboardCtrl', function ($scope)
+okHealthControllers.controller('DashboardCtrl', function ($scope, $http)
 {
+    $scope.username = '';
+    $scope.token    = null;
     
+    $scope.calories = 0;
+    $scope.consumed = 0;
+    $scope.steps    = 0;
+    
+    
+    angular.element(document).ready(function () {
+        SYF.Page.SetSubtitle("SYF Dashboard");
+        SYF.Resources.Load('css/dashboard.css');
+    });
 });

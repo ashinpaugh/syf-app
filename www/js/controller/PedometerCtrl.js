@@ -6,7 +6,7 @@
 
 "use strict";
 
-okHealth.controller('PedometerCtrl', ['$scope', '$interval', function ($scope, $interval)
+okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http', function ($scope, $interval, $http)
 {
     $scope.Pedometer = new Pedometer();
     $scope.display   = '00:00:00';
@@ -55,5 +55,13 @@ okHealth.controller('PedometerCtrl', ['$scope', '$interval', function ($scope, $
         if (angular.isDefined(tickStop)) {
             tickStop();
         }
+    });
+    
+    angular.element(document).ready(function () {
+        SYF.Page.SetSubtitle('Pedometer');
+        SYF.Resources.Load([
+            'css/pedometer.css',
+            'js/Pedometer.js'
+        ]);
     });
 }]);
