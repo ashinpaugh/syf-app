@@ -8,8 +8,7 @@
 
 okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http', function ($scope, $interval, $http)
 {
-    $scope.Pedometer = new Pedometer();
-    $scope.display   = '00:00:00';
+    $scope.display = '00:00:00';
 
     /**
      * Is the Pedometer enabled.
@@ -63,5 +62,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
             'css/pedometer.css',
             'js/Pedometer.js'
         ]);
+        
+        $scope.Pedometer = new Pedometer();
     });
 }]);

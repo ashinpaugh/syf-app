@@ -1,5 +1,5 @@
 /**
- * Core JS required by the app and Angular.
+ * Bootstrap the AngularJS app.
  * 
  * @author Austin Shinpaugh
  */
@@ -21,16 +21,16 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: '../partials/Dashboard.html',
             controller:  'DashboardCtrl'
         }).when('/exercise', {
-            templateUrl: '../partials/Pedometer/links.html',
+            templateUrl: '../partials/Exercise/links.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/pedometer', {
-            templateUrl: '../partials/Pedometer/utility.html',
+            templateUrl: '../partials/Exercise/utility.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/history', {
-            templateUrl: '../partials/Pedometer/history.html',
+            templateUrl: '../partials/Exercise/history.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/settings', {
-            templateUrl: '../partials/Pedometer/settings.html',
+            templateUrl: '../partials/Exercise/settings.html',
             controller:  'PedometerCtrl'
         }).when('/nutrition', {
             templateUrl: '../partials/Nutrition.html',

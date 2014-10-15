@@ -2,8 +2,8 @@
 
 body {
   color: #FFF;
-  background: #000;
-  margin: 2.5em 0;
+  background: rgb(00, 171, 239);
+  overflow-x: hidden;
   
   -webkit-user-select: none;
   -moz-user-select: none;
@@ -11,11 +11,20 @@ body {
   -o-user-select: none;
   user-select: none;
   
-  div.main-content {
-    div.header-wrapper {
+  div.container-fluid {
+    //position: absolute;
+    //top: 0;
+    
+    div.main-content .header-wrapper {
       text-align: center;
+      margin-bottom: 0.75em;
+      
+      h3 {
+        margin: 0.25em 0;
+      }
       
       hr {
+        margin: 0 auto;
         width: 80%;
         text-align: center;
         opacity: 75%;
