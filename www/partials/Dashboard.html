@@ -1,0 +1,39 @@
+<div class="col-md-12 dash-wrapper" ng-controller="DashboardCtrl">
+    <div class="row stats well">
+        <div class="col-xs-4">
+            <h3 ng-bind="calories"></h3>
+            <h5>Calories Burned</h5>
+        </div>
+        <div class="col-xs-4">
+            <h3 ng-bind="steps"></h3>
+            <h5>Steps Taken</h5>
+        </div>
+        <div class="col-xs-4">
+            <h3 ng-bind="consumed"></h3>
+            <h5>Calories Consumed</h5>
+        </div>
+    </div>
+    
+    <div class="row utilities">
+        <div class="col-xs-4">
+            <a href="#/exercise" class="util">
+                <span class="fa fa-5x fa-bicycle"></span>
+                <h4>Exercise</h4>
+            </a>
+        </div>
+        
+        <div class="col-xs-4">
+            <a href="#/nutrition" class="util">
+                <span class="fa fa-5x fa-cutlery"></span>
+                <h4>Eat Better</h4>
+            </a>
+        </div>
+        
+        <div class="col-xs-4">
+            <a href="#/farmers-market" class="util">
+                <span class="fa fa-5x fa-map-marker"></span>
+                <h4>Market Locator</h4>
+            </a>
+        </div>
+    </div>
+</div>

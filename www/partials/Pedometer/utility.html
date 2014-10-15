@@ -1,0 +1,63 @@
+<div class="pedometer-wrapper">
+    <div class="col-md-12">
+        <div class="pedo-button" ng-click="toggleTimer()">
+            <button class="btn btn-lg btn-primary" ng-show="!isTracking()">
+                Start!
+            </button>
+            
+            <button class="btn btn-lg btn-warning" ng-show="isTracking()">
+                Stop!
+            </button>
+        </div>
+        
+        <div class="row counters">
+            <div class="col-md-3 counter-wrapper">
+                <h3 class="counter">
+                    {{getSteps()}}
+                </h3>
+            </div>
+            
+            <div class="col-md-3 counter-wrapper">
+                <h3 class="counter">
+                    {{getSteps()}}
+                </h3>
+            </div>
+            
+            <div class="col-md-3 counter-wrapper">
+                <h3 class="counter">
+                    {{getSteps()}}
+                </h3>
+            </div>
+            
+            <div class="col-md-3 counter-wrapper">
+                <h3 class="counter">
+                    {{getSteps()}}
+                </h3>
+            </div>
+        </div>
+        
+        <div class="statistics">
+            <div class="row calories-wrapper">
+                <div class="col-md-8 label">
+                    <h4>Calories burned:</h4>
+                </div>
+                
+                <div class="col-md-4 stat">
+                    <h4 id="calories">-</h4>
+                </div>
+            </div>
+            
+            <div class="row timer-wrapper">
+                <div class="col-md-8 label">
+                    <h4>Time elapsed:</h4>
+                </div>
+                
+                <div class="col-md-4 stat">
+                    <h4 id="timer">
+                        {{Pedometer.getElapsedTime()}}
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
