@@ -1,0 +1,36 @@
+<div ng-controller="NutritionCtrl" class="nutrition-wrapper">
+    <form class="search-input">
+        <label class="sr-only" for="nutrition-search">Search</label>
+        <input ng-model="search" id="nutrition-search" type="text" placeholder="Lookup Ingredients - (i.e. 'chicken')" />
+        
+        <button class="well-sm" ng-click="doLookup()">Search</button>
+    </form>
+    
+    <div class="search-results" ng-hide="!resultSet">
+        <h4>Results</h4>
+        
+        <ul class="results">
+            <li class="row result" ng-repeat="result in resultSet" ng-class-even="'list-alt'">
+                <div class="col-xs-12" ng-init="result.closed = true">
+                    <div class="row name-wrapper" ng-click="result.closed = !result.closed">
+                        <h4 class="col-xs-11">{{result.food_name}}</h4>
+                        <span class="col-xs-1 fa" ng-class="{'fa-arrow-right': result.closed, 'fa-arrow-down': !result.closed}"></span>
+                    </div>
+                    
+                    <div class="additional-details" ng-hide="result.closed">
+                        <div class="description">
+                            {{result.food_description}}
+                        </div>
+                        
+                        <div class="fs-link">
+                            <span class="fa fa-external-link"></span>
+                            <a href="{{result.food_url}}">
+                                Click here to find out more.
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div> 

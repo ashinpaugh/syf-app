@@ -1,5 +1,5 @@
 div.app-nav-wrapper {
-  background: url("../img/steel.png");
+  background: #000;
   position: absolute;
   margin-left: -50%;
   
@@ -7,10 +7,19 @@ div.app-nav-wrapper {
     font-size: 1.25em;
     
     li {
-      padding: 0.5em;
+      padding: 0.25em;
+      
+      a {
+        color: #FFF;
+        
+        &:hover, &:active {
+          color: #000;
+        }
+      }
+      
       
       .fa {
-        color: #FFF;
+        //color: #FFF;
         padding-right: 0.25em;
       }
       

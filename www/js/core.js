@@ -6,7 +6,6 @@
 
 var SYF = (function ($)
 {
-    //SYF           = function () {};
     var Page      = function () {};
     var Resources = function () {};
 
@@ -14,10 +13,20 @@ var SYF = (function ($)
      * Sets the page sub-title.
      * 
      * @param name
+     * @param flag
+     * 
+     * @return bool
      */
-    Page.SetSubtitle = function (name)
+    Page.SetSubtitle = function (name, flag)
     {
-        $('#header').text(name);
+        var header = $('#header');
+        header.text(name);
+        
+        if (typeof flag !== 'undefined') {
+            header.toggle(flag);
+        }
+        
+        return header.is(':hidden');
     };
 
     /**
@@ -37,12 +46,23 @@ var SYF = (function ($)
             return;
         }
         
-        if ('js' === path.substring(path.indexOf('.') + 1)) {
-            LoadScript(path);
-        } else {
-            LoadCSS(path);
-        }
+        'js' === path.substring(path.indexOf('.') + 1)
+            ? LoadScript(path)
+            : LoadCSS(path)
+        ; 
     };
+
+    /**
+     * Opens external links using the InAppBrowser APIs.
+     */
+    function bindExternalLinks ()
+    {
+        $('a[href^="//"], a[href^="http"]').click(function (e) {
+            e.preventDefault();
+            
+            window.open($(this).attr('href'), '_system', 'location=yes');
+        });
+    }
     
     /**
      * Loads a CSS file onto the page if it hasn't already been loaded.
@@ -87,6 +107,20 @@ var SYF = (function ($)
      */
     function SetupPageNav ()
     {
+        bindNavSwipes();
+        
+        var nav = $('div.app-nav-wrapper');
+        nav.on('click', 'a', function (e) {
+            if (nav.is(':hidden')) {
+                return;
+            }
+            
+            $(document).trigger('swipeleft');
+        });
+    }
+    
+    function bindNavSwipes ()
+    {
         $(document).bind('swipeleft swiperight', function (e) {
             var nav, main, state, offset, closing, margin;
             nav   = $('div.app-nav-wrapper');
@@ -108,6 +142,7 @@ var SYF = (function ($)
             nav.animate({
                 marginLeft: margin
             }, {
+                'speed': 'fast',
                 'easing': 'linear',
                 'progress': function (panim, prog, remaining) {
                     var complete = 0;
@@ -133,6 +168,7 @@ var SYF = (function ($)
     
     $(function () {
         SetupPageNav();
+        bindExternalLinks();
     });
     
     return {

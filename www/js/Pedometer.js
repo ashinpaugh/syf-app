@@ -4,131 +4,39 @@
  * @author Austin Shinpaugh <ashinpaugh@gmail.com>
  */
 
-var Pedometer;
-(function ($) {
+var Pedometer = (function ($) {
     "use strict";
-
-    /**
-     * @constructor
-     */
-    Pedometer = function ()
-    {
-        this.average    = 0;
-        this.started    = null;
-        this.ended      = null;
-        this.samples    = [];
-        this.num_errors = 0;
-        
-        this.watch_id      = null;
-        this.timer_id      = null;
-        this.is_tracking   = false;
-        this.steps         = 0;
-        this.accelerometer = new Pedometer.Accellerometer();
-    };
     
-    Pedometer.prototype = {
-        start : function ()
-        {
-            this.ended       = null;
-            this.is_tracking = true;
-            this.started     = new Date();
-            
-            //this.timer_id = setInterval(Pedometer.getElapsedTime, 1000);
-            this.watch_id = navigator.accelerometer.watchAcceleration(
-                this.accelerometer.onSuccess,
-                this.accelerometer.onFailure, {
-                'frequency' : 250
-            });
-        },
-        stop : function ()
-        {
-            this.ended       = new Date();
-            this.is_tracking = false;
-            
-            //clearInterval(this.timer_id);
-            navigator
-                .accelerometer
-                .clearWatch(this.watch_id)
-            ;
-        },
-        
-        /**
-         * Updates the amount of time that the pedometer has been running.
-         * 
-         * @returns {string}
-         */
-        getElapsedTime : function ()
-        {
-            if (!this.started) {
-                return '00:00:00';
-            }
-            
-            var now, started, diff, sec, min, hr, display;
-            
-            now     = new Date();
-            started = this.started ? this.started : now;
-            
-            diff = (now - started) / 1000;
-            sec  = Math.round((now - started) / 1000) % 60;
-            min  = (diff / 60)   % 60;
-            hr   = (diff / 3600) % 3600;
-            
-            var timerRound = function (num) {
-                num = Math.floor(num);
-                
-                return ("00" + num).slice(-2);
-            };
-            
-            display = timerRound(hr)
-                + ':' + timerRound(min)
-                + ':' + timerRound(sec)
-            ;
-            
-            //$('#timer').text(display);
-            
-            return display;
-        }
-    };
-
-    /**
-     * Returns the singleton of this class.
-     * 
-     * @returns {Pedometer}
-     */
-    Pedometer.getInstance = function ()
-    {
-        if (null !== Pedometer._instance) {
-            return Pedometer._instance;
-        }
-        
-        return (Pedometer._instance = new Pedometer());
-    };
-
+    var average, started, ended, samples, num_errors, watch_id,
+        timer_id, is_tracking, steps, accelerometer;
+    
+    steps = 0;
+    average = 0;
+    samples = [];
+    num_errors = 0;
+    is_tracking = false;
+    accelerometer = new Accellerometer();
+    
     /**
      * Initialize!
-     * @return {Pedometer}
      */
-    Pedometer.init = function ()
+    function init ()
     {
-        var pedo = Pedometer.getInstance();
-        
-        Pedometer.bindEvents.call(pedo);
-        
-        return this;
-    };
+        bindEvents();
+    }
 
     /**
      * Binds the requisite pedometer events.
      */
-    Pedometer.bindEvents = function ()
+    function bindEvents ()
     {
-        Pedometer.bindCounterEvents.call(this);
-    };
+        bindCounterEvents();
+    }
 
     /**
      * Binds the events associated to the counter.
      */
-    Pedometer.bindCounterEvents = function ()
+    function bindCounterEvents ()
     {
         var context, counters;
         
@@ -161,13 +69,13 @@ var Pedometer;
         /*counters.click(function (e) {
             $(this).trigger('increment_counter');
         });*/
-    };
+    }
     
-    Pedometer.doCalibration = function ()
+    function doCalibration ()
     {
         var num_samples, axises, item, steps;
         
-        num_samples = this.samples.length;
+        num_samples = samples.length;
         axises      = {
             'x': {'min': 0, 'max': 0},
             'y': {'min': 0, 'max': 0},
@@ -186,13 +94,13 @@ var Pedometer;
             return data;
         };
         
-        for (item in this.samples) {
+        for (item in samples) {
             axises.x = findMinMax(axises.x, item.x);
             axises.y = findMinMax(axises.y, item.y);
             axises.z = findMinMax(axises.z, item.z);
         }
         
-        this.samples = [];
+        samples = [];
         
         console.log('-- Do Calibration --');
         console.log({
@@ -215,35 +123,106 @@ var Pedometer;
             'max':  axises.z.max,
             'AVG':  (axises.z.max + axises.z.min) / 2
         });
-    };
+    }
     
     /**
      * The Pedometer handle.
      * @var {Pedometer}
      */
-    Pedometer._instance = null;
+    //Pedometer._instance = null;
 
     /**
      * @constructor
      */
-    Pedometer.Accellerometer = function () {};
+    function Accellerometer () {}
     
-    Pedometer.Accellerometer.prototype.onSuccess = function (e)
+    Accellerometer.prototype.onSuccess = function (e)
     {
-        var pedo = Pedometer.getInstance();
-        pedo.samples.push(e);
+        samples.push(e);
         
-        if (0 === pedo.samples.length % 25) {
-            Pedometer.doCalibration.call(pedo);
+        if (0 === samples.length % 25) {
+            doCalibration();
         }
     };
     
-    Pedometer.Accellerometer.prototype.onFailure = function (e)
+    Accellerometer.prototype.onFailure = function (e)
     {
-        this.num_errors++;
+        num_errors++;
     };
     
     $(function () {
-        document.addEventListener('deviceready', Pedometer.init, false);
+        document.addEventListener('deviceready', init, false);
     });
+    
+    return {
+        getSteps : function () {
+            return steps;
+        },
+        
+        isTracking : function () {
+            return is_tracking;
+        },
+        
+        start : function ()
+        {
+            ended       = null;
+            is_tracking = true;
+            started     = new Date();
+            
+            //this.timer_id = setInterval(Pedometer.getElapsedTime, 1000);
+            watch_id = navigator.accelerometer.watchAcceleration(
+                accelerometer.onSuccess,
+                accelerometer.onFailure, {
+                    'frequency' : 250
+                }
+            );
+        },
+        
+        stop : function ()
+        {
+            ended       = new Date();
+            is_tracking = false;
+            
+            //clearInterval(this.timer_id);
+            navigator
+                .accelerometer
+                .clearWatch(watch_id)
+            ;
+        },
+        
+        /**
+         * Updates the amount of time that the pedometer has been running.
+         * 
+         * @returns {string}
+         */
+        getElapsedTime : function ()
+        {
+            if (!started) {
+                return '00:00:00';
+            }
+            
+            var now, start, diff, sec, min, hr, display;
+            
+            now   = new Date();
+            start = started ? started : now;
+            
+            diff = (now - start) / 1000;
+            sec  = Math.round((now - started) / 1000) % 60;
+            min  = (diff / 60)   % 60;
+            hr   = (diff / 3600) % 3600;
+            
+            var timerRound = function (num) {
+                num = Math.floor(num);
+                
+                return ("00" + num).slice(-2);
+            };
+            
+            display = timerRound(hr)
+                + ':' + timerRound(min)
+                + ':' + timerRound(sec)
+            ;
+            
+            return display;
+        }
+    };
 }) (jQuery);

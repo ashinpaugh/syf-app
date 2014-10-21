@@ -1,26 +1,34 @@
 <nav class="navbar app-nav" role="navigation">
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-default">
         <li class="row hist-traversal">
-            <a href="#" class="col-xs-6">
+            <a class="col-xs-6" ng-click="$back()">
                 <span class="fa fa-arrow-left"></span>
-                back
+                <span class="sr-only">back</span>
             </a>
             
-            <a href="#" class="col-xs-6 disabled">
+            <a class="col-xs-6 disabled" ng-click="$forward()">
                 <span class="fa fa-arrow-right"></span>
-                forward
+                <span class="sr-only">forward</span>
             </a>
         </li>
         
         <li>
-            <a href="#/login">
-                <span class="fa fa-user"></span>
-                Login
+            <a href="/dashboard">
+                <span class="fa fa-home"></span>
+                Dashboard
             </a>
         </li>
         
         <li>
-            <a href="#/settings">
+            <a href="/login">
+                <span class="fa fa-user" ng-class="{loggedIn:$user}"></span>
+                <span ng-show="!$user">Login</span>
+                <span ng-show="$user">Logout</span>
+            </a>
+        </li>
+        
+        <li>
+            <a href="/settings">
                 <span class="fa fa-cog"></span>
                 Settings
             </a>

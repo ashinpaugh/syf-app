@@ -1,0 +1,33 @@
+<form class="login-wrapper row" name="credentials" ng-controller="LoginCtrl">
+    <div class="col-xs-8">
+        <label for="username" class="sr-only">Username</label>
+        <input id="username" type="text" class="form-control" placeholder="Username" ng-model="credentials.username" />
+        
+        <label for="password" class="sr-only">Password</label>
+        <input id="password" type="text" class="form-control" placeholder="Password" ng-model="credentials.password" />
+        
+        <div class="actions">
+            <button type="submit" class="btn btn-block btn-primary" ng-click="doLogin()">
+                Login
+            </button>
+            
+            <a href="#" class="btn btn-block">
+                Register
+            </a>
+        </div>
+    </div>
+    
+    <div class="col-xs-4 sso-wrapper">
+        <div class="vr"></div>
+        
+        <a href="#" class="facebook btn btn-lg">
+            <span class="fa fa-facebook"></span>
+            Facebook
+        </a>
+        
+        <a href="#" class="twitter btn btn-lg">
+            <span class="fa fa-twitter"></span>
+            Twitter
+        </a>
+    </div>
+</form>

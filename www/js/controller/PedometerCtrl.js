@@ -12,16 +12,16 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
 
     /**
      * Is the Pedometer enabled.
-     * @returns {Pedometer.is_tracking}
+     * @returns bool
      */
     $scope.isTracking = function ()
     {
-        return $scope.Pedometer.is_tracking;
+        return $scope.Pedometer.isTracking();
     };
     
     $scope.getSteps = function ()
     {
-        return $scope.Pedometer.steps;
+        return $scope.Pedometer.getSteps();
     };
     
     /*$scope.getElapsedTime = function ()
@@ -63,6 +63,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
             'js/Pedometer.js'
         ]);
         
-        $scope.Pedometer = new Pedometer();
+        $scope.Pedometer = Pedometer;
     });
 }]);
