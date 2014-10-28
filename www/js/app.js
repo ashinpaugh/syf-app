@@ -20,7 +20,7 @@ okHealthServices    = angular.module('okHealthServices', ['ngResource']);
 
 okHealthApp.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     $locationProvider.html5Mode(true);
-    $httpProvider.defaults.withCredentials = true;
+    //$httpProvider.defaults.withCredentials = true;
     
     $routeProvider
         .when('/dashboard', {
@@ -69,7 +69,7 @@ okHealthServices.factory('Account', ['$resource', function ($resource) {
     return $resource('', {}, {
         login : {
             url: base + '/login/:username/:password',
-            method: 'GET',
+            method: 'POST',
             params: {
                 username: '@username',
                 password: '@password'
@@ -88,26 +88,6 @@ okHealthServices.factory('Account', ['$resource', function ($resource) {
         }
     });
 }]);
-/*
-
-GET api/fs/food/*
-GET api/fs/food/search/*
-POST api/fs/food/favorite/*
-GET api/fs/food/favorite/*
-DELETE  api/fs/food/favorite/*
-GET api/fs/food/most-eaten/*
-GET api/fs/food/recently-eaten/*
-
-POST api/fs/recipe/favorite/*
-
-POST api/account/login/*
-POST api/account/register/*
-GET api/account/stats/*
-
-POST api/pedo/entry/*
-GET api/pedo/[d,w,m,y]/*
-
- */
 
 okHealthServices.factory('FS', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/fs';
@@ -119,9 +99,9 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
             params: {id: '@id'}
         },
         search : {
-            url: base + '/food/search/:query',
+            url: base + '/food/search-food/:query',
             method: 'GET',
-            isArray: true,
+            //isArray: true,
             params: {query: '@query'}
         },
         favoriteFood : {

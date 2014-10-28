@@ -6,7 +6,7 @@
 
 "use strict";
 
-okHealthControllers.controller('DashboardCtrl', function ($scope, $http)
+okHealthControllers.controller('DashboardCtrl', ['$scope', function ($scope)
 {
     $scope.username = '';
     $scope.token    = null;
@@ -15,9 +15,8 @@ okHealthControllers.controller('DashboardCtrl', function ($scope, $http)
     $scope.consumed = 0;
     $scope.steps    = 0;
     
-    
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle("SYF Dashboard");
         SYF.Resources.Load('css/dashboard.css');
     });
-});
+}]);

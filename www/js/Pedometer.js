@@ -1,5 +1,5 @@
 /**
- * The pedometer's guts.
+ * The pedometer utility's UI component.
  * 
  * @author Austin Shinpaugh <ashinpaugh@gmail.com>
  */
@@ -70,7 +70,10 @@ var Pedometer = (function ($) {
             $(this).trigger('increment_counter');
         });*/
     }
-    
+
+    /**
+     * Calibrate the pedometer.
+     */
     function doCalibration ()
     {
         var num_samples, axises, item, steps;
@@ -124,12 +127,6 @@ var Pedometer = (function ($) {
             'AVG':  (axises.z.max + axises.z.min) / 2
         });
     }
-    
-    /**
-     * The Pedometer handle.
-     * @var {Pedometer}
-     */
-    //Pedometer._instance = null;
 
     /**
      * @constructor
