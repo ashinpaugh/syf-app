@@ -46,24 +46,13 @@ var SYF = (function ($)
             return;
         }
         
+        //path = 'file:///android_asset/www/' + path;
         'js' === path.substring(path.indexOf('.') + 1)
             ? LoadScript(path)
             : LoadCSS(path)
         ; 
     };
 
-    /**
-     * Opens external links using the InAppBrowser APIs.
-     */
-    function bindExternalLinks ()
-    {
-        $('a[href^="//"], a[href^="http"]').click(function (e) {
-            e.preventDefault();
-            
-            window.open($(this).attr('href'), '_system', 'location=yes');
-        });
-    }
-    
     /**
      * Loads a CSS file onto the page if it hasn't already been loaded.
      *
@@ -100,10 +89,31 @@ var SYF = (function ($)
     }
 
     /**
+     * Opens external links using the InAppBrowser APIs.
+     */
+    function bindExternalLinks ()
+    {
+        $(document).on('click', 'a[href^="//"], a[href^="http"]', function (e) {
+            var handle = window.open(encodeURI(this.href), '_system', 'location=yes');
+            handle.addEventListener('loadstart', function () {
+                console.log('start');
+            });
+            
+            handle.addEventListener('loadstop', function () {
+                console.log('stop')
+            });
+            
+            handle.addEventListener('exit', function () {
+                console.log('exit');
+            });
+            
+            return false;
+        });
+    }
+    
+    /**
      * Sets up the listeners for the swipe events and toggles the display
      * of the nav bar.
-     * 
-     * @return void
      */
     function SetupPageNav ()
     {
@@ -122,7 +132,7 @@ var SYF = (function ($)
     function bindNavSwipes ()
     {
         $(document).bind('swipeleft swiperight', function (e) {
-            var nav, main, state, offset, closing, margin;
+            var nav, main, state, offset, closing;
             nav   = $('div.app-nav-wrapper');
             main  = $('div.main-content');
             state = nav.data('state');
@@ -131,18 +141,24 @@ var SYF = (function ($)
                 return;
             } else if ('closed' == state && 'swipeleft' == e.type) {
                 return;
+            } else if ('trans' == state) {
+                return;
             }
             
             nav.data('state', 'trans');
             
             offset  = 50;
             closing = 'open' === state;
-            margin  = closing ? '-' + offset + '%' : '0';
             
+            if (closing) {
+                main.css('left', '');
+            }
+
             nav.animate({
-                marginLeft: margin
+                //marginLeft: (closing ? '-' + offset + '%' : '0')
+                left: (closing ? '-' + offset + '%' : '0')
             }, {
-                'speed': 'fast',
+                'speed': 'slow',
                 'easing': 'linear',
                 'progress': function (panim, prog, remaining) {
                     var complete = 0;
@@ -150,10 +166,12 @@ var SYF = (function ($)
                     if (!closing) {
                         complete = offset * prog;
                     } else {
-                        complete = offset * (1 - prog);
+                        complete = Math.round(offset * (1 - prog));
                     }
                     
                     main.css('left', complete + "%");
+                    
+                    console.log('complete: ' + complete);
                 },
                 'complete' : function () {
                     nav.data('state', closing ? 'closed' : 'open');

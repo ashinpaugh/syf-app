@@ -9,46 +9,47 @@
 var ApiEndpoint, okHealthApp, okHealthControllers, okHealthServices;
 
 ApiEndpoint = 'http://syfok.azurewebsites.net/api';
-okHealthApp = angular.module('okHealthApp', [
+
+okHealthControllers = angular.module('okHealthControllers', []);
+okHealthServices    = angular.module('okHealthServices', ['ngRoute', 'ngResource']);
+okHealthApp         = angular.module('okHealthApp', [
     'ngRoute',
     'okHealthServices',
     'okHealthControllers'
 ]);
 
-okHealthControllers = angular.module('okHealthControllers', []);
-okHealthServices    = angular.module('okHealthServices', ['ngResource']);
-
-okHealthApp.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
-    $locationProvider.html5Mode(true);
+okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+    //$locationProvider.html5Mode(true);
     //$httpProvider.defaults.withCredentials = true;
+
     
     $routeProvider
         .when('/dashboard', {
-            templateUrl: '../partials/Dashboard.html',
+            templateUrl: 'partials/Dashboard.html',
             controller:  'DashboardCtrl'
         }).when('/exercise', {
-            templateUrl: '../partials/Location/exercise-links.html',
+            templateUrl: 'partials/Location/exercise-links.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/pedometer', {
-            templateUrl: '../partials/Exercise/utility.html',
+            templateUrl: 'partials/Exercise/utility.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/history', {
-            templateUrl: '../partials/Exercise/history.html',
+            templateUrl: 'partials/Exercise/history.html',
             controller:  'PedometerCtrl'
         }).when('/exercise/settings', {
-            templateUrl: '../partials/Exercise/settings.html',
+            templateUrl: 'partials/Exercise/settings.html',
             controller:  'PedometerCtrl'
         }).when('/nutrition', {
-            templateUrl: '../partials/Location/nutrition-links.html',
+            templateUrl: 'partials/Location/nutrition-links.html',
             controller:  'NutritionCtrl'
         }).when('/nutrition/add-meal', {
-            templateUrl: '../partials/Nutrition/add-meal.html',
+            templateUrl: 'partials/Nutrition/add-meal.html',
             controller:  'NutritionCtrl'
         }).when('/nutrition/lookup', {
-            templateUrl: '../partials/Nutrition/lookup.html',
+            templateUrl: 'partials/Nutrition/lookup.html',
             controller:  'NutritionCtrl'
         }).when('/login', {
-            templateUrl: '../partials/Login/login.html',
+            templateUrl: 'partials/Login/login.html',
             controller:  'LoginCtrl'
         }).otherwise({
             redirectTo: '/dashboard'
@@ -59,22 +60,33 @@ okHealthApp.config(['$routeProvider', '$locationProvider', '$httpProvider', func
 okHealthApp.directive('appNav', function () {
     return {
         'restrict'    : 'E',
-        'templateUrl' : '../partials/AppNav.html'
+        'templateUrl' : 'partials/AppNav.html'
     };
 });
 
+okHealthServices.config(['$httpProvider', function ($httpProvider) {
+    $httpProvider.interceptors.push('httpInterceptor');
+}]);
+
 okHealthServices.factory('Account', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/account';
+    var base = ApiEndpoint + '/profile';
     
     return $resource('', {}, {
+        register : {
+            url: base + '/register/:username/:password',
+            method: 'POST',
+            params: {
+                username: '@username',
+                password: '@password'
+            }
+        },
         login : {
             url: base + '/login/:username/:password',
             method: 'POST',
             params: {
                 username: '@username',
                 password: '@password'
-            },
-            isArray: false
+            }
         },
         logout : {
             url: base + '/logout',
@@ -89,46 +101,53 @@ okHealthServices.factory('Account', ['$resource', function ($resource) {
     });
 }]);
 
+/**
+ * The FatSecret API service.
+ * 
+ * For technical reasons on the .NET side, anything that is user specific requires
+ * the '/fs' prefix.
+ */
 okHealthServices.factory('FS', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/fs';
+    var base = ApiEndpoint + '/food';
     
     return $resource('', {}, {
         get : {
-            url: base + '/food/:id',
+            url: base + '/food/get/:food_id',
             method: 'GET',
-            params: {id: '@id'}
+            params: {food_id: '@food_id'}
         },
         search : {
-            url: base + '/food/search-food/:query',
+            url: base + '/search/:query',
             method: 'GET',
             //isArray: true,
             params: {query: '@query'}
         },
         favoriteFood : {
-            url: base + '/food/favorite',
+            url: base + '/favorite',
             method: 'GET',
             isArray: true
         },
         addFavoriteFood : {
-            url: base + '/food/favorite/:food_id/:uid',
+            url: base + '/favorite/:food_id/:name/:description',
             method: 'POST',
             params: {
                 food_id: '@food_id',
-                uid:     '@uid'
+                name: '@name',
+                description: '@description'
             }
         },
         removeFavoriteFood : {
-            url: base + '/food/favorite/:food_id',
+            url: base + '/favorite/:food_id',
             method: 'DELETE',
             params: {food_id: '@food_id'}
         },
         mostEaten : {
-            url: base + '/food/most-eaten',
+            url: base + '/most-eaten',
             method: 'GET',
             isArray: true
         },
         recentlyEaten : {
-            url: base + '/food/recently-eaten',
+            url: base + '/recently-eaten',
             method: 'GET',
             isArray: true
         }
@@ -145,10 +164,48 @@ okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
         url: base + '/entry',
         method: 'POST',
         params: {
-            steps: '@steps',
+            steps:    '@steps',
             calories: '@calories',
             duration: '@duration',
             started:  '@started'
         }
     });
 }]);
+
+okHealthServices.factory('TokenHandler', function () {
+    var token, date;
+    token = null;
+    date  = null;
+    
+    return {
+        get : function () {
+            return token;
+        },
+        set : function (t) {
+            token = t;
+            date  = new Date();
+        }
+    };
+});
+
+okHealthServices.factory('httpInterceptor', function (TokenHandler) {
+    return {
+        request : function (config) {
+            if (!TokenHandler.get()) {
+                return config;
+            }
+            
+            config.headers['SYF-AUTH'] = TokenHandler.get();
+            
+            return config;
+        },
+        response : function (response) {
+            if (!response.headers('SYF-AUTH')) {
+                return response;
+            }
+            
+            TokenHandler.set(response.headers('SYF-AUTH'));
+            return response;
+        }
+    };
+});

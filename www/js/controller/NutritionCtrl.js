@@ -11,6 +11,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
     $scope.searches  = {};
     $scope.search    = '';
     $scope.resultSet = null;
+    //$scope.moop = FS.addFavoriteFood({food_id: 33691, name: 'mah-name', description: 'mah-awesome-description'});
+    //$scope.moop = FS.get({'food_id': 33691});
+    //$scope.mooop = FS.favoriteFood();
 
     /**
      * Looks up a user's query.

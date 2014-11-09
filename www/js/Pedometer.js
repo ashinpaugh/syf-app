@@ -8,14 +8,14 @@ var Pedometer = (function ($) {
     "use strict";
     
     var average, started, ended, samples, num_errors, watch_id,
-        timer_id, is_tracking, steps, accelerometer;
+        timer_id, is_tracking, steps, accelerometer, calibrating, detector;
     
     steps = 0;
-    average = 0;
     samples = [];
     num_errors = 0;
     is_tracking = false;
-    accelerometer = new Accellerometer();
+    calibrating   = false;
+    detector = new StepDetector();
     
     /**
      * Initialize!
@@ -49,8 +49,6 @@ var Pedometer = (function ($) {
             counter   = container.find('h3');
             val       = parseInt(counter.text().trim()) + 1;
             
-            context.steps++;
-            
             if (val <= 9) {
                 counter.text(val);
                 return false;
@@ -70,15 +68,121 @@ var Pedometer = (function ($) {
             $(this).trigger('increment_counter');
         });*/
     }
-
-    /**
-     * Calibrate the pedometer.
-     */
-    function doCalibration ()
+    
+    function OnStepTaken ()
     {
+        steps++;
+        $('.counter-wrapper').last().trigger('increment_counter');
+    }
+
+    
+    function onTrackingStop ()
+    {
+        if (!calibrating) {
+            return;
+        }
+        
+        calibrating = false;
+        var table   = $('#results');
+        
+        table.children('tr').not(':first').remove();
+        
+        for (var idx in samples) {
+            if (!samples.hasOwnProperty(idx)) {
+                continue;
+            }
+            
+            var row, sample;
+            row    = $('<tr>');
+            sample = samples[idx];
+            
+            for (var dirs in {x: '', y: '', z: ''}) {
+                $('<td>').text(sample[dirs]).appendTo(row);
+            }
+            
+            row.appendTo(table);
+        }
+    }
+    
+    function StepDetector ()
+    {
+        this.threshold  = new AccelPoint(0, 0, 0);
+        this.prev_point = new AccelPoint(100, 100, 100);
+        
+        this.samples  = [];
+        this.watch_id = null;
+    }
+    
+    StepDetector.prototype.Start = function ()
+    {
+        var that = this;
+        this.watch_id = navigator.accelerometer.watchAcceleration(
+            function (data) {
+                that.DetectStep(data);
+            },
+            function (var1) {
+                that.PollingFailure(var1);
+            }, {
+                frequency: 250
+            }
+        );
+    };
+    
+    StepDetector.prototype.Stop = function ()
+    {
+        ended = new Date();
+        
+        navigator
+            .accelerometer
+            .clearWatch(this.watch_id)
+        ;
+        
+        this.watch_id = null;
+    };
+    
+    StepDetector.prototype.AddSample = function (point, delta)
+    {
+        console.log(['Add Sample', point, this.prev_point, delta]);
+        if (0.3 >= delta.diff) {
+            return point;
+        }
+        
+        this.samples.push(point);
+        
+        return point;
+    };
+    
+    StepDetector.prototype.DetectStep = function (data) {
+        var point, base, delta, v;
+        point = new AccelPoint(data.x, data.y, data.z);
+        base  = this.GetThreshold();
+        delta = point.getGreatestVectorDelta(this.prev_point);
+        v     = delta.vector;
+        
+        this.AddSample(point, delta);
+        
+        /*if (!this.prev_point.StepCheck(data, base)) {
+            return;
+        }*/
+        
+        if (point[v] < base[v] && this.prev_point.StepCheck(point, base)) {
+            console.log(['Step Detected', data, base]);
+            
+            this.prev_point = data;
+            OnStepTaken();
+        }
+    };
+    
+    
+    StepDetector.prototype.GetThreshold = function ()
+    {
+        if (this.samples.length % 25 > 0) {
+            return this.threshold;
+        }
+        
         var num_samples, axises, item, steps;
         
-        num_samples = samples.length;
+        num_samples = this.samples.length;
         axises      = {
             'x': {'min': 0, 'max': 0},
             'y': {'min': 0, 'max': 0},
@@ -97,13 +201,13 @@ var Pedometer = (function ($) {
             return data;
         };
         
-        for (item in samples) {
-            axises.x = findMinMax(axises.x, item.x);
-            axises.y = findMinMax(axises.y, item.y);
-            axises.z = findMinMax(axises.z, item.z);
+        for (var idx in this.samples) {
+            var sample = this.samples[idx];
+            
+            axises.x = findMinMax(axises.x, sample.x);
+            axises.y = findMinMax(axises.y, sample.y);
+            axises.z = findMinMax(axises.z, sample.z);
         }
-        
-        samples = [];
         
         console.log('-- Do Calibration --');
         console.log({
@@ -126,6 +230,89 @@ var Pedometer = (function ($) {
             'max':  axises.z.max,
             'AVG':  (axises.z.max + axises.z.min) / 2
         });
+        
+        this.threshold = new AccelPoint(
+            (axises.x.max + axises.x.min) / 2,
+            (axises.y.max + axises.y.min) / 2,
+            (axises.z.max + axises.z.min) / 2
+        );
+        
+        return this.threshold;
+    };
+    
+    StepDetector.prototype.PollingFailure = function (var1)
+    {
+        console.log('Polling failure');
+        console.log(var1);
+    };
+    
+    //StepDetector.prototype.constructor = StepDetector;
+    
+    function AccelPoint (x, y, z)
+    {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+    
+    AccelPoint.prototype.getGreatestVectorDelta = function (point)
+    {
+        if (!point instanceof AccelPoint) {
+            throw new Error();
+        }
+        
+        var x, y, z, results, idx, highest;
+        x = Math.abs(this.x - point.x);
+        y = Math.abs(this.y - point.y);
+        z = Math.abs(this.z - point.z);
+        
+        results = {'x': x, 'y': y, 'z': z};
+        highest = 'x';
+        
+        for (idx in results) {
+            if (results[highest] < results[idx]) {
+                highest = idx;
+            }
+        }
+        
+        return {
+            vector: highest,
+            diff:   point[highest] - this[highest]
+        };
+    };
+    
+    AccelPoint.prototype.StepCheck = function (point, threshold)
+    {
+        /*if (0.3 > point.x) {
+            return false;
+        }*/
+        
+        var delta, vector;
+        delta  = this.getGreatestVectorDelta(point);
+        vector = delta.vector;
+        
+        console.log(['StepCheck', this, point, delta, threshold, point[vector] < this[vector]]);
+        
+        /*return point[vector] > this[vector]
+           && threshold[vector] < point[vector]
+        ;*/
+        return point[vector] < this[vector];
+    };
+    
+    function getLargestNum(nums)
+    {
+        var idx, highest, num;
+        highest = nums[0];
+        
+        for (idx = 1; idx < nums.length; idx++) {
+            num = nums[idx];
+            
+            if (num > highest) {
+                highest = num;
+            }
+        }
+        
+        return highest;
     }
 
     /**
@@ -135,6 +322,7 @@ var Pedometer = (function ($) {
     
     Accellerometer.prototype.onSuccess = function (e)
     {
+        console.log('Accel success');
         samples.push(e);
         
         if (0 === samples.length % 25) {
@@ -144,6 +332,7 @@ var Pedometer = (function ($) {
     
     Accellerometer.prototype.onFailure = function (e)
     {
+        console.log('Accel failed.');
         num_errors++;
     };
     
@@ -166,13 +355,7 @@ var Pedometer = (function ($) {
             is_tracking = true;
             started     = new Date();
             
-            //this.timer_id = setInterval(Pedometer.getElapsedTime, 1000);
-            watch_id = navigator.accelerometer.watchAcceleration(
-                accelerometer.onSuccess,
-                accelerometer.onFailure, {
-                    'frequency' : 250
-                }
-            );
+            detector.Start();
         },
         
         stop : function ()
@@ -180,11 +363,9 @@ var Pedometer = (function ($) {
             ended       = new Date();
             is_tracking = false;
             
-            //clearInterval(this.timer_id);
-            navigator
-                .accelerometer
-                .clearWatch(watch_id)
-            ;
+            detector.Stop();
+            
+            onTrackingStop();
         },
         
         /**
@@ -220,6 +401,12 @@ var Pedometer = (function ($) {
             ;
             
             return display;
+        },
+        
+        setCalibrate : function (val) {
+            var type = typeof val;
+            
+            calibrating = $.inArray(type, ['undefined', 'object']) ? !calibrating : val;
         }
     };
 }) (jQuery);

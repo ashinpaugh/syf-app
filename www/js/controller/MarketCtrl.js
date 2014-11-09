@@ -5,5 +5,5 @@
  */
 
 okHealthControllers.controller('MarketCtrl', ['$scope', function ($scope) {
-    $scope
+    
 }]);

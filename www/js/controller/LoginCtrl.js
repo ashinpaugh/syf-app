@@ -2,7 +2,7 @@
  *
  */
 
-okHealthControllers.controller('LoginCtrl', ['$scope', 'Account', function ($scope, User) {
+okHealthControllers.controller('LoginCtrl', ['$scope', '$location', 'Account', function ($scope, $location, User) {
     /**
      * Perform user sign-in.
      */
@@ -11,13 +11,13 @@ okHealthControllers.controller('LoginCtrl', ['$scope', 'Account', function ($sco
         User.login({
             username: $scope.credentials.username,
             password: $scope.credentials.password
-        }, function (user) {
-            $scope.user = user;
+        }, function (data, headers) {
+            $location.url('/dashboard');
         });
     };
     
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle("Login");
+        SYF.Page.SetSubtitle('Login');
         SYF.Resources.Load([
             'css/login.css'
         ]);
