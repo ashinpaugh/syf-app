@@ -72,7 +72,7 @@ var Pedometer = (function ($) {
     function OnStepTaken ()
     {
         steps++;
-        $('.counter-wrapper').last().trigger('increment_counter');
+        $('#tenths').trigger('increment_counter');
     }
 
     
@@ -107,10 +107,11 @@ var Pedometer = (function ($) {
     function StepDetector ()
     {
         this.threshold  = new AccelPoint(0, 0, 0);
-        this.prev_point = new AccelPoint(100, 100, 100);
+        this.prev_point = new AccelPoint(0, 0, 0);
         
-        this.samples  = [];
-        this.watch_id = null;
+        this.samples   = [];
+        this.watch_id  = null;
+        this.prev_time = Date.now();
     }
     
     StepDetector.prototype.Start = function ()
@@ -142,22 +143,26 @@ var Pedometer = (function ($) {
     
     StepDetector.prototype.AddSample = function (point, delta)
     {
-        console.log(['Add Sample', point, this.prev_point, delta]);
-        if (0.3 >= delta.diff) {
+        this.prev_point = point;
+        
+        if (0.75 >= Math.abs(delta.diff)) {
             return point;
         }
         
+        //console.log(['Add Sample', point, this.prev_point, delta]);
         this.samples.push(point);
         
         return point;
     };
     
     StepDetector.prototype.DetectStep = function (data) {
-        var point, base, delta, v;
+        var point, pp, base, delta, v, now;
         point = new AccelPoint(data.x, data.y, data.z);
+        pp    = this.prev_point;
         base  = this.GetThreshold();
-        delta = point.getGreatestVectorDelta(this.prev_point);
+        delta = point.getGreatestVectorDelta(pp);
         v     = delta.vector;
+        now   = Date.now();
         
         this.AddSample(point, delta);
         
@@ -165,10 +170,16 @@ var Pedometer = (function ($) {
             return;
         }*/
         
-        if (point[v] < base[v] && this.prev_point.StepCheck(point, base)) {
-            console.log(['Step Detected', data, base]);
+        if (now - this.prev_time < 200) {
+            return;
+        }
+        
+        console.log([point, base, delta, point[v] < base[v], pp.StepCheck(point, base)]);
+        if (point[v] < base[v] && pp.StepCheck(point, base)) {
+            console.log('Step Detected');
             
-            this.prev_point = data;
+            this.prev_time = now;
+            
             OnStepTaken();
         }
     };
@@ -201,15 +212,18 @@ var Pedometer = (function ($) {
             return data;
         };
         
+        console.log('-- Do Calibration --');
+        
         for (var idx in this.samples) {
             var sample = this.samples[idx];
             
             axises.x = findMinMax(axises.x, sample.x);
             axises.y = findMinMax(axises.y, sample.y);
             axises.z = findMinMax(axises.z, sample.z);
+            
+            console.log([sample.x, sample.y, sample.z]);
         }
         
-        console.log('-- Do Calibration --');
         console.log({
             'axis': 'X',
             'min':  axises.x.min,
@@ -291,7 +305,7 @@ var Pedometer = (function ($) {
         delta  = this.getGreatestVectorDelta(point);
         vector = delta.vector;
         
-        console.log(['StepCheck', this, point, delta, threshold, point[vector] < this[vector]]);
+        //console.log(['StepCheck', this, point, delta, threshold, point[vector] < this[vector]]);
         
         /*return point[vector] > this[vector]
            && threshold[vector] < point[vector]
