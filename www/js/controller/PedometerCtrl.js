@@ -6,18 +6,12 @@
 
 "use strict";
 
-okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http', function ($scope, $interval, $http)
+okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'PedometerApi', function ($scope, $interval, PedometerApi)
 {
+    var appTick, tickStop;
+    
     $scope.display = '00:00:00';
 
-    /**
-     * Is the Pedometer enabled.
-     * @returns bool
-     */
-    $scope.isTracking = function ()
-    {
-        return $scope.Pedometer.isTracking();
-    };
     
     $scope.getSteps = function ()
     {
@@ -30,10 +24,10 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
         return $scope.Pedometer.getElapsedTime();
     };*/
     
-    var appTick, tickStop;
-    $scope.toggleTimer = function ()
+    
+    $scope.ToggleTracking = function ()
     {
-        if ($scope.isTracking()) {
+        if ($scope.Pedometer.isTracking()) {
             tickStop();
             return;
         }
@@ -41,6 +35,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
         tickStop = function () {
             $interval.cancel(appTick);
             $scope.Pedometer.stop();
+            $scope.UploadEntry();
         };
         
         appTick = $interval(function () {
@@ -49,6 +44,12 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
         
         $scope.Pedometer.start();
     };
+    
+    $scope.UploadEntry = function ()
+    {
+        
+    };
+    
     
     $scope.$on('$destroy', function () {
         if (angular.isDefined(tickStop)) {
@@ -59,6 +60,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', '$http',
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle('Pedometer');
         SYF.Resources.Load([
+            'js/StepDetector.js',
             'css/pedometer.css',
             'js/Pedometer.js'
         ]);

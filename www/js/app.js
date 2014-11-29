@@ -51,11 +51,19 @@ okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvi
         }).when('/login', {
             templateUrl: 'partials/Login/login.html',
             controller:  'LoginCtrl'
+        }).when('/tobacco-free', {
+            templateUrl: 'partials/Tobacco/resources.html',
+            controller:  'LoginCtrl'
+        }).when('/account/register', {
+            templateUrl: 'partials/Login/register.html',
+            controller:  'LoginCtrl'
         }).otherwise({
             redirectTo: '/dashboard'
         })
     ;
 }]);
+
+
 
 okHealthApp.directive('appNav', function () {
     return {
@@ -70,16 +78,22 @@ okHealthServices.config(['$httpProvider', function ($httpProvider) {
 
 okHealthServices.factory('Account', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/profile';
-    
+
     return $resource('', {}, {
         register : {
-            url: base + '/register/:username/:password',
+            url: base + '/register/:UserName/:Password',
             method: 'POST',
             params: {
-                username: '@username',
-                password: '@password'
+                UserName: '@username',
+                Password: '@password',
+                ConfirmPassword: '@password',
+                Height: '@height',
+                Age: '@dob',
+                Sex: '@gender',
+                Weight: '@weight'
             }
         },
+        
         login : {
             url: base + '/login/:username/:password',
             method: 'POST',

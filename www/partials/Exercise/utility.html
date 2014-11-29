@@ -1,11 +1,11 @@
 <div class="pedometer-wrapper">
     
-    <div class="pedo-button" ng-click="toggleTimer()">
-        <button class="btn btn-lg btn-primary" ng-show="!isTracking()">
+    <div class="pedo-button" ng-click="ToggleTracking()">
+        <button class="btn btn-lg btn-primary" ng-show="!Pedometer.isTracking()">
             Start!
         </button>
         
-        <button class="btn btn-lg btn-warning" ng-show="isTracking()">
+        <button class="btn btn-lg btn-warning" ng-show="Pedometer.isTracking()">
             Stop!
         </button>
     </div>
@@ -13,25 +13,25 @@
     <div class="row counters">
         <div class="col-md-3 counter-wrapper">
             <h3 class="counter">
-                {{getSteps()}}
+                0
             </h3>
         </div>
         
         <div class="col-md-3 counter-wrapper">
             <h3 class="counter">
-                {{getSteps()}}
+                0
             </h3>
         </div>
         
         <div class="col-md-3 counter-wrapper">
             <h3 class="counter">
-                {{getSteps()}}
+                0
             </h3>
         </div>
         
         <div class="col-md-3 counter-wrapper">
             <h3 class="counter" id="tenths">
-                {{getSteps()}}
+                0
             </h3>
         </div>
     </div>
@@ -60,6 +60,7 @@
         </div>
     </div>
     
+    <!--
     <div class="calibrate-wrapper">
         <button type="button" class="btn btn-info" ng-click="Pedometer.setCalibrate()">Calibrate</button>
     </div>
@@ -71,4 +72,5 @@
             <th>Z</th>
         </tr>
     </table>
+    -->
 </div>

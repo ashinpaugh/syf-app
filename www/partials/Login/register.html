@@ -1,0 +1,134 @@
+<div ng-controller="LoginCtrl" class="registration">
+    <form name="frm" role="form" ng-submit="doRegistration()">
+        <div class="nav-arrow previous-arrow well-sm" ng-show="page > 1">
+            <div class="fa fa-arrow-left" ng-click="page = page - 1"></div>
+        </div>
+        
+        <div class="page-1" ng-show="page < 2">
+            <div class="form-group">
+                <label for="username" class="sr-only">Username:</label>
+                
+                <input id          = "username"
+                       type        = "text"
+                       class       = "form-control"
+                       placeholder = "Username"
+                       ng-model    = "user.username"
+                       required
+                />
+            </div>
+            
+            <div class="form-group" ng-switch="show_pass">
+                <label for="password" class="sr-only">Password:</label>
+                <input id               = "password"
+                       name             = "password"
+                       type             = "text"
+                       class            = "form-control"
+                       placeholder      = "Password"
+                       ng-model         = "user.password"
+                       ng-minlength     = "6"
+                       ng-maxlength     = "100"
+                       ng-switch-when   = "true"
+                       ng-model-options = "{ updateOn: 'blur' }"
+                       required
+                />
+                
+                <input id               = "password"
+                       name             = "password"
+                       type             = "password"
+                       class            = "form-control"
+                       placeholder      = "Password"
+                       ng-model         = "user.password"
+                       ng-minlength     = "6"
+                       ng-maxlength     = "100"
+                       ng-switch-when   = "false"
+                       ng-model-options = "{ updateOn: 'blur' }"
+                       required
+                />
+                
+                <p class="help-block bg-warning well-sm" ng-show="frm.password.$error.minlength || frm.password.$error.maxlength">
+                    Please ensure you're password contains 6 characters.
+                </p>
+            </div>
+            
+            <div class="form-group" ng-show="!show_pass">
+                <label for="password2" class="sr-only">Retype your password:</label>
+                <input id           = "password2"
+                       name         = "password2"
+                       type         = "password"
+                       class        = "form-control"
+                       placeholder  = "Confirm password"
+                       ng-model     = "user.password2"
+                       ng-minlength = "6"
+                       ng-maxlength = "100"
+                       ng-required  = "{{!show_pass}}"
+                />
+            </div>
+            
+            <div class="form-group">
+                <div class="checkbox">
+                    <label>
+                        <input id       = "show-password"
+                               type     = "checkbox"
+                               ng-model = "show_pass"
+                        /> Show Password
+                    </label>
+                </div>
+            </div>
+        </div>
+        
+        <div class="page-2" ng-show="page > 1">
+            <div class="form-group">
+                <label for="gender" class="sr-only">Gender:</label>
+                
+                <select id="gender" name="gender" class="form-control">
+                    <option value="" disabled selected>Select your gender...</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="dob" class="sr-only">Year of Birth:</label>
+                
+                <input id          = "dob"
+                       type        = "number"
+                       class       = "form-control"
+                       placeholder = "Year of Birth"
+                       ng-model    = "user.birth_year"
+                       required
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="height" class="sr-only">Height in Inches:</label>
+                
+                <input id          = "height"
+                       type        = "number"
+                       class       = "form-control"
+                       placeholder = "Height in Inches"
+                       ng-model    = "user.height"
+                       required
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="weight" class="sr-only">Weight:</label>
+                
+                <input id          = "weight"
+                       type        = "number"
+                       class       = "form-control"
+                       placeholder = "Weight in LBS"
+                       ng-model    = "user.weight"
+                       required
+                />
+            </div>
+            
+            <button type="submit" class="btn btn-block btn-primary">Submit</button>
+        </div>
+        
+        <div class="nav-arrow next-arrow well-sm" ng-show="page < 2">
+            <div class="fa fa-arrow-right" ng-click="page = page + 1"></div>
+        </div>
+    </form>
+</div>
