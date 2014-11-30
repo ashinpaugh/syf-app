@@ -1,4 +1,13 @@
 .nutrition-wrapper {
+  
+  .error-wrapper {
+    color: #000;
+    height: 4em;
+    margin: 0 auto 1em;
+    padding: 0.5em;
+    width: 80%;
+  }
+  
   .search-input {
     width: 100%;
     text-align: center;
@@ -40,8 +49,70 @@
         border-top: thin solid #CCC;
         padding: 1em 0 0.5em;
         
-        .description {
+        /*.description {
           padding: 0.5em;
+          font-size: 0.5;
+        }*/
+        
+        .meta-wrapper {
+          .meta {
+            div {
+              width: 50%;
+              font-weight: lighter;
+              text-align: center;
+              
+              &:first-child {
+                text-decoration: underline;
+              }
+            }
+          }
+          
+        }
+      }
+      
+      .food-actions {
+        a {
+          width: 45%;
+          text-align: center;
+          margin: 0 0.5em;
+        }
+      }
+      
+      .servings-wrapper {
+        margin: 1em 0;
+        
+        ul {
+          margin-top: 0.15em;
+          list-style: none;
+          padding-left: 0;
+          
+          li {
+            padding: 0.4em 0;
+            
+            .headings {
+              font-weight: bold;
+              margin-bottom: 0.25em;
+            }
+            
+            .description {
+              font-weight: lighter;
+              font-size: 0.75em;
+            }
+            
+            a.btn {
+              text-align: center;
+              margin: 0.25em;
+            }
+            
+            .fa {
+              color: #000;
+              margin-right: 0.2em;
+            }
+            
+            div:last-child {
+              text-align: center;
+            }
+          }
         }
       }
     }

@@ -33,7 +33,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', 'Account', f
         }
         
         User.register($scope.user, function (data, headers) {
-            console.log([data, headers]);
+            $location.url('/dashboard');
         })
     };
     

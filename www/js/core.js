@@ -30,6 +30,29 @@ var SYF = (function ($)
     };
 
     /**
+     * Apply the loading animation.
+     * 
+     * @param jQuery target
+     */
+    Page.ToggleLoadingAnimation = function (target)
+    {
+        target = target.hasOwnProperty('find') ? target : $(target);
+        
+        if (target.find('.syf-loading')) {
+            target.remove('.syf-loading');
+            return;
+        }
+        
+        $('<div>')
+            .addClass('syf-loading')
+            .append(
+                $('<div>').addClass('fa fa-circle-o-notch fa-spin')
+            )
+            .appendTo(target)
+        ;
+    };
+
+    /**
      * Loads a resource onto the page based on the file extension.
      * 
      * @param path

@@ -35,15 +35,46 @@ body {
       }
     }
     
-    li.list-alt {
-      background: #efefef;
+    ul {
+      list-style: none;
+      
+      li {
+        background: #FFF;
+        
+        &.list-alt {
+          background: #efefef;
+        }
+        
+        ul {
+          margin-left: 0.15em;
+          
+          .list-alt {
+            background: #b8eaff;
+          }
+        }
+      }
     }
     
     ul.navbar-default {
       background: none;
+      box-shadow: none;
       -webkit-box-shadow: none;
       -moz-box-shadow: none;
-      box-shadow: none;
+      
+      li {
+        background: none;
+      }
+    }
+    
+    .syf-loader {
+      //background: #e8e8e8;
+      //z-index: 100;
+      //top: 50%;
+      
+      div {
+        color: #FFF;
+        margin: 0 45%;
+      }
     }
   }
 }

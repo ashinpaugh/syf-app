@@ -6,16 +6,20 @@
 
 "use strict";
 
-var ApiEndpoint, okHealthApp, okHealthControllers, okHealthServices;
+var ApiEndpoint, okHealthApp, okHealthControllers,
+    okHealthServices, okHealthFilters
+;
 
 ApiEndpoint = 'http://syfok.azurewebsites.net/api';
 
 okHealthControllers = angular.module('okHealthControllers', []);
 okHealthServices    = angular.module('okHealthServices', ['ngRoute', 'ngResource']);
+okHealthFilters     = angular.module('okHealthFilters', []);
 okHealthApp         = angular.module('okHealthApp', [
     'ngRoute',
     'okHealthServices',
-    'okHealthControllers'
+    'okHealthControllers',
+    'okHealthFilters'
 ]);
 
 okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
@@ -57,6 +61,9 @@ okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvi
         }).when('/account/register', {
             templateUrl: 'partials/Login/register.html',
             controller:  'LoginCtrl'
+        }).when('/nutrition/markets', {
+            templateUrl: 'partials/Market/search.html',
+            controller:  'MarketCtrl'
         }).otherwise({
             redirectTo: '/dashboard'
         })
@@ -102,11 +109,13 @@ okHealthServices.factory('Account', ['$resource', function ($resource) {
                 password: '@password'
             }
         },
+        
         logout : {
             url: base + '/logout',
             method: 'GET',
             isArray: false
         },
+        
         stats : {
             url: base + '/stats',
             method: 'GET',
@@ -126,7 +135,7 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
     
     return $resource('', {}, {
         get : {
-            url: base + '/food/get/:food_id',
+            url: base + '/get/:food_id',
             method: 'GET',
             params: {food_id: '@food_id'}
         },
@@ -171,17 +180,54 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
     });
 }]);
 
+/**
+ * public class PedoEntry
+    {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int Id { get; set; }
+        public int UserId { get; set; }
+        public int Steps { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime TimeStamp { get; set; }
+        public double CaloriesBurned { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime StartTime { get; set; }
+        [Column(TypeName = "datetime2")]
+        public DateTime Duration { get; set; }
+    }
+ */
+
 okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/pedo';
+    var base = ApiEndpoint + '/pedometer';
     
     return $resource('', {}, {
-        url: base + '/entry',
-        method: 'POST',
-        params: {
-            steps:    '@steps',
-            calories: '@calories',
-            duration: '@duration',
-            started:  '@started'
+        entry : {
+            url: base + '/entry',
+            method: 'POST',
+            params: {
+                Steps:    '@steps',
+                TimeStamp: '@started_on',
+                StartTime: '@started_on',
+                Duration: '@duration',
+                CaloriesBurned: '@calories'
+            }
+        }
+    });
+}]);
+
+
+okHealthServices.factory('MarketApi', ['$resource', function ($resource) {
+    var base = ApiEndpoint + '/market';
+    
+    return $resource('', {}, {
+        search : {
+            url: base + '/search/:query',
+            method: 'GET',
+            isArray: true,
+            params: {
+                query: "@query"
+            }
         }
     });
 }]);
@@ -219,7 +265,15 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
             }
             
             TokenHandler.set(response.headers('SYF-AUTH'));
+            
             return response;
         }
     };
 });
+
+okHealthFilters.filter('StripTags', function() {
+    return function(text) {
+      return String(text).replace(/<[^>]+>/gm, '');
+    }
+  }
+);
