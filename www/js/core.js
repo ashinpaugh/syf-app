@@ -117,18 +117,7 @@ var SYF = (function ($)
     function bindExternalLinks ()
     {
         $(document).on('click', 'a[href^="//"], a[href^="http"]', function (e) {
-            var handle = window.open(encodeURI(this.href), '_system', 'location=yes');
-            handle.addEventListener('loadstart', function () {
-                console.log('start');
-            });
-            
-            handle.addEventListener('loadstop', function () {
-                console.log('stop')
-            });
-            
-            handle.addEventListener('exit', function () {
-                console.log('exit');
-            });
+            window.open(encodeURI(this.href), '_system', 'location=yes');
             
             return false;
         });
@@ -193,8 +182,6 @@ var SYF = (function ($)
                     }
                     
                     main.css('left', complete + "%");
-                    
-                    console.log('complete: ' + complete);
                 },
                 'complete' : function () {
                     nav.data('state', closing ? 'closed' : 'open');

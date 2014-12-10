@@ -1,21 +1,58 @@
 .market-wrapper {
   color: black;
   
-  ul {
-    padding-left: 0;
+  .search-input {
+    width: 100%;
+    text-align: center;
+    outline: 0;
+    
+    input {
+      width: 70%;
+      color: #080808;
+      margin: 0.5em 1em 0 0;
+    }
+    
+    button {
+      color: #FFF;
+      font-weight: 500;
+      background: #EB8F2D;
+    }
   }
   
-  .title-wrapper {
-    &.row {
-      margin: 0;
+  
+  .search-results {
+    border: none;
+    margin: 0.5em 0;
+    background: inherit;
+    
+    h4 {
+      color: #fff;
     }
     
-    .distance, .arrow {
-      margin-top: 0.5em;
-    }
-    
-    .distance {
-      font-weight: lighter;
+    ul {
+      padding: 0;
+      
+      li {
+        .additional-details div {
+          margin: 0.25em 0;
+          font-weight: lighter;
+          font-size: 0.95em;
+        }
+        
+        .title-wrapper {
+          &.row {
+            margin: 0;
+          }
+          
+          .distance, .arrow {
+            margin-top: 0.5em;
+          }
+          
+          .distance {
+            font-weight: lighter;
+          }
+        }
+      }
     }
   }
 }

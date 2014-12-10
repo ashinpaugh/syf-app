@@ -177,12 +177,6 @@ StepDetector.prototype.RisingRangeAcceptable = function (x, y, z)
 {
     var vectors = this.vectors;
     
-    console.log([
-        'Rising',
-        (x < vectors['x'].upperThresholdMax),
-        (z > vectors['z'].upperThresholdMin && z < vectors['z'].upperThresholdMax)
-    ]);
-    
     return (x < vectors['x'].upperThresholdMax)
         && (z > vectors['z'].upperThresholdMin && z < vectors['z'].upperThresholdMax);
 };
@@ -292,7 +286,6 @@ StepDetector.getSampleLimit = function ()
  */
 StepDetector.prototype.OnStep = function ()
 {
-    console.log('On Step!');
     this.steps++;
     
     if (!this.callbacks.length) {

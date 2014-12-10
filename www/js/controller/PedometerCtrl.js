@@ -18,13 +18,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         return $scope.Pedometer.getSteps();
     };
     
-    /*$scope.getElapsedTime = function ()
-    {
-        console.log($scope.Pedometer.getElapsedTime());
-        return $scope.Pedometer.getElapsedTime();
-    };*/
-    
-    
     $scope.ToggleTracking = function ()
     {
         if ($scope.Pedometer.isTracking()) {
@@ -47,7 +40,17 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     $scope.UploadEntry = function ()
     {
-        
+        $scope.user.Steps  += $scope.Pedometer.getSteps();
+        $scope.user.NetCal += $scope.Pedometer.getCaloriesBurned();
+
+        PedometerApi.entry({
+            steps:      $scope.Pedometer.getSteps(),
+            calories:   $scope.Pedometer.getCaloriesBurned(),
+            started_on: $scope.Pedometer.getStartTime().getTime(),
+            ended_on:   new Date().getTime()
+        }, function (data, headers) {
+            //console.log([data, headers]);
+        });
     };
     
     
@@ -66,5 +69,9 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         ]);
         
         $scope.Pedometer = Pedometer;
+    });
+    
+    $('.pedomter-wrapper .btn-warning').on('click', function (e) {
+        $scope.UploadEntry();
     });
 }]);

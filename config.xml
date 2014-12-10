@@ -12,6 +12,9 @@
     
     <content src="index.html" />
     <access origin="*" />
+    <!--
+    <access origin="geo:*" launch-external="yes" />
+    -->
     
     <preference name="loglevel" value="DEBUG" />
     <preference name="DisallowOverscroll" value="true"/>
@@ -19,20 +22,6 @@
     
     <feature name="App">
         <param name="android-package" value="org.apache.cordova.App" />
-    </feature>
-    
-    <feature name="Accelerometer">
-        <param name="android-package" value="org.apache.cordova.AccelListener" />
-    </feature>
-    
-    <!--
-    <feature name="IndexedDB">
-        <param name="android-package" value="com.msopentech.indexeddb" />
-    </feature>
-    -->
-    
-    <feature name="Geolocation">
-        <param name="android-package" value="org.apache.cordova.geolocation" />
     </feature>
     
     <feature name="InAppBrowser">

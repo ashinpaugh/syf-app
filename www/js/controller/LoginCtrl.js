@@ -2,23 +2,39 @@
  *
  */
 
-okHealthControllers.controller('LoginCtrl', ['$scope', '$location', 'Account', function ($scope, $location, User) {
+okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler) {
     //$scope.user      = {username: '', password: '', password2: '', dob: 0, height: null, weight: 0};
-    $scope.user      = {};
+    $scope.user      = UserHandler.get();
     $scope.show_pass = false;
     $scope.page      = 1;
     $scope.pword_focused = false;
-    //$scope.watchman_set  = false;
+    $scope.message       = $routeParams.message;
     
     /**
      * Perform user sign-in.
      */
     $scope.doLogin = function ()
     {
-        User.login({
-            username: $scope.credentials.username,
-            password: $scope.credentials.password
+        var username, password;
+        
+        username = $scope.credentials.username;
+        password = $scope.credentials.password;
+        
+        AccountApi.login({
+            'username': username,
+            'password': password
         }, function (data, headers) {
+            if (typeof data !== 'object') {
+                alert(data);
+                return;
+            }
+            
+            UserHandler.set($.extend(
+                {'username': username},
+                data
+            ));
+            
+            
             $location.url('/dashboard');
         });
     };
@@ -32,7 +48,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', 'Account', f
             return;
         }
         
-        User.register($scope.user, function (data, headers) {
+        AccountApi.register($scope.user, function (data, headers) {
             $location.url('/dashboard');
         })
     };

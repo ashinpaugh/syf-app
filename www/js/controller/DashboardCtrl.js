@@ -6,14 +6,12 @@
 
 "use strict";
 
-okHealthControllers.controller('DashboardCtrl', ['$scope', function ($scope)
+okHealthControllers.controller('DashboardCtrl', ['$scope', 'UserHandler', function ($scope, UserHandler)
 {
-    $scope.username = '';
-    $scope.token    = null;
-    
-    $scope.calories = 0;
-    $scope.consumed = 0;
-    $scope.steps    = 0;
+    var user        = UserHandler.get();
+    $scope.calories = user.Calories;
+    $scope.steps    = user.Steps;
+    $scope.netCal   = user.NetCalories;
     
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle("SYF Dashboard");

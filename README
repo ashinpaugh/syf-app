@@ -1,10 +1,16 @@
-cordova plugin add org.apache.cordova.devicemotion.AccelListener
-cordova plugin add com.msopentech.indexeddb
-cordova plugin add org.apache.cordova.geolocation
+OKHealth Mobile App
+
+This project uses cordova (v3.0) to build native applications in common languages
+such as html and javascript. Currently only Android devices running
+SDK v19 and above are supported.
+
+All functionality is based off of services provided by the website, aka the API
+endpoint. That being said should the API endpoint change, you must update the
+'ApiEndpoint' variable found in app.js to reflect the new url.
+
+It is also important to note that this program was build using LESS CSS. Any
+changes should be made to the less files and recompiled.
+
 cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
 
 
-com.msopentech.indexedDB 0.1.0 "IndexedDB polyfill"
-org.apache.cordova.device-motion 0.2.9 "Device Motion"
-org.apache.cordova.geolocation 0.3.10 "Geolocation"
-org.apache.cordova.inappbrowser 0.5.4-dev "InAppBrowser"

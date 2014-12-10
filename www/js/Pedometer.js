@@ -7,12 +7,13 @@
 var Pedometer = (function ($) {
     "use strict";
     
-    var start_time, ended_time, steps, detector, calibrating;
+    var start_time, ended_time, steps, detector, calories_burnt, calibrating;
     
-    start_time  = null;
-    ended_time  = null;
-    steps       = 0;
-    detector    = null;
+    start_time     = null;
+    ended_time     = null;
+    steps          = 0;
+    calories_burnt = 0;
+    detector       = null;
     
     /**
      * Initialize!
@@ -62,8 +63,6 @@ var Pedometer = (function ($) {
      */
     function OnStepTaken ()
     {
-        console.log(['On step taken', this]);
-        
         steps++;
         $('.counter-wrapper:last').trigger('increment_counter');
     }
@@ -85,8 +84,20 @@ var Pedometer = (function ($) {
             return steps;
         },
         
+        getStartTime: function () {
+            return start_time;
+        },
+        
+        getEndTime: function () {
+            return ended_time
+        },
+        
         isTracking : function () {
             return detector instanceof StepDetector && detector.IsEnabled();
+        },
+        
+        getCaloriesBurned: function () {
+            return calories_burnt;
         },
 
         /**

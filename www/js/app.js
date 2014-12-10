@@ -10,6 +10,14 @@ var ApiEndpoint, okHealthApp, okHealthControllers,
     okHealthServices, okHealthFilters
 ;
 
+/**
+ * If the API endpoint changes, this must be updated to the new URI, and the
+ * app must be recompiled.
+ * 
+ * I.E.: cordova build android
+ * 
+ * @type {string}
+ */
 ApiEndpoint = 'http://syfok.azurewebsites.net/api';
 
 okHealthControllers = angular.module('okHealthControllers', []);
@@ -26,7 +34,6 @@ okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvi
     //$locationProvider.html5Mode(true);
     //$httpProvider.defaults.withCredentials = true;
 
-    
     $routeProvider
         .when('/dashboard', {
             templateUrl: 'partials/Dashboard.html',
@@ -83,7 +90,7 @@ okHealthServices.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpInterceptor');
 }]);
 
-okHealthServices.factory('Account', ['$resource', function ($resource) {
+okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/profile';
 
     return $resource('', {}, {
@@ -180,24 +187,6 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
     });
 }]);
 
-/**
- * public class PedoEntry
-    {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
-        public int UserId { get; set; }
-        public int Steps { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime TimeStamp { get; set; }
-        public double CaloriesBurned { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime StartTime { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime Duration { get; set; }
-    }
- */
-
 okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/pedometer';
     
@@ -207,10 +196,10 @@ okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
             method: 'POST',
             params: {
                 Steps:    '@steps',
+                CaloriesBurned: '@calories',
                 TimeStamp: '@started_on',
                 StartTime: '@started_on',
-                Duration: '@duration',
-                CaloriesBurned: '@calories'
+                EndTime: '@ended_on'
             }
         }
     });
@@ -267,6 +256,19 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
             TokenHandler.set(response.headers('SYF-AUTH'));
             
             return response;
+        }
+    };
+});
+
+okHealthServices.factory('UserHandler', function () {
+    var user = {};
+    
+    return {
+        get : function () {
+            return user;
+        },
+        set : function (u) {
+            user = u;
         }
     };
 });

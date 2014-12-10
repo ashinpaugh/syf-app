@@ -1,15 +1,9 @@
 <div class="link-utility-grouping" ng-controller="LocationCtrl">
     <nav class="navbar" role="navigation">
         <ul class="nav navbar-nav exercise-links">
-            <li class="row">
+            <li class="row" ng-click="EnforceLogin($event, 'Please login to use the pedometer.')">
                 <a href="#/exercise/pedometer" class="col-xs-12">
                     Pedometer
-                </a>
-            </li>
-            
-            <li class="row">
-                <a href="#/exercise/calorie-counter" class="col-xs-12">
-                    Calorie Counter
                 </a>
             </li>
         </ul>
