@@ -32,7 +32,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
         $scope.isSearching = true;
         
         FS.search({query: $scope.search}, function (result) {
-            $scope.resultSet   = CleanFoodData(result.foods.food);
+            $scope.resultSet   = CleanFoodData(result.food);
             $scope.isSearching = false;
             $scope.userError   = false;
             LoadServings();
@@ -46,7 +46,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
         }
         
         FS.get({food_id: food.food_id}, function (result) {
-            food.servings = CleanServingsData(result.food.servings.serving)
+            // Way to go FatSecret - nice and consistent return values...
+            result = $.isArray(result) ? result : [result];
+            food.servings = CleanServingsData(result)
         });
     };
     
@@ -90,19 +92,20 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
         var output = [];
         
         for (var idx in servings) {
-            var data, parts;
-            data  = servings[idx];
-            parts = data.serving_description.split('(');
+            var serving, parts;
+            serving = servings[idx];
+            parts   = serving.serving_description.split('(');
             
-            data.name        = parts[0].trim();
-            data.description = "";
+            serving.name        = parts[0].trim();
+            serving.description = "";
             
             if (parts.length > 1) {
-                data.description = parts[1].substr(0, parts[1].length - 1);
+                serving.description = parts[1].substr(0, parts[1].length - 1);
             }
             
-            delete data.serving_description;
-            output.push(data);
+            delete serving.serving_description;
+            
+            output.push(serving);
         }
         
         return output;

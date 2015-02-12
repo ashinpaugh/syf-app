@@ -18,7 +18,10 @@ var ApiEndpoint, okHealthApp, okHealthControllers,
  * 
  * @type {string}
  */
-ApiEndpoint = 'http://syfok.azurewebsites.net/api';
+//ApiEndpoint = 'http://syfok.azurewebsites.net/api';
+//ApiEndpoint = 'http://okshapeyourfuture.azurewebsites.net';
+ApiEndpoint = 'http://api.mis-health.dev/app_dev.php/v1';
+
 
 okHealthControllers = angular.module('okHealthControllers', []);
 okHealthServices    = angular.module('okHealthServices', ['ngRoute', 'ngResource']);
@@ -91,20 +94,25 @@ okHealthServices.config(['$httpProvider', function ($httpProvider) {
 }]);
 
 okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/profile';
+    var base = ApiEndpoint + '/account';
 
     return $resource('', {}, {
         register : {
-            url: base + '/register/:UserName/:Password',
+            url: base + '.json',
             method: 'POST',
             params: {
-                UserName: '@username',
-                Password: '@password',
-                ConfirmPassword: '@password',
-                Height: '@height',
-                Age: '@dob',
-                Sex: '@gender',
-                Weight: '@weight'
+                username: '@username',
+                password: '@password',
+                first_name: '@first_name',
+                last_name: '@last_name',
+                height: '@height',
+                dob: '@dob',
+                gender: '@gender',
+                weight: '@weight',
+                school_id: '@school_id',
+                group_id: '@group_id',
+                student_id: '@student_id',
+                email: '@email'
             }
         },
         
@@ -142,15 +150,15 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
     
     return $resource('', {}, {
         get : {
-            url: base + '/get/:food_id',
+            url: base + '/:food_id.json',
             method: 'GET',
             params: {food_id: '@food_id'}
         },
         search : {
-            url: base + '/search/:query',
+            url: base + '.json',
             method: 'GET',
             //isArray: true,
-            params: {query: '@query'}
+            params: {q: '@query'}
         },
         favoriteFood : {
             url: base + '/favorite',
@@ -188,7 +196,7 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
 }]);
 
 okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/pedometer';
+    var base = ApiEndpoint + '/pedometer.json';
     
     return $resource('', {}, {
         entry : {
@@ -205,6 +213,30 @@ okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
     });
 }]);
 
+okHealthServices.factory('GroupApi', ['$resource', function ($resource) {
+    var base = ApiEndpoint + '/group.json';
+    
+    return $resource('', {}, {
+        getAll : {
+            url: base,
+            method: 'GET',
+            isArray: true
+        }
+    });
+}]);
+
+
+okHealthServices.factory('SchoolApi', ['$resource', function ($resource) {
+    var base = ApiEndpoint + '/school.json';
+    
+    return $resource('', {}, {
+        getAll : {
+            url: base,
+            method: 'GET',
+            isArray: true
+        }
+    });
+}]);
 
 okHealthServices.factory('MarketApi', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/market';

@@ -3,12 +3,10 @@
  */
 
 okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler) {
-    //$scope.user      = {username: '', password: '', password2: '', dob: 0, height: null, weight: 0};
     $scope.user      = UserHandler.get();
     $scope.show_pass = false;
     $scope.page      = 1;
-    $scope.pword_focused = false;
-    $scope.message       = $routeParams.message;
+    $scope.message   = $routeParams.message;
     
     /**
      * Perform user sign-in.

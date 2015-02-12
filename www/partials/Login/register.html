@@ -74,13 +74,37 @@
                     </label>
                 </div>
             </div>
+            
+            <div class="form-group">
+                <label for="first_name" class="sr-only">First Name:</label>
+                
+                <input id          = "first_name"
+                       type        = "text"
+                       class       = "form-control"
+                       placeholder = "First Name"
+                       ng-model    = "user.first_name"
+                       required
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="last_name" class="sr-only">Last Name:</label>
+                
+                <input id          = "last_name"
+                       type        = "text"
+                       class       = "form-control"
+                       placeholder = "Last Name"
+                       ng-model    = "user.last_name"
+                       required
+                />
+            </div>
         </div>
         
-        <div class="page-2" ng-show="page > 1">
+        <div class="page-2" ng-show="page == 2">
             <div class="form-group">
                 <label for="gender" class="sr-only">Gender:</label>
                 
-                <select id="gender" name="gender" class="form-control">
+                <select id="gender" name="gender" class="form-control" ng-model="user.gender">
                     <option value="" disabled selected>Select your gender...</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -95,7 +119,7 @@
                        type        = "number"
                        class       = "form-control"
                        placeholder = "Year of Birth"
-                       ng-model    = "user.birth_year"
+                       ng-model    = "user.dob"
                        required
                 />
             </div>
@@ -123,11 +147,65 @@
                        required
                 />
             </div>
+        </div>
+        
+        
+        
+        
+        
+        
+        <div class="page-3" ng-show="page > 2">
+            <div class="form-group">
+                <label for="school" class="sr-only">School:</label>
+                
+                <select id="school" name="school_id" class="form-control" ng-model="user.school_id">
+                    <option value="" disabled selected>Select the school you attend...</option>
+                    <option value="{{school.id}}" ng-repeat="school in schools">{{school.name}}</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="group" class="sr-only">Group:</label>
+                
+                <select id="group" name="group_id" class="form-control" ng-model="user.group_id">
+                    <option value="" disabled selected>Select the group you were assigned to...</option>
+                    <option value="{{group.id}}" ng-repeat="group in groups">{{group.name}}</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="student_id" class="sr-only">Student ID:</label>
+                
+                <input id          = "student_id"
+                       type        = "number"
+                       class       = "form-control"
+                       placeholder = "Student ID"
+                       ng-model    = "user.student_id"
+                       required
+                />
+            </div>
+            
+            <div class="form-group">
+                <label for="email" class="sr-only">Email:</label>
+                
+                <input id          = "email"
+                       type        = "email"
+                       class       = "form-control"
+                       placeholder = "Email"
+                       ng-model    = "user.email"
+                       required
+                />
+            </div>
             
             <button type="submit" class="btn btn-block btn-primary">Submit</button>
         </div>
         
-        <div class="nav-arrow next-arrow well-sm" ng-show="page < 2">
+        
+        
+        
+        
+        
+        <div class="nav-arrow next-arrow well-sm" ng-show="page < 3">
             <div class="fa fa-arrow-right" ng-click="page = page + 1"></div>
         </div>
     </form>
