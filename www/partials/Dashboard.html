@@ -2,15 +2,15 @@
     
     <div class="row stats well" ng-hide="!EnsureValidUser()">
         <div class="col-xs-4">
-            <h3>{{calories | number}}</h3>
+            <h3>{{user.calories | number}}</h3>
             <h5>Calories Consumed</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{steps | number}}</h3>
+            <h3>{{user.steps | number}}</h3>
             <h5>Steps Taken</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{netCal | number}}</h3>
+            <h3>{{user.netCal | number}}</h3>
             <h5>Net Calories</h5>
         </div>
     </div>

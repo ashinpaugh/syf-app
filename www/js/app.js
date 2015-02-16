@@ -33,7 +33,7 @@ okHealthApp         = angular.module('okHealthApp', [
     'okHealthFilters'
 ]);
 
-okHealthApp.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
+okHealthApp.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
     //$locationProvider.html5Mode(true);
     //$httpProvider.defaults.withCredentials = true;
 
@@ -117,22 +117,18 @@ okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
         },
         
         login : {
-            url: base + '/login/:username/:password',
-            method: 'POST',
-            params: {
-                username: '@username',
-                password: '@password'
-            }
+            url: ApiEndpoint + '/login.json',
+            method: 'POST'
         },
         
         logout : {
-            url: base + '/logout',
+            url: base + '/logout.json',
             method: 'GET',
             isArray: false
         },
         
         stats : {
-            url: base + '/stats',
+            url: base + '/stats.json',
             method: 'GET',
             isArray: true
         }
@@ -156,9 +152,7 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
         },
         search : {
             url: base + '.json',
-            method: 'GET',
-            //isArray: true,
-            params: {q: '@query'}
+            method: 'GET'
         },
         favoriteFood : {
             url: base + '/favorite',
@@ -276,16 +270,16 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
                 return config;
             }
             
-            config.headers['SYF-AUTH'] = TokenHandler.get();
+            config.headers['X-AUTH-TOKEN'] = TokenHandler.get();
             
             return config;
         },
         response : function (response) {
-            if (!response.headers('SYF-AUTH')) {
+            if (!response.headers('X-AUTH-TOKEN')) {
                 return response;
             }
             
-            TokenHandler.set(response.headers('SYF-AUTH'));
+            TokenHandler.set(response.headers('X-AUTH-TOKEN'));
             
             return response;
         }

@@ -31,7 +31,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
         
         $scope.isSearching = true;
         
-        FS.search({query: $scope.search}, function (result) {
+        FS.search({q: $scope.search}, function (result) {
             $scope.resultSet   = CleanFoodData(result.food);
             $scope.isSearching = false;
             $scope.userError   = false;
@@ -47,8 +47,10 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', 'FS', function ($scop
         
         FS.get({food_id: food.food_id}, function (result) {
             // Way to go FatSecret - nice and consistent return values...
-            result = $.isArray(result) ? result : [result];
-            food.servings = CleanServingsData(result)
+            var servings = result.servings.serving;
+            servings     = $.isArray(servings) ? servings : [servings];
+            
+            food.servings = CleanServingsData(servings);
         });
     };
     

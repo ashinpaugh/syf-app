@@ -19,19 +19,15 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         password = $scope.credentials.password;
         
         AccountApi.login({
-            'username': username,
-            'password': password
+            '_username': username,
+            '_password': password
         }, function (data, headers) {
             if (typeof data !== 'object') {
                 alert(data);
                 return;
             }
             
-            UserHandler.set($.extend(
-                {'username': username},
-                data
-            ));
-            
+            UserHandler.set(data);
             
             $location.url('/dashboard');
         });
@@ -47,6 +43,8 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         }
         
         AccountApi.register($scope.user, function (data, headers) {
+            UserHandler.set(data);
+            
             $location.url('/dashboard');
         })
     };
