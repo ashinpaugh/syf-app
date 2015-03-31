@@ -6,7 +6,8 @@
 
 "use strict";
 
-var ApiEndpoint, okHealthApp, okHealthControllers,
+var ApiEndpoint, ApiResponseFormat,
+    okHealthApp, okHealthControllers,
     okHealthServices, okHealthFilters
 ;
 
@@ -20,14 +21,16 @@ var ApiEndpoint, okHealthApp, okHealthControllers,
  */
 //ApiEndpoint = 'http://syfok.azurewebsites.net/api';
 //ApiEndpoint = 'http://okshapeyourfuture.azurewebsites.net';
-ApiEndpoint = 'http://api.mis-health.dev/app_dev.php/v1';
+ApiEndpoint       = 'http://api.mis-health.dev/app_dev.php/v1';
+ApiResponseFormat = 'json';
 
 
-okHealthControllers = angular.module('okHealthControllers', []);
+okHealthControllers = angular.module('okHealthControllers', ['ngTouch']);
 okHealthServices    = angular.module('okHealthServices', ['ngRoute', 'ngResource']);
 okHealthFilters     = angular.module('okHealthFilters', []);
 okHealthApp         = angular.module('okHealthApp', [
     'ngRoute',
+    //'ngTouch',
     'okHealthServices',
     'okHealthControllers',
     'okHealthFilters'
@@ -150,10 +153,26 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
             method: 'GET',
             params: {food_id: '@food_id'}
         },
+        batch : {
+            url:    base + '/:food_ids.json',
+            method: 'GET',
+            params: {'food_ids': '@food_ids'},
+            isArray: true
+        },
         search : {
             url: base + '.json',
             method: 'GET'
         },
+        addEatenItem : {
+            url: base + '/diary/:id/:serving_id/:name.json',
+            method: 'POST',
+            params: {
+                id: '@id',
+                serving_id: '@serving_id',
+                name: '@name'
+            }
+        },
+        
         favoriteFood : {
             url: base + '/favorite',
             method: 'GET',

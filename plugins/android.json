@@ -14,17 +14,12 @@
                         }
                     ]
                 }
-            },
-            "AndroidManifest.xml": {
-                "parents": {
-                    "/*": []
-                }
             }
         }
     },
     "installed_plugins": {
         "org.apache.cordova.inappbrowser": {
-            "PACKAGE_NAME": "io.okhealth.shapeyourfuture"
+            "PACKAGE_NAME": "io.okhealth.healthandfitness"
         }
     },
     "dependent_plugins": {}

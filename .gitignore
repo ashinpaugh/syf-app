@@ -5,6 +5,8 @@ www/css/*
 plugins/
 platforms/
 
+npm-*
+
 # ANDROID / ECLIPSE
 
 # built application files

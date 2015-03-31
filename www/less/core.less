@@ -5,6 +5,11 @@ body {
   background: rgb(00, 171, 239);
   overflow-x: hidden;
   
+  /* For the sliding navbar */
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -30,7 +35,7 @@ body {
         margin: 0 auto;
         width: 80%;
         text-align: center;
-        opacity: 75%;
+        opacity: 0.7;
         color: #FFF;
       }
     }
@@ -69,6 +74,16 @@ body {
     .syf-loader div {
       color: #FFF;
       margin: 0 auto;
+    }
+    
+    .form-search {
+      div.row {
+        margin: 0;
+        
+        div {
+          padding: 2px 5px;
+        }
+      }
     }
   }
 }

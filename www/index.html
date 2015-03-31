@@ -21,18 +21,20 @@
         
         <script type="text/javascript" src="cordova.js"></script>
         
+        
+        
         <!--
         <script src="http://192.168.1.71:8080/target/target-script-min.js#anonymous"></script>
+        <script src="http://10.0.1.9:8080/target/target-script-min.js#anonymous"></script>
         -->
-                
+        
         <title>Shape your Future</title>
     </head>
     
-    <body>
-        <div class="container-fluid" ng-controller="AppCtrl">
+    <body ng-controller="AppCtrl" ng-swipe-left="HandleNav($event)" ng-swipe-right="HandleNav($event)">
+        <div class="container-fluid">
             <div class="row">
-                
-                <div class="app-nav-wrapper col-xs-6" data-state="closed">
+                <div class="app-nav-wrapper col-xs-6" data-state="closed" ng-mouseup="HideNav()">
                     <app-nav></app-nav>
                 </div>
                 
@@ -45,8 +47,8 @@
                         </div>
                     </div>
                     
-                    <div class="row content">
-                        <div class="col-xs-12" ng-view></div>
+                    <div class="content">
+                        <div ng-view></div>
                     </div>
                 </div>
                 

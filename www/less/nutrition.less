@@ -2,7 +2,6 @@
   
   .error-wrapper {
     color: #000;
-    height: 4em;
     margin: 0 auto 1em;
     padding: 0.5em;
     width: 80%;
@@ -12,6 +11,7 @@
     width: 100%;
     text-align: center;
     outline: 0;
+    border-radius: 1em;
     
     input {
       width: 70%;
@@ -30,87 +30,107 @@
     padding: 0.25em 0.1em;
     background: #FFF;
     list-style: none;
-    
+
     .result {
       margin: 0.5em 0;
-      
-      .name-wrapper {
-        &.row {
-          margin: 0 0;
-        }
+      border-radius: 15px;
+
+      div {
+        //padding: 0 5px 0 5px;
         
-        span.fa {
-          margin: 10px 0;
-          padding-right: 0;
-        }
-      }
-      
-      .additional-details {
-        border-top: thin solid #CCC;
-        padding: 1em 0 0.5em;
-        
-        /*.description {
-          padding: 0.5em;
-          font-size: 0.5;
-        }*/
-        
-        .meta-wrapper {
-          .meta {
-            div {
-              width: 50%;
-              font-weight: lighter;
-              text-align: center;
-              
-              &:first-child {
-                text-decoration: underline;
+        .item-display {
+          .food-eaten-wrapper {
+            margin: 0.25em 0 0;
+          }
+  
+          .arrow-wrapper {
+            margin: 0.25em 0;
+          }
+  
+          .name-wrapper {
+            h4 {
+              overflow: hidden;
+              text-overflow: ellipsis;
+              white-space: nowrap;
+  
+              span {
+                display: block;
+                font-weight: lighter;
+                margin: 0.25em 0 0;
               }
             }
           }
-          
         }
-      }
-      
-      .food-actions {
-        a {
-          width: 45%;
-          text-align: center;
-          margin: 0 0.5em;
+  
+        .additional-details {
+          border-top: thin solid #CCC;
+          padding: 1em 0 0.5em;
+  
+          /*.description {
+            padding: 0.5em;
+            font-size: 0.5;
+          }*/
+  
+          .meta-wrapper {
+            .meta {
+              div {
+                width: 50%;
+                font-weight: lighter;
+                text-align: center;
+  
+                &:first-child {
+                  text-decoration: underline;
+                }
+              }
+            }
+  
+          }
         }
-      }
-      
-      .servings-wrapper {
-        margin: 1em 0;
-        
-        ul {
-          margin-top: 0.15em;
-          list-style: none;
-          padding-left: 0;
-          
-          li {
-            padding: 0.4em 0;
-            
-            .headings {
-              font-weight: bold;
-              margin-bottom: 0.25em;
-            }
-            
-            .description {
-              font-weight: lighter;
-              font-size: 0.75em;
-            }
-            
-            a.btn {
-              text-align: center;
-              margin: 0.25em;
-            }
-            
-            .fa {
-              color: #000;
-              margin-right: 0.2em;
-            }
-            
-            div:last-child {
-              text-align: center;
+  
+        .food-actions {
+          margin: 0 0 0.65em;
+  
+          a {
+            //width: 45%;
+            text-align: center;
+            margin: 0 0.5em;
+          }
+        }
+  
+        .servings-wrapper {
+          margin: 1em 0;
+  
+          ul {
+            margin-top: 0.15em;
+            list-style: none;
+            padding-left: 0;
+  
+            li {
+              padding: 0.4em 0;
+  
+              .headings {
+                font-weight: bold;
+                margin-bottom: 0.25em;
+              }
+  
+              .description {
+                font-weight: lighter;
+                font-size: 0.75em;
+              }
+  
+              a.btn {
+                text-align: center;
+                margin: 0.25em;
+              }
+  
+              .fa {
+                color: #000;
+                margin-right: 0.2em;
+              }
+  
+              div:last-child {
+                text-align: center;
+              }
             }
           }
         }

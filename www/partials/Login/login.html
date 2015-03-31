@@ -1,9 +1,9 @@
-<form class="login-wrapper row" name="credentials" ng-controller="LoginCtrl">
+<form class="login-wrapper" name="credentials" ng-controller="LoginCtrl">
     <div class="message-wrapper warning well-sm" ng-hide="!message">
         {{message}}
     </div>
     
-    <div class="col-xs-8">
+    <div>
         <label for="username" class="sr-only">Username</label>
         <input id="username" type="text" class="form-control" placeholder="Username" ng-model="credentials.username" />
         
@@ -19,6 +19,7 @@
         </div>
     </div>
     
+    <!--
     <div class="col-xs-4 sso-wrapper">
         <div class="vr"></div>
         
@@ -30,4 +31,5 @@
             <span class="fa fa-twitter"></span>
         </a>
     </div>
+    -->
 </form>

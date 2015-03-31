@@ -9,22 +9,64 @@
         </span>
     </div>
     
+    <!--
     <form class="search-input">
         <label class="sr-only" for="nutrition-search">Search</label>
         <input ng-model="search" id="nutrition-search" type="text" placeholder="Lookup Ingredients - (i.e. 'chicken')" />
         
         <button class="well-sm" ng-click="doLookup()">Search</button>
     </form>
+    -->
+    
+    <form class="form-inline form-search">
+        <div class="form-group">
+            <!--
+            <div class="row">
+                <div class="col-xs-10">
+                    
+                </div>
+                
+                
+                <div class="col-xs-2">
+                    <button class="btn btn-sm btn-primary" ng-click="doLookup()">Search</button>
+                </div>
+            </div>
+            -->
+            
+            <label class="sr-only" for="nutrition-search">Search</label>
+            <input ng-model="search" class="form-control" id="nutrition-search" type="text" placeholder="Lookup Food - (i.e. 'chicken')" ng-keypress="$event.keyCode == 13 ? doLookup() : void();" />
+        </div>
+    </form>
     
     <div class="search-results">
         <h4 ng-hide="!resultSet && !isSearching">Results</h4>
         
         <ul class="results well" ng-hide="!resultSet">
-            <li class="row result" ng-repeat="food in resultSet" ng-class-even="'list-alt'">
-                <div class="col-xs-12" ng-init="food.closed = true">
-                    <div class="row name-wrapper" ng-click="food.closed = !food.closed">
-                        <h4 class="col-xs-11">{{food.food_name}}</h4>
-                        <span class="col-xs-1 fa" ng-class="{'fa-arrow-right': food.closed, 'fa-arrow-down': !food.closed}"></span>
+            <li class="row result swipe-able" ng-repeat="food in resultSet" ng-class-even="'list-alt'">
+                <div class="col-xs-12" ng-init="food.closed = true; food.swiping = false; food.show_add = false;">
+                    <div class="row item-display" ng-swipe-right="food.swiping = true; food.show_add = true;" ng-swipe-left="food.swiping = true; food.show_add = false;">
+                        <div class="col-xs-2 food-eaten-wrapper" ng-show="food.show_add">
+                            <button type="button" class="btn btn-sm btn-info"    ng-if="!HasEaten(food)" ng-click="AddToEaten($event, food)">Add</button>
+                            <button type="button" class="btn btn-sm btn-success" ng-if="HasEaten(food)">Added!</button>
+                        </div>
+                        
+                        <!--
+                        <div class="name-wrapper" ng-click="food.closed = !food.closed" ng-class="{'col-xs-12': !food.has_swiped, 'col-xs-10': food.has_swiped}">
+                            <h4 class="col-xs-11">{{food.name}} <span ng-hide="food.closed">{{food.name_meta}}</span></h4>
+                            <span class="col-xs-1 fa" ng-class="{'fa-arrow-right': food.closed, 'fa-arrow-down': !food.closed}"></span>
+                        </div>
+                        -->
+                        
+                        <!---->
+                        <div class="name-wrapper" ng-click="food.swiping = false;" ng-mouseup="food.closed = food.swiping ? food.closed : !food.closed" ng-class="{'col-xs-10': !food.show_add, 'col-xs-8': food.show_add}">
+                            <h4>
+                                {{food.name}} <span ng-hide="food.closed">{{food.name_meta}}</span>
+                            </h4>
+                        </div>
+                        
+                        <div class="col-xs-2 arrow-wrapper">
+                            <span class="fa" ng-class="{'fa-arrow-right': food.closed, 'fa-arrow-down': !food.closed}"></span>
+                        </div>
                     </div>
                     
                     <div class="additional-details" ng-hide="food.closed">
@@ -36,23 +78,30 @@
                         </div>
                     </div>
                     
-                    <div class="food-actions row" ng-hide="food.closed">
-                        <a ng-click="GetFood(food)" class="btn btn-default col-xs-6" ng-show="!food.servings">
-                            Portions and Details
-                        </a>
+                    <div class="row food-actions" ng-hide="food.closed">
+                        <div class="col-xs-6" ng-init="food.hide_servings = true;">
+                            <a ng-click="GetFood(food);" class="btn btn-sm btn-default" ng-show="!food.servings">
+                                Portions and Details
+                            </a>
+                            
+                            <a ng-mouseup="food.hide_servings = !food.hide_servings;" ng-hide="!food.servings" class="toggle btn btn-sm btn-default">
+                                <span ng-show="!food.hide_servings">Hide Servings</span>
+                                <span ng-show="food.hide_servings">Show Servings</span>
+                            </a>
+                            
+                            <!--
+                            <a ng-click="food.hide_servings = false;" ng-hide="!food.servings || !food.hide_servings" class="toggle btn btn-default">
+                                Show Servings
+                            </a>
+                            -->
+                        </div>
                         
-                        <a ng-click="food.hide_servings = true" ng-hide="!food.servings || food.hide_servings" class="toggle btn btn-default col-xs-6" ng-hide="!food.servings">
-                            Hide Servings
-                        </a>
-                        
-                        <a ng-click="food.hide_servings = false" ng-hide="!food.servings || !food.hide_servings" class="toggle btn btn-default col-xs-6" ng-hide="!food.servings">
-                            Show Servings
-                        </a>
-                        
-                        <a href="{{food.food_url}}" class="btn btn-default col-xs-6">
-                            <span class="fa fa-external-link"></span>
-                            <span>More Information</span>
-                        </a>
+                        <div class="col-xs-6">
+                            <a href="{{food.food_url}}" class="btn btn-sm btn-default">
+                                <span class="fa fa-external-link"></span>
+                                <span>More Info</span>
+                            </a>
+                        </div>
                     </div>
                     
                     <div class="servings-wrapper" ng-hide="food.closed || food.hide_servings">

@@ -123,79 +123,7 @@ var SYF = (function ($)
         });
     }
     
-    /**
-     * Sets up the listeners for the swipe events and toggles the display
-     * of the nav bar.
-     */
-    function SetupPageNav ()
-    {
-        bindNavSwipes();
-        
-        var nav = $('div.app-nav-wrapper');
-        nav.on('click', 'a', function (e) {
-            if (nav.is(':hidden')) {
-                return;
-            }
-            
-            $(document).trigger('swipeleft');
-        });
-    }
-    
-    function bindNavSwipes ()
-    {
-        $(document).bind('swipeleft swiperight', function (e) {
-            var nav, main, state, offset, closing;
-            nav   = $('div.app-nav-wrapper');
-            main  = $('div.main-content');
-            state = nav.data('state');
-            
-            if ('open' == state && 'swiperight' == e.type) {
-                return;
-            } else if ('closed' == state && 'swipeleft' == e.type) {
-                return;
-            } else if ('trans' == state) {
-                return;
-            }
-            
-            nav.data('state', 'trans');
-            
-            offset  = 50;
-            closing = 'open' === state;
-            
-            if (closing) {
-                main.css('left', '');
-            }
-
-            nav.animate({
-                //marginLeft: (closing ? '-' + offset + '%' : '0')
-                left: (closing ? '-' + offset + '%' : '0')
-            }, {
-                'speed': 'slow',
-                'easing': 'linear',
-                'progress': function (panim, prog, remaining) {
-                    var complete = 0;
-                    
-                    if (!closing) {
-                        complete = offset * prog;
-                    } else {
-                        complete = Math.round(offset * (1 - prog));
-                    }
-                    
-                    main.css('left', complete + "%");
-                },
-                'complete' : function () {
-                    nav.data('state', closing ? 'closed' : 'open');
-                    
-                    if (closing) {
-                        main.removeAttr('style');
-                    }
-                }
-            });
-        });
-    }
-    
     $(function () {
-        SetupPageNav();
         bindExternalLinks();
     });
     

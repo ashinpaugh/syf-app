@@ -21,13 +21,13 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         AccountApi.login({
             '_username': username,
             '_password': password
-        }, function (data, headers) {
+        }, function (data) {
             if (typeof data !== 'object') {
-                alert(data);
+                $scope.message = 'Invalid login credentials provided!';
                 return;
             }
             
-            UserHandler.set(data);
+            UserHandler.set(data.user_meta);
             
             $location.url('/dashboard');
         });
