@@ -7,12 +7,12 @@
 "use strict";
 
 //{"Calories":"0","Steps":"0","NetCalories":"0","Age":"0","Height":"73","Weight":"230"}
-okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, GroupApi, SchoolApi) {
-    $scope.token     = null;
-    $scope.user      = UserHandler.get();
-    $scope.groups    = GroupApi.getAll();
-    $scope.schools   = SchoolApi.getAll();
-    $scope.eaten_ids = [];
+okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GroupApi, SchoolApi) {
+    $scope.token       = null;
+    $scope.user        = null;
+    $scope.tracker     = TrackerHandler;
+    $scope.groups      = GroupApi.getAll();
+    $scope.schools     = SchoolApi.getAll();
     $scope.eaten_today = [];
     
     $scope.$back = function () {
@@ -106,5 +106,4 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
             type: 'swipeleft'
         });
     }
-    
 }]);

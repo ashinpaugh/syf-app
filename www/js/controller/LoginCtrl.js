@@ -28,6 +28,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             }
             
             UserHandler.set(data.user_meta);
+            $scope.tracker.set(data.food_meta);
             
             $location.url('/dashboard');
         });
@@ -48,7 +49,12 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             $location.url('/dashboard');
         })
     };
-    
+
+    /**
+     * Performs some lightweight client-side input validation.
+     * 
+     * @returns {boolean}
+     */
     function validateProperties()
     {
         var u = $scope.user;
@@ -81,9 +87,5 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         SYF.Resources.Load([
             'css/login.css'
         ]);
-    });
-    
-    $scope.$on('$destroy', function () {
-        
     });
 }]);

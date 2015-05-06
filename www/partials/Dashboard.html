@@ -2,15 +2,15 @@
     
     <div class="row stats well" ng-hide="!EnsureValidUser()">
         <div class="col-xs-4">
-            <h3>{{user.calories | number}}</h3>
+            <h3>{{tracker.getConsumed() | number}}</h3>
             <h5>Calories Consumed</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{user.steps | number}}</h3>
+            <h3>{{tracker.getBurned() | number}}</h3>
             <h5>Steps Taken</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{user.netCal | number}}</h3>
+            <h3 id="net-calories" ng-class="{inNegative: !tracker.hasConsumedLess(), inPositive: tracker.hasConsumedLess()}">{{tracker.getNet() | number}}</h3>
             <h5>Net Calories</h5>
         </div>
     </div>
@@ -28,13 +28,6 @@
             <a href="#/exercise" class="util">
                 <span class="fa fa-5x fa-bicycle"></span>
                 <h4>Move More</h4>
-            </a>
-        </div>
-        
-        <div class="col-xs-4">
-            <a href="#/tobacco-free" class="util">
-                <span class="fa fa-5x fa-ban"></span>
-                <h4>Tobacco Free</h4>
             </a>
         </div>
     </div>

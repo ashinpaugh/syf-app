@@ -4,7 +4,7 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
+/*"use strict";
 
 (function ($) {
     
@@ -20,4 +20,4 @@
     }
     
     SetupBindings();
-}) (jQuery);
+}) (jQuery);*/

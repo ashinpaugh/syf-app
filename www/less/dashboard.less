@@ -7,6 +7,16 @@ div.main-content {
       text-align: center;
       padding: 0 0 0.25em;
       
+      #net-calories {
+        &.inNegative {
+          color: lightcoral !important;
+        }
+        
+        &.inPositive {
+          color: lightgreen !important;
+        }
+      }
+      
       h3 {
         color: rgb(102, 189, 79);
         margin: 0.15em 0 0;

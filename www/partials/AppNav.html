@@ -21,9 +21,9 @@
         
         <li>
             <a href="#/login">
-                <span class="fa fa-user" ng-class="{loggedIn:$user}"></span>
-                <span ng-show="!$user">Login</span>
-                <span ng-show="$user">Logout</span>
+                <span class="fa fa-user" ng-class="{loggedIn:getUser().username}"></span>
+                <span ng-show="!getUser().username">Login</span>
+                <span ng-show="getUser().username">Logout</span>
             </a>
         </li>
         

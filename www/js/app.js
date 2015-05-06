@@ -36,7 +36,7 @@ okHealthApp         = angular.module('okHealthApp', [
     'okHealthFilters'
 ]);
 
-okHealthApp.config(['$routeProvider', '$locationProvider', '$httpProvider', function ($routeProvider, $locationProvider, $httpProvider) {
+okHealthApp.config(['$routeProvider', function ($routeProvider) {
     //$locationProvider.html5Mode(true);
     //$httpProvider.defaults.withCredentials = true;
 
@@ -164,7 +164,7 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
             method: 'GET'
         },
         addEatenItem : {
-            url: base + '/diary/:id/:serving_id/:name.json',
+            url: base + '/diary.json',
             method: 'POST',
             params: {
                 id: '@id',
@@ -316,6 +316,57 @@ okHealthServices.factory('UserHandler', function () {
             user = u;
         }
     };
+});
+
+okHealthServices.factory('TrackerHandler', function () {
+    var meta = {
+        consumed:  0,
+        burned:    0,
+        eaten_ids: []
+    };
+    
+    return {
+        get : function () {
+            return meta;
+        },
+        
+        set : function (food_meta) {
+            meta = food_meta;
+        },
+        
+        getConsumed : function () {
+            return meta.consumed;
+        },
+        
+        getBurned : function () {
+            return meta.burned;
+        },
+        
+        getNet : function () {
+            return meta.consumed - meta.burned;
+        },
+        
+        getEatenIds : function () {
+            return meta.eaten_ids;
+        },
+        
+        addEatenId : function (id) {
+            meta.eaten_ids.push(id);
+        },
+        
+        addCalories : function (cal) {
+            meta.consumed += parseInt(cal);
+        },
+        
+        hasConsumedLess : function ()
+        {
+            return meta.consumed < meta.burned;
+        },
+        
+        calculateCaloriesBurned : function (user) {
+            
+        }
+    }
 });
 
 okHealthFilters.filter('StripTags', function() {

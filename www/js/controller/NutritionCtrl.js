@@ -1,5 +1,5 @@
 /**
- * The homepage / dashboard for the app.
+ * Page where the user searches for food and adds it to their calorie diary.
  * 
  * @author Austin Shinpaugh
  */
@@ -15,7 +15,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
     $scope.userError   = false;
 
     /**
-     * Looks up a user's query.
+     * Looks up a user's search query.
      */
     $scope.doLookup = function ()
     {
@@ -39,67 +39,52 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         });
     };
     
-    /*$scope.GetServings = function (food)
-    {
-        if (food.servings) {
-            return;
-        }
-        
-        FS.get({food_id: food.food_id}, function (result) {
-            // Way to go FatSecret - nice and consistent return values...
-            var servings = result.servings.serving;
-            servings     = $.isArray(servings) ? servings : [servings];
-            
-            food.servings = CleanServingsData(servings);
-        });
-    };
-    
-    var LoadServings = function ()
-    {
-        for (var idx in $scope.resultSet) {
-            if (!$scope.resultSet.hasOwnProperty(idx)) {
-                continue;
-            }
-            
-            $scope.GetServings($scope.resultSet[idx]);
-        }
-    };*/
-    
-    $scope.GetServings = function (food)
-    {
-        if (food.servings) {
-            return;
-        }
-        
-        FS.get({food_id: food.food_id}, function (result) {
-            // Way to go FatSecret - nice and consistent return values...
-            var servings = result.servings.serving;
-            servings     = $.isArray(servings) ? servings : [servings];
-            
-            food.servings = CleanServingsData(servings);
-        });
-    };
-    
+    /**
+     * Mark a meal as eaten and enter it into the calorie diary.
+     * 
+     * @param $event
+     * @param food
+     */
     $scope.AddToEaten = function ($event, food)
     {
         if ($scope.EnforceLogin($event, 'Please login before tracking your meals.')) {
             return;
         }
         
+        var id, serving;
+        id      = food.food_id;
+        serving = food.servings[0];
+        
         FS.addEatenItem({
-            id: food.food_id,
-            name: food.name,
-            serving_id: food.servings[0].serving_id
+            id:         id,
+            name:       food.name,
+            serving_id: serving.serving_id
         }, function (result) {
-            console.log(result);
+            if (!result.hasOwnProperty('value')) {
+                return;
+            }
+            
+            food.has_eaten = true;
+            
+            $scope.tracker.addEatenId(food.food_id);
+            $scope.tracker.addCalories(serving.calories);
         });
     };
-    
-    $scope.HasEaten = function (food)
+
+    /**
+     * Determine if the user has eaten a particular food_id today.
+     * 
+     * @param food_id
+     * @returns {boolean}
+     */
+    var HasEaten = function (food_id)
     {
-        return food.food_id in $scope.eaten_ids;
+        return $.inArray(food_id, $scope.tracker.getEatenIds()) > -1;
     };
-    
+
+    /**
+     * Collects all the food objects' food_id's for batch processing.
+     */
     var LoadServings = function ()
     {
         var food_ids = [];
@@ -116,7 +101,16 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         
         UpdateServings(food_ids);
     };
-    
+
+    /**
+     * Streams the servings API back to the phone since the server will have
+     * to make multiple FS API calls to retrieve all the required data.
+     * 
+     * Also, normalizes some of the inconsistent data sent by FS when requesting
+     * the serving details.
+     * 
+     * @param food_ids
+     */
     var UpdateServings = function (food_ids)
     {
         FS.batch({'food_ids': food_ids.join(',')}, function (results) {
@@ -132,7 +126,13 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             }
         })
     };
-    
+
+    /**
+     * Clean up some of the rubbish data sent with the FS food API.
+     * 
+     * @param food
+     * @returns {Array}
+     */
     var CleanFoodData = function (food)
     {
         var output = [];
@@ -144,9 +144,10 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             vol  = desc.substr(4, desc.indexOf(' -') - 4);
             
             // Per 101g - Calories: 197kcal | Fat: 7.79g | Carbs: 0.00g | Protein: 29.80g
-            data.volume = vol;
-            data.meta   = desc.substr(desc.indexOf('- ') + 2).trim().split(' | ');
-            data.closed = true;
+            data.volume    = vol;
+            data.meta      = desc.substr(desc.indexOf('- ') + 2).trim().split(' | ');
+            data.closed    = true;
+            data.has_eaten = HasEaten(data.food_id);
             
             name     = data.food_name;
             meta_pos = name.indexOf('(');
@@ -165,7 +166,13 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         
         return output;
     };
-    
+
+    /**
+     * Clean up some of the rubbish data sent with the FS servings API.
+     * 
+     * @param servings
+     * @returns {Array}
+     */
     var CleanServingsData = function (servings)
     {
         var output = [];
@@ -177,7 +184,6 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             
             serving.name        = parts[0].trim();
             serving.description = "";
-            serving.ser
             
             if (parts.length > 1) {
                 serving.description = parts[1].substr(0, parts[1].length - 1);
@@ -190,7 +196,12 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         
         return output;
     };
-    
+
+    /**
+     * Checks the user input before sending it on to FS.
+     * 
+     * @returns {boolean}
+     */
     var InvalidInput = function ()
     {
         var idx, letter;
@@ -205,7 +216,13 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         
         return false;
     };
-    
+
+    /**
+     * Finds the food object (sent by FS) by ID.
+     * 
+     * @param food_id
+     * @returns {Object}
+     */
     var GetFood = function (food_id)
     {
         for (var idx in $scope.resultSet) {
@@ -220,8 +237,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
     
     angular.element(document).ready(function () {
         SYF.Resources.Load([
-            'css/nutrition.css',
-            'js/nutrition.js'
+            'css/nutrition.css'
         ]);
     });
 }]);

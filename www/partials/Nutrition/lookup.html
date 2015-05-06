@@ -44,20 +44,12 @@
         <ul class="results well" ng-hide="!resultSet">
             <li class="row result swipe-able" ng-repeat="food in resultSet" ng-class-even="'list-alt'">
                 <div class="col-xs-12" ng-init="food.closed = true; food.swiping = false; food.show_add = false;">
-                    <div class="row item-display" ng-swipe-right="food.swiping = true; food.show_add = true;" ng-swipe-left="food.swiping = true; food.show_add = false;">
+                    <div class="row item-display" ng-swipe-right="food.swiping = true; food.show_add = true; console.log('swipe');" ng-swipe-left="food.swiping = true; food.show_add = false;">
                         <div class="col-xs-2 food-eaten-wrapper" ng-show="food.show_add">
-                            <button type="button" class="btn btn-sm btn-info"    ng-if="!HasEaten(food)" ng-click="AddToEaten($event, food)">Add</button>
-                            <button type="button" class="btn btn-sm btn-success" ng-if="HasEaten(food)">Added!</button>
+                            <button type="button" class="btn btn-sm btn-info"    ng-show="!food.has_eaten" ng-click="AddToEaten($event, food)">Add</button>
+                            <button type="button" class="btn btn-sm btn-success disabled" ng-show="food.has_eaten">Added!</button>
                         </div>
                         
-                        <!--
-                        <div class="name-wrapper" ng-click="food.closed = !food.closed" ng-class="{'col-xs-12': !food.has_swiped, 'col-xs-10': food.has_swiped}">
-                            <h4 class="col-xs-11">{{food.name}} <span ng-hide="food.closed">{{food.name_meta}}</span></h4>
-                            <span class="col-xs-1 fa" ng-class="{'fa-arrow-right': food.closed, 'fa-arrow-down': !food.closed}"></span>
-                        </div>
-                        -->
-                        
-                        <!---->
                         <div class="name-wrapper" ng-click="food.swiping = false;" ng-mouseup="food.closed = food.swiping ? food.closed : !food.closed" ng-class="{'col-xs-10': !food.show_add, 'col-xs-8': food.show_add}">
                             <h4>
                                 {{food.name}} <span ng-hide="food.closed">{{food.name_meta}}</span>
@@ -80,7 +72,7 @@
                     
                     <div class="row food-actions" ng-hide="food.closed">
                         <div class="col-xs-6" ng-init="food.hide_servings = true;">
-                            <a ng-click="GetFood(food);" class="btn btn-sm btn-default" ng-show="!food.servings">
+                            <a ng-click="GetFood(food);" class="btn btn-sm btn-default" ng-show="!food.servings" ng-class="{'disabled': !food.servings}">
                                 Portions and Details
                             </a>
                             
