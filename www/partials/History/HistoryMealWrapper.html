@@ -1,0 +1,23 @@
+<ul>
+    <li class="table-header">
+        <div class="col-xs-4"><h5>Name</h5></div>
+        
+        <div class="col-xs-6"><h5>Description</h5></div>
+        
+        <div class="col-xs-2"><h5>Cal.</h5></div>
+    </li>
+    
+    <li class="row meal" ng-repeat="meal in day" ng-class-even="'list-alt'">
+        <div class="col-xs-4">
+            {{ meal.food_entry_name }}
+        </div>
+        
+        <div class="col-xs-6">
+            {{ meal.food_entry_description }}
+        </div>
+        
+        <div class="col-xs-2">
+            {{ meal.calories }}
+        </div>
+    </li>
+</ul>

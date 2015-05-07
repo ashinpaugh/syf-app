@@ -1,4 +1,4 @@
-@import "app-nav";
+@import "app-nav.less";
 
 body {
   color: #FFF;
@@ -23,21 +23,33 @@ body {
   }
   
   div.container-fluid {
-    div.main-content .header-wrapper {
-      text-align: center;
-      margin-bottom: 0.75em;
+    .row {
+      margin: 0;
+    }
+    
+    div.main-content {
+      padding: 0;
       
-      h3 {
-        margin: 0.25em 0;
-      }
-      
-      hr {
-        margin: 0 auto;
-        width: 80%;
+      .header-wrapper {
         text-align: center;
-        opacity: 0.7;
-        color: #FFF;
+        margin-bottom: 0.75em;
+
+        h3 {
+          margin: 0.25em 0;
+        }
+
+        hr {
+          margin: 0 auto;
+          width: 80%;
+          text-align: center;
+          opacity: 0.7;
+          color: #FFF;
+        }
       }
+      
+      /*.utilities {
+        overflow: hidden;
+      }*/
     }
     
     ul {

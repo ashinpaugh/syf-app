@@ -9,7 +9,7 @@
 okHealthControllers.controller('DashboardCtrl', [function ()
 {
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle("SYF Dashboard");
+        SYF.Page.SetSubtitle("Dashboard");
         SYF.Resources.Load('css/dashboard.css');
     });
 }]);

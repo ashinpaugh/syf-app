@@ -40,8 +40,8 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     $scope.UploadEntry = function ()
     {
-        $scope.user.Steps  += $scope.Pedometer.getSteps();
-        $scope.user.NetCal += $scope.Pedometer.getCaloriesBurned();
+        $scope.getTracker().addSteps($scope.Pedometer.getSteps());
+        $scope.getTracker().addBurnedCalories($scope.Pedometer.getCaloriesBurned());
 
         PedometerApi.entry({
             steps:      $scope.Pedometer.getSteps(),

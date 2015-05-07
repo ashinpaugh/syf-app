@@ -1,8 +1,10 @@
 <div ng-controller="LoginCtrl" class="registration">
     <form name="frm" role="form" ng-submit="doRegistration()">
+        <!--
         <div class="nav-arrow previous-arrow well-sm" ng-show="page > 1">
             <div class="fa fa-arrow-left" ng-click="page = page - 1"></div>
         </div>
+        -->
         
         <div class="page-1" ng-show="page < 2">
             <div class="form-group">
@@ -201,12 +203,16 @@
         </div>
         
         
-        
-        
-        
-        
-        <div class="nav-arrow next-arrow well-sm" ng-show="page < 3">
-            <div class="fa fa-arrow-right" ng-click="page = page + 1"></div>
+        <div class="btn-group btn-group-justified" ng-class="{'extra-space': page > 2}">
+            <div class="btn button btn-warning" ng-click="page = page - 1;" ng-class="{'disabled': page < 2}">
+                Prev
+                <span class="fa fa-arrow-left"></span>
+            </div>
+            
+            <div class="btn button btn-primary" ng-click="page = page + 1;" ng-class="{'disabled': page > 2}">
+                Next
+                <span class="fa fa-arrow-right"></span>
+            </div>
         </div>
     </form>
 </div>

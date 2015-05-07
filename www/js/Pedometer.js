@@ -7,7 +7,7 @@
 var Pedometer = (function ($) {
     "use strict";
     
-    var start_time, ended_time, steps, detector, calories_burnt, calibrating;
+    var start_time, ended_time, steps, detector, calories_burnt;
     
     start_time     = null;
     ended_time     = null;

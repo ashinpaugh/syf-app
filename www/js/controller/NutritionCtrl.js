@@ -8,7 +8,6 @@
 
 okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', function ($scope, $swipe, FS)
 {
-    $scope.searches    = {};
     $scope.search      = '';
     $scope.resultSet   = null;
     $scope.isSearching = false;
@@ -44,19 +43,21 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
      * 
      * @param $event
      * @param food
+     * @param serving
      */
-    $scope.AddToEaten = function ($event, food)
+    $scope.AddToEaten = function ($event, food, serving)
     {
         if ($scope.EnforceLogin($event, 'Please login before tracking your meals.')) {
+            $scope.BackupData('nutrition', $scope);
             return;
         }
         
-        var id, serving;
-        id      = food.food_id;
-        serving = food.servings[0];
+        if (!serving) {
+            serving = food.servings[0];
+        }
         
         FS.addEatenItem({
-            id:         id,
+            id:         food.food_id,
             name:       food.name,
             serving_id: serving.serving_id
         }, function (result) {
@@ -64,9 +65,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
                 return;
             }
             
-            food.has_eaten = true;
+            serving.has_eaten = true;
             
-            $scope.tracker.addEatenId(food.food_id);
+            $scope.tracker.addEatenId(serving.serving_id);
             $scope.tracker.addCalories(serving.calories);
         });
     };
@@ -74,12 +75,12 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
     /**
      * Determine if the user has eaten a particular food_id today.
      * 
-     * @param food_id
+     * @param serving_id
      * @returns {boolean}
      */
-    var HasEaten = function (food_id)
+    $scope.HasEaten = function (serving_id)
     {
-        return $.inArray(food_id, $scope.tracker.getEatenIds()) > -1;
+        return $.inArray(serving_id, $scope.tracker.getEatenIds()) > -1;
     };
 
     /**
@@ -147,7 +148,8 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             data.volume    = vol;
             data.meta      = desc.substr(desc.indexOf('- ') + 2).trim().split(' | ');
             data.closed    = true;
-            data.has_eaten = HasEaten(data.food_id);
+            data.has_eaten = false;
+            console.log(data);
             
             name     = data.food_name;
             meta_pos = name.indexOf('(');
@@ -239,5 +241,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         SYF.Resources.Load([
             'css/nutrition.css'
         ]);
+        
+        if ($scope.HasBackupData('nutrition')) {
+            $scope.QuickFillScope('nutrition', $scope);
+        }
     });
 }]);

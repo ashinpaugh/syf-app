@@ -45,16 +45,7 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'partials/Dashboard.html',
             controller:  'DashboardCtrl'
         }).when('/exercise', {
-            templateUrl: 'partials/Location/exercise-links.html',
-            controller:  'PedometerCtrl'
-        }).when('/exercise/pedometer', {
             templateUrl: 'partials/Exercise/utility.html',
-            controller:  'PedometerCtrl'
-        }).when('/exercise/history', {
-            templateUrl: 'partials/Exercise/history.html',
-            controller:  'PedometerCtrl'
-        }).when('/exercise/settings', {
-            templateUrl: 'partials/Exercise/settings.html',
             controller:  'PedometerCtrl'
         }).when('/nutrition', {
             templateUrl: 'partials/Location/nutrition-links.html',
@@ -65,18 +56,18 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
         }).when('/nutrition/lookup', {
             templateUrl: 'partials/Nutrition/lookup.html',
             controller:  'NutritionCtrl'
+        }).when('/history/nutrition/:username?/:display_name?', {
+            templateUrl: 'partials/History/template.html',
+            controller:  'HistoryCtrl'
         }).when('/login', {
             templateUrl: 'partials/Login/login.html',
-            controller:  'LoginCtrl'
-        }).when('/tobacco-free', {
-            templateUrl: 'partials/Tobacco/resources.html',
             controller:  'LoginCtrl'
         }).when('/account/register', {
             templateUrl: 'partials/Login/register.html',
             controller:  'LoginCtrl'
-        }).when('/nutrition/markets', {
-            templateUrl: 'partials/Market/search.html',
-            controller:  'MarketCtrl'
+        }).when('/board', {
+            templateUrl: 'partials/Board/board.html',
+            controller:  'BoardCtrl'
         }).otherwise({
             redirectTo: '/dashboard'
         })
@@ -90,6 +81,34 @@ okHealthApp.directive('appNav', function () {
         'restrict'    : 'E',
         'templateUrl' : 'partials/AppNav.html'
     };
+});
+
+okHealthApp.directive('userEatenButton', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/Nutrition/UserEatenButton.html'
+    }
+});
+
+okHealthApp.directive('boardUserItem', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/Board/BoardUserItem.html'
+    }
+});
+
+okHealthApp.directive('historyDateWrapper', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/History/HistoryDateWrapper.html'
+    }
+});
+
+okHealthApp.directive('historyMealWrapper', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/History/HistoryMealWrapper.html'
+    }
 });
 
 okHealthServices.config(['$httpProvider', function ($httpProvider) {
@@ -172,55 +191,71 @@ okHealthServices.factory('FS', ['$resource', function ($resource) {
                 name: '@name'
             }
         },
-        
-        favoriteFood : {
-            url: base + '/favorite',
+        history : {
+            url: base + '/history.json',
             method: 'GET',
-            isArray: true
-        },
-        addFavoriteFood : {
-            url: base + '/favorite/:food_id/:name/:description',
-            method: 'POST',
+            isArray: true,
             params: {
-                food_id: '@food_id',
-                name: '@name',
-                description: '@description'
+                q: '@username'
             }
-        },
-        removeFavoriteFood : {
-            url: base + '/favorite/:food_id',
-            method: 'DELETE',
-            params: {food_id: '@food_id'}
-        },
-        mostEaten : {
-            url: base + '/most-eaten',
-            method: 'GET',
-            isArray: true
-        },
-        recentlyEaten : {
-            url: base + '/recently-eaten',
-            method: 'GET',
-            isArray: true
         }
-        /*addFavoriteRecipe : {
-            url: base + '/recipe/favorite/'
-        }*/
     });
 }]);
 
 okHealthServices.factory('PedometerApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/pedometer.json';
+    var base = ApiEndpoint + '/entry';
     
     return $resource('', {}, {
         entry : {
-            url: base + '/entry',
+            url: base + '/:started/:ended/:steps/:calories.json',
             method: 'POST',
             params: {
-                Steps:    '@steps',
-                CaloriesBurned: '@calories',
-                TimeStamp: '@started_on',
-                StartTime: '@started_on',
-                EndTime: '@ended_on'
+                steps:    '@steps',
+                calories: '@calories',
+                started: '@started_on',
+                ended: '@ended_on'
+            }
+        }
+    });
+}]);
+
+okHealthServices.factory('BoardApi', ['$resource', function ($resource) {
+    var base = ApiEndpoint + '/board';
+    
+    return $resource('', {}, {
+        getLeaderBoard : {
+            url: base + '/leaders.json',
+            method: 'GET',
+            isArray: true
+        },
+        
+        getGroups : {
+            url: base + '/group.json',
+            method: 'GET',
+            isArray: true
+        },
+        
+        getGroup : {
+            url: base + '/group/:id.json',
+            method: 'GET',
+            isArray: true,
+            params: {
+                id: '@id'
+            }
+        },
+        
+        getSchools : {
+            url: base + '/school.json',
+            method: 'GET',
+            isArray: true
+        },
+        
+        getSchool : {
+            url: base + '/school/:id.json',
+            method: 'GET',
+            isArray: true,
+            params: {
+                id: '@id'
             }
         }
     });
@@ -309,17 +344,21 @@ okHealthServices.factory('UserHandler', function () {
     var user = {};
     
     return {
-        get : function () {
+        meta : function () {
             return user;
         },
         set : function (u) {
             user = u;
+        },
+        logout : function () {
+            user = null;
         }
     };
 });
 
 okHealthServices.factory('TrackerHandler', function () {
     var meta = {
+        steps:     0,
         consumed:  0,
         burned:    0,
         eaten_ids: []
@@ -343,7 +382,7 @@ okHealthServices.factory('TrackerHandler', function () {
         },
         
         getNet : function () {
-            return meta.consumed - meta.burned;
+            return parseInt(meta.consumed) - parseInt(meta.burned);
         },
         
         getEatenIds : function () {
@@ -360,7 +399,16 @@ okHealthServices.factory('TrackerHandler', function () {
         
         hasConsumedLess : function ()
         {
-            return meta.consumed < meta.burned;
+            return parseInt(meta.consumed) <= parseInt(meta.burned);
+        },
+        
+        addSteps : function (s)
+        {
+            meta.steps += s;
+        },
+        
+        addBurnedCalories : function (s) {
+            meta.burned += s;
         },
         
         calculateCaloriesBurned : function (user) {

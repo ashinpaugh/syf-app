@@ -3,25 +3,34 @@
  */
 
 okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler) {
-    $scope.user      = UserHandler.get();
+    $scope.user      = {};
     $scope.show_pass = false;
     $scope.page      = 1;
     $scope.message   = $routeParams.message;
     
     /**
      * Perform user sign-in.
+     * 
+     * @param btn
      */
-    $scope.doLogin = function ()
+    $scope.doLogin = function (btn)
     {
+        btn.disabled = true;
+        
         var username, password;
         
-        username = $scope.credentials.username;
-        password = $scope.credentials.password;
+        //username = $scope.credentials.username;
+        //password = $scope.credentials.password;
+        // TODO: Remove before sending off to production.
+        username = !$scope.credentials.username ? 'ashinpaugh' : $scope.credentials.username;
+        password = !$scope.credentials.password ? 'password1'  : $scope.credentials.password;
         
         AccountApi.login({
             '_username': username,
             '_password': password
         }, function (data) {
+            btn.disabled = false;
+            
             if (typeof data !== 'object') {
                 $scope.message = 'Invalid login credentials provided!';
                 return;
@@ -30,7 +39,10 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             UserHandler.set(data.user_meta);
             $scope.tracker.set(data.food_meta);
             
-            $location.url('/dashboard');
+            console.log($scope.redirect_url);
+            if (!$scope.RedirectUser()) {
+                $location.url('/dashboard');
+            }
         });
     };
 
@@ -43,10 +55,21 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             return;
         }
         
-        AccountApi.register($scope.user, function (data, headers) {
-            UserHandler.set(data);
+        AccountApi.register($scope.user, function (data) {
+            if (!data.hasOwnProperty('success')) {
+                alert('An error occurred. Please make sure you are using unique values for your username, email, and student ID.');
+                return;
+            }
             
-            $location.url('/dashboard');
+            AccountApi.login({
+                _username: $scope.user.username,
+                _password: $scope.user.password
+            }, function (data) {
+                UserHandler.set(data.user_meta);
+                $scope.tracker.set(data.food_meta);
+                
+                $location.url('/dashboard');
+            });
         })
     };
 
@@ -83,6 +106,10 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
     }
     
     angular.element(document).ready(function () {
+        if ($scope.getUser().meta()) {
+            $scope.getUser().logout();
+        }
+        
         SYF.Page.SetSubtitle('Login');
         SYF.Resources.Load([
             'css/login.css'

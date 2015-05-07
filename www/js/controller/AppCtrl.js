@@ -8,12 +8,14 @@
 
 //{"Calories":"0","Steps":"0","NetCalories":"0","Age":"0","Height":"73","Weight":"230"}
 okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GroupApi, SchoolApi) {
-    $scope.token       = null;
-    $scope.user        = null;
-    $scope.tracker     = TrackerHandler;
-    $scope.groups      = GroupApi.getAll();
-    $scope.schools     = SchoolApi.getAll();
-    $scope.eaten_today = [];
+    $scope.token        = null;
+    $scope.user         = null;
+    $scope.tracker      = TrackerHandler;
+    $scope.groups       = GroupApi.getAll();
+    $scope.schools      = SchoolApi.getAll();
+    $scope.eaten_today  = [];
+    $scope.redirect_url = '';
+    $scope.previous_data = {};
     
     $scope.$back = function () {
         $window.history.back();
@@ -25,12 +27,17 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     
     $scope.getUser = function ()
     {
-        return UserHandler.get();
+        return UserHandler;
+    };
+    
+    $scope.getTracker = function ()
+    {
+        return TrackerHandler;
     };
     
     $scope.EnsureValidUser = function ()
     {
-        return UserHandler.get().hasOwnProperty('username');
+        return UserHandler.meta().hasOwnProperty('username');
     };
     
     $scope.EnforceLogin = function ($event, message)
@@ -39,10 +46,94 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
             return false;
         }
         
-        $event.preventDefault();
+        if ($event) {
+            $event.preventDefault();
+        }
+        
+        if (!$scope.redirect_url) {
+            $scope.redirect_url = $location.url();
+        }
+        
         $location.url('/login?message=' + encodeURIComponent(message));
         
         return true;
+    };
+    
+    $scope.SaveLocation = function (path)
+    {
+        if (path) {
+            $scope.redirect_url = path;
+            return;
+        }
+        
+        $scope.redirect_url = $location.url();
+    };
+    
+    $scope.RedirectUser = function ()
+    {
+        if (!$scope.redirect_url.length) {
+            return false;
+        }
+        
+        $location.url($scope.redirect_url);
+        $scope.redirect_url = '';
+        
+        return true;
+    };
+    
+    $scope.HasBackupData = function (controller)
+    {
+        return $scope.previous_data.hasOwnProperty(controller);
+    };
+    
+    $scope.BackupData = function (controller, $s)
+    {
+        var data, params, param;
+        data   = $scope.previous_data[controller] || {};
+        params = ChildOnlyParams($s);
+        
+        for (var i = 0; i < params.length; i++) {
+            param       = params[i];
+            data[param] = $s[param];
+        }
+        
+        $scope.previous_data[controller] = data;
+        
+        return true;
+    };
+    
+    $scope.QuickFillScope = function (controller, $s)
+    {
+        if (!$scope.HasBackupData(controller)) {
+            return false;
+        }
+        
+        var data, params, param;
+        data   = $scope.previous_data[controller];
+        params = ChildOnlyParams($s);
+        
+        for (var i = 0; i < params.length; i++) {
+            param = params[i];
+            
+            if (data.hasOwnProperty(param)) {
+                $s[param] = data[param];
+            }
+        }
+        
+        return true;
+    };
+    
+    var ChildOnlyParams = function ($s)
+    {
+        var params = [];
+        
+        for (var idx in $s) {
+            if (!$scope.hasOwnProperty(idx) && ('$' != idx.substr(0, 1)) && !($s[idx] instanceof Function)) {
+                params.push(idx);
+            }
+        }
+        
+        return params;
     };
     
     $scope.HandleNav = function (e)

@@ -1,0 +1,21 @@
+<div class="board-wrapper" ng-controller="BoardCtrl">
+    <ul class="board-list">
+        <li class="board-list-headers">
+            <div class="row">
+                <div class="col-xs-4" ng-click="ToggleSort('username'); SortByProperty(null, 'username', 'display_name');">
+                    <h5>Username</h5>
+                </div>
+                
+                <div class="col-xs-4" ng-click="ToggleSort('school'); SortByProperty(null, 'school', 'school_initials');">
+                    <h5>School</h5>
+                </div>
+                
+                <div class="col-xs-4" ng-click="ToggleSort('points'); SortByProperty(null, 'points', 'total_points');">
+                    <h5>Points</h5>
+                </div>
+            </div>
+        </li>
+        
+        <board-user-item></board-user-item>
+    </ul>
+</div> 

@@ -1,0 +1,17 @@
+<div class="history" ng-controller="HistoryCtrl">
+    <div class="user-history-name">
+        <h4>Viewing {{name}}'s History</h4>
+    </div>
+    
+    <div class="no-results" ng-show="!resultSet.length && !isSearching">
+        This user hasn't tracked their eating habits.
+    </div>
+    
+    <ul class="date-list" ng-init="LoadHistory();">
+        <history-date-wrapper></history-date-wrapper>
+    </ul>
+    
+    <div class="syf-loader text-center" ng-show="isSearching">
+        <div class="fa fa-circle-o-notch fa-spin fa-5x"></div>
+    </div>
+</div> 

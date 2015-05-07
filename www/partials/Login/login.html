@@ -11,25 +11,11 @@
         <input id="password" type="text" class="form-control" placeholder="Password" ng-model="credentials.password" />
         
         <div class="actions">
-            <button type="submit" class="btn btn-block btn-primary" ng-click="doLogin()">
+            <button type="submit" class="btn btn-block btn-primary" ng-click="doLogin(this)">
                 Login
             </button>
             
             <a class="btn btn-block btn-info" href="#/account/register">Register</a>
         </div>
     </div>
-    
-    <!--
-    <div class="col-xs-4 sso-wrapper">
-        <div class="vr"></div>
-        
-        <a href="#" class="facebook btn btn-lg">
-            <span class="fa fa-facebook"></span>
-        </a>
-        
-        <a href="#" class="twitter btn btn-lg">
-            <span class="fa fa-twitter"></span>
-        </a>
-    </div>
-    -->
 </form>

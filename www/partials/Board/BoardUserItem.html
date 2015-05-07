@@ -1,0 +1,17 @@
+<li class="board-user" ng-repeat="player in resultSet" ng-class-even="'list-alt'">
+    <div class="row">
+        <a href="#/history/nutrition/{{player.username}}/{{player.display_name}}">
+            <span class="col-xs-4 username">
+                {{player.display_name}}
+            </span>
+            
+            <span class="col-xs-4 initials">
+                {{player.school_initials}}
+            </span>
+            
+            <span class="col-xs-4 points">
+                {{player.total_points}}
+            </span>
+        </a>
+    </div>
+</li>
