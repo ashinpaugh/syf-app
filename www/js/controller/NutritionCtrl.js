@@ -149,7 +149,6 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             data.meta      = desc.substr(desc.indexOf('- ') + 2).trim().split(' | ');
             data.closed    = true;
             data.has_eaten = false;
-            console.log(data);
             
             name     = data.food_name;
             meta_pos = name.indexOf('(');

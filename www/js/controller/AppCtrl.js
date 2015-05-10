@@ -37,7 +37,9 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     
     $scope.EnsureValidUser = function ()
     {
-        return UserHandler.meta().hasOwnProperty('username');
+        return UserHandler.meta()
+            && UserHandler.meta().hasOwnProperty('username')
+        ;
     };
     
     $scope.EnforceLogin = function ($event, message)

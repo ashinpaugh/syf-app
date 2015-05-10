@@ -129,7 +129,7 @@ okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
                 last_name: '@last_name',
                 height: '@height',
                 dob: '@dob',
-                gender: '@gender',
+                sex: '@sex',
                 weight: '@weight',
                 school_id: '@school_id',
                 group_id: '@group_id',
@@ -286,21 +286,6 @@ okHealthServices.factory('SchoolApi', ['$resource', function ($resource) {
     });
 }]);
 
-okHealthServices.factory('MarketApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/market';
-    
-    return $resource('', {}, {
-        search : {
-            url: base + '/search/:query',
-            method: 'GET',
-            isArray: true,
-            params: {
-                query: "@query"
-            }
-        }
-    });
-}]);
-
 okHealthServices.factory('TokenHandler', function () {
     var token, date;
     token = null;
@@ -340,29 +325,51 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
     };
 });
 
-okHealthServices.factory('UserHandler', function () {
+okHealthServices.factory('UserHandler', ['TrackerHandler', function (TrackerHandler) {
     var user = {};
+
+    /**
+     * http://stackoverflow.com/questions/4060004/calculate-age-in-javascript
+     * @returns {number}
+     */
+    function computeAge (user)
+    {
+        var diff_ms, diff_date;
+        diff_ms   = Date.now() - user.date_of_birth;
+        diff_date = new Date(diff_ms);
+        user.age  = Math.abs(diff_date.getUTCFullYear() - 1970);
+        
+        return user;
+    }
     
     return {
         meta : function () {
             return user;
         },
         set : function (u) {
-            user = u;
+            user = computeAge(u);
         },
         logout : function () {
             user = null;
+            TrackerHandler.clear();
         }
     };
-});
+}]);
 
 okHealthServices.factory('TrackerHandler', function () {
-    var meta = {
-        steps:     0,
-        consumed:  0,
-        burned:    0,
-        eaten_ids: []
-    };
+    var meta = {};
+    
+    reset();
+    
+    function reset ()
+    {
+        meta = {
+            steps:     0,
+            consumed:  0,
+            burned:    0,
+            eaten_ids: []
+        };
+    }
     
     return {
         get : function () {
@@ -402,6 +409,10 @@ okHealthServices.factory('TrackerHandler', function () {
             return parseInt(meta.consumed) <= parseInt(meta.burned);
         },
         
+        getSteps : function () {
+            return meta.steps;
+        },
+        
         addSteps : function (s)
         {
             meta.steps += s;
@@ -411,8 +422,8 @@ okHealthServices.factory('TrackerHandler', function () {
             meta.burned += s;
         },
         
-        calculateCaloriesBurned : function (user) {
-            
+        clear : function (user) {
+            reset();
         }
     }
 });

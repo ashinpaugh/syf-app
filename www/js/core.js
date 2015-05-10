@@ -122,6 +122,14 @@ var SYF = (function ($)
             return false;
         });
     }
+
+    /**
+     * Look for switch toggles and animate them.
+     */
+    Page.AnimateSwitches = function ()
+    {
+        $('.is-switch').bootstrapSwitch();
+    };
     
     $(function () {
         bindExternalLinks();

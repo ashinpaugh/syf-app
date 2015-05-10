@@ -104,13 +104,12 @@
         
         <div class="page-2" ng-show="page == 2">
             <div class="form-group">
-                <label for="gender" class="sr-only">Gender:</label>
+                <label for="sex" class="sr-only">Sex:</label>
                 
-                <select id="gender" name="gender" class="form-control" ng-model="user.gender">
-                    <option value="" disabled selected>Select your gender...</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
+                <select id="sex" name="sex" class="form-control" ng-model="user.sex">
+                    <option value="" disabled selected>Select your sex...</option>
+                    <option value="1">Male</option>
+                    <option value="0">Female</option>
                 </select>
             </div>
             
@@ -139,7 +138,7 @@
             </div>
             
             <div class="form-group">
-                <label for="weight" class="sr-only">Weight:</label>
+                <label for="weight" class="sr-only">Weight in LBS:</label>
                 
                 <input id          = "weight"
                        type        = "number"

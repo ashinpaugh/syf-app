@@ -6,7 +6,7 @@
             <h5>Calories Consumed</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{tracker.getBurned() | number}}</h3>
+            <h3>{{tracker.getSteps() | number}}</h3>
             <h5>Steps Taken</h5>
         </div>
         <div class="col-xs-4">
@@ -24,8 +24,8 @@
             </a>
         </div>
         
-        <div class="col-xs-4" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
-            <a href="#/exercise" class="util">
+        <div class="col-xs-4">
+            <a href="#/exercise" class="util" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
                 <span class="fa fa-5x fa-forward"></span>
                 <h4>Pedometer</h4>
             </a>

@@ -1,6 +1,6 @@
 <div class="pedometer-wrapper">
     
-    <div class="pedo-button" ng-click="ToggleTracking()">
+    <div class="pedo-button" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')" ng-click="ToggleTracking()">
         <button class="btn btn-lg btn-primary" ng-show="!Pedometer.isTracking()">
             Start!
         </button>
@@ -45,6 +45,18 @@
             <div class="col-md-4 stat">
                 <h4 id="timer">
                     {{Pedometer.getElapsedTime()}}
+                </h4>
+            </div>
+        </div>
+        
+        <div class="row calorie-wrapper">
+            <div class="col-md-8 label">
+                <h4>Calories Burnt:</h4>
+            </div>
+            
+            <div class="col-md-4 stat">
+                <h4 id="calories">
+                    {{Pedometer.getCaloriesBurned()}}
                 </h4>
             </div>
         </div>

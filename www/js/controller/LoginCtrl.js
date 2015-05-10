@@ -39,7 +39,6 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             UserHandler.set(data.user_meta);
             $scope.tracker.set(data.food_meta);
             
-            console.log($scope.redirect_url);
             if (!$scope.RedirectUser()) {
                 $location.url('/dashboard');
             }

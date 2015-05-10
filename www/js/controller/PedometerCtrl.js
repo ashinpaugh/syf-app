@@ -11,6 +11,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     var appTick, tickStop;
     
     $scope.display = '00:00:00';
+    $scope.walking = true;
 
     
     $scope.getSteps = function ()
@@ -35,7 +36,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
             $('#timer').text($scope.Pedometer.getElapsedTime());
         }, 1000);
         
-        $scope.Pedometer.start();
+        $scope.Pedometer.start($scope.getUser().meta());
     };
     
     $scope.UploadEntry = function ()
@@ -46,13 +47,12 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         PedometerApi.entry({
             steps:      $scope.Pedometer.getSteps(),
             calories:   $scope.Pedometer.getCaloriesBurned(),
-            started_on: $scope.Pedometer.getStartTime().getTime(),
-            ended_on:   new Date().getTime()
+            started_on: $scope.Pedometer.getStartTime(),
+            ended_on:   $scope.Pedometer.getEndTime()
         }, function (data, headers) {
             //console.log([data, headers]);
         });
     };
-    
     
     $scope.$on('$destroy', function () {
         if (angular.isDefined(tickStop)) {
@@ -63,12 +63,14 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle('Pedometer');
         SYF.Resources.Load([
+            'js/CalorieCounter.js',
             'js/StepDetector.js',
             'css/pedometer.css',
             'js/Pedometer.js'
         ]);
         
         $scope.Pedometer = Pedometer;
+        SYF.Page.AnimateSwitches();
     });
     
     $('.pedomter-wrapper .btn-warning').on('click', function (e) {
