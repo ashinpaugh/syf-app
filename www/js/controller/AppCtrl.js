@@ -16,6 +16,12 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     $scope.eaten_today  = [];
     $scope.redirect_url = '';
     $scope.previous_data = {};
+    $scope.isSearching   = false;
+    $scope.$location     = $location;
+    
+    $scope.page        = 0;
+    $scope.page_range  = {};
+    $scope.total_pages = 0;
     
     $scope.$back = function () {
         $window.history.back();
@@ -59,6 +65,56 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         $location.url('/login?message=' + encodeURIComponent(message));
         
         return true;
+    };
+    
+    $scope.GetPaginationPath = function ()
+    {
+        return $location.path();
+    };
+    
+    $scope.SetupPagination = function (page, max_results, max_items)
+    {
+        $scope.page        = page;
+        $scope.total_pages = Math.ceil(max_items / max_results);
+        $scope.page_range  = $scope.pageRange(1, $scope.total_pages);
+    };
+
+    /**
+     * @see http://stackoverflow.com/questions/11873570/angularjs-for-loop-with-numbers-ranges
+     * @param min
+     * @param max
+     * @param step
+     * @returns {Array}
+     */
+    $scope.range = function(min, max, step)
+    {
+        var input, i;
+        step  = step || 1;
+        input = [];
+        
+        for (i = min; i <= max; i += step) {
+            input.push(i);
+        }
+        
+        return input;
+    };
+    
+    $scope.pageRange = function(page, max_pages)
+    {
+        var range = {
+            min: page < 1 ? 1 : page,
+            max: max_pages < 5 ? max_pages : 5
+        };
+        
+        if (page - 2 >= 1) {
+            range.min = page - 2;
+        }
+        
+        if (page + 2 <= max_pages && page + 2 > range.max) {
+            range.max = page + 2;
+        }
+        console.log(range);
+        return $scope.range(range.min, range.max);
     };
     
     $scope.SaveLocation = function (path)

@@ -1,0 +1,31 @@
+<nav class="navbar app-top-nav" role="navigation">
+    <ul class="row nav navbar-default">
+        <li class="col-xs-3">
+            <a href="#/dashboard">
+                <span class="fa fa-home"></span>
+                <span class="text">Dashboard</span>
+            </a>
+        </li>
+        
+        <li class="col-xs-3">
+            <a href="#/nutrition">
+                <span class="fa fa-cutlery"></span>
+                <span class="text">Nutrition</span>
+            </a>
+        </li>
+        
+        <li class="col-xs-3" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
+            <a href="#/exercise">
+                <span class="fa fa-fast-forward"></span>
+                <span class="text">Exercise</span>
+            </a>
+        </li>
+        
+        <li class="col-xs-3">
+            <a href="#/board">
+                <span class="fa fa-list"></span>
+                <span class="text">Leaderboards</span>
+            </a>
+        </li>
+    </ul>
+</nav>

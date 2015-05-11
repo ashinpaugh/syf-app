@@ -1,4 +1,6 @@
 <div class="history" ng-controller="HistoryCtrl">
+    <app-nav-top></app-nav-top>
+    
     <div class="user-history-name">
         <h4>Viewing {{name}}'s History</h4>
     </div>
@@ -11,7 +13,5 @@
         <history-date-wrapper></history-date-wrapper>
     </ul>
     
-    <div class="syf-loader text-center" ng-show="isSearching">
-        <div class="fa fa-circle-o-notch fa-spin fa-5x"></div>
-    </div>
-</div> 
+    <loader></loader>
+</div>

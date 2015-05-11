@@ -1,4 +1,5 @@
-<div class="pedometer-wrapper">
+<div class="pedometer-wrapper" ng-controller="PedometerCtrl">
+    <app-nav-top></app-nav-top>
     
     <div class="pedo-button" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')" ng-click="ToggleTracking()">
         <button class="btn btn-lg btn-primary" ng-show="!Pedometer.isTracking()">

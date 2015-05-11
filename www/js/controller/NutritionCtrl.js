@@ -6,12 +6,12 @@
 
 "use strict";
 
-okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', function ($scope, $swipe, FS)
+okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routeParams', 'FS', function ($scope, $swipe, $routeParams, FS)
 {
-    $scope.search      = '';
-    $scope.resultSet   = null;
-    $scope.isSearching = false;
-    $scope.userError   = false;
+    $scope.page      = $routeParams.hasOwnProperty('page') ? $routeParams.page : 0;
+    $scope.search    = $routeParams.hasOwnProperty('search') ? $routeParams.search : '';
+    $scope.resultSet = null;
+    $scope.userError = false;
 
     /**
      * Looks up a user's search query.
@@ -28,9 +28,19 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             return;
         }
         
-        $scope.isSearching = true;
+        var query = {q: $scope.search};
+        if ($routeParams.hasOwnProperty('page')) {
+            query.page = $routeParams.page;
+        }
         
-        FS.search({q: $scope.search}, function (result) {
+        $scope.isSearching = true;
+        FS.search(query, function (result) {
+            $scope.SetupPagination(
+                result.page_number,
+                result.max_results,
+                result.total_results
+            );
+            
             $scope.resultSet   = CleanFoodData(result.food);
             $scope.isSearching = false;
             $scope.userError   = false;
@@ -70,6 +80,11 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             $scope.tracker.addEatenId(serving.serving_id);
             $scope.tracker.addCalories(serving.calories);
         });
+    };
+    
+    $scope.GetPaginationPath = function (page)
+    {
+        return $scope.$location.path() + '?search=' + $scope.search + '&page=' + page;
     };
 
     /**
@@ -233,7 +248,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
             }
         }
         
-        throw new Error('Food not found.');
+        return {};
     };
     
     angular.element(document).ready(function () {
@@ -244,5 +259,16 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', 'FS', funct
         if ($scope.HasBackupData('nutrition')) {
             $scope.QuickFillScope('nutrition', $scope);
         }
+        
+        if ($scope.search.length) {
+            $scope.doLookup();
+        }
     });
 }]);
+
+okHealthApp.directive('userEatenButton', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/Nutrition/UserEatenButton.html'
+    }
+});

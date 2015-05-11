@@ -1,4 +1,4 @@
-<li class="date-wrapper" ng-repeat="day in resultSet" ng-class-even="'list-alt'">
+<li class="date-wrapper" ng-repeat="(day_idx, day) in resultSet">
     <div class="date">
         <!-- Multiply by 1000 since javascript uses milliseconds in stead of seconds. -->
         <h4>{{ (1000 * 86400 * day[0].date_int) | date:'M/d/yyyy'}}</h4>

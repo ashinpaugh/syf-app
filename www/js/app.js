@@ -31,6 +31,7 @@ okHealthFilters     = angular.module('okHealthFilters', []);
 okHealthApp         = angular.module('okHealthApp', [
     'ngRoute',
     //'ngTouch',
+    //'ngHref',
     'okHealthServices',
     'okHealthControllers',
     'okHealthFilters'
@@ -42,32 +43,23 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
 
     $routeProvider
         .when('/dashboard', {
-            templateUrl: 'partials/Dashboard.html',
-            controller:  'DashboardCtrl'
+            templateUrl: 'partials/Dashboard.html'
         }).when('/exercise', {
-            templateUrl: 'partials/Exercise/utility.html',
-            controller:  'PedometerCtrl'
+            templateUrl: 'partials/Exercise/utility.html'
         }).when('/nutrition', {
-            templateUrl: 'partials/Location/nutrition-links.html',
-            controller:  'NutritionCtrl'
+            templateUrl: 'partials/Location/nutrition-links.html'
         }).when('/nutrition/add-meal', {
-            templateUrl: 'partials/Nutrition/add-meal.html',
-            controller:  'NutritionCtrl'
+            templateUrl: 'partials/Nutrition/add-meal.html'
         }).when('/nutrition/lookup', {
-            templateUrl: 'partials/Nutrition/lookup.html',
-            controller:  'NutritionCtrl'
+            templateUrl: 'partials/Nutrition/lookup.html'
         }).when('/history/nutrition/:username?/:display_name?', {
-            templateUrl: 'partials/History/template.html',
-            controller:  'HistoryCtrl'
+            templateUrl: 'partials/History/template.html'
         }).when('/login', {
-            templateUrl: 'partials/Login/login.html',
-            controller:  'LoginCtrl'
+            templateUrl: 'partials/Login/login.html'
         }).when('/account/register', {
-            templateUrl: 'partials/Login/register.html',
-            controller:  'LoginCtrl'
+            templateUrl: 'partials/Login/register.html'
         }).when('/board', {
-            templateUrl: 'partials/Board/board.html',
-            controller:  'BoardCtrl'
+            templateUrl: 'partials/Board/board.html'
         }).otherwise({
             redirectTo: '/dashboard'
         })
@@ -79,37 +71,31 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
 okHealthApp.directive('appNav', function () {
     return {
         'restrict'    : 'E',
-        'templateUrl' : 'partials/AppNav.html'
+        'templateUrl' : 'partials/components/AppNav.html'
     };
 });
 
-okHealthApp.directive('userEatenButton', function () {
+okHealthApp.directive('appNavTop', function () {
     return {
         'restrict'    : 'E',
-        'templateUrl' : 'partials/Nutrition/UserEatenButton.html'
+        'templateUrl' : 'partials/components/TopNav.html'
     }
 });
 
-okHealthApp.directive('boardUserItem', function () {
+okHealthApp.directive('pagination', function () {
     return {
         'restrict'    : 'E',
-        'templateUrl' : 'partials/Board/BoardUserItem.html'
+        'templateUrl' : 'partials/components/Pagination.html'
     }
 });
 
-okHealthApp.directive('historyDateWrapper', function () {
+okHealthApp.directive('loader', function () {
     return {
         'restrict'    : 'E',
-        'templateUrl' : 'partials/History/HistoryDateWrapper.html'
+        'templateUrl' : 'partials/components/Loader.html'
     }
 });
 
-okHealthApp.directive('historyMealWrapper', function () {
-    return {
-        'restrict'    : 'E',
-        'templateUrl' : 'partials/History/HistoryMealWrapper.html'
-    }
-});
 
 okHealthServices.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpInterceptor');

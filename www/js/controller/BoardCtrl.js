@@ -1,7 +1,7 @@
 
 
 okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams', function ($scope, BoardApi, $routeParams) {
-    $scope.resultSet = BoardApi.getLeaderBoard();
+    $scope.resultSet = {};
     $scope.columns   = {
         username: 'ASC',
         school:   'ASC',
@@ -92,5 +92,17 @@ okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams
         SYF.Resources.Load([
             'css/board.css'
         ]);
+        
+        $scope.isSearching = true;
+        $scope.resultSet = BoardApi.getLeaderBoard({}, function () {
+            $scope.isSearching = false;
+        });
     });
 }]);
+
+okHealthApp.directive('boardUserItem', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/Board/BoardUserItem.html'
+    }
+});

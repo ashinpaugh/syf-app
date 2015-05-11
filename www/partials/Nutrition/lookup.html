@@ -9,6 +9,8 @@
         </span>
     </div>
     
+    <app-nav-top></app-nav-top>
+    
     <form class="form-inline form-search">
         <div class="form-group">
             <label class="sr-only" for="nutrition-search">Search</label>
@@ -100,9 +102,9 @@
                 </div>
             </li>
         </ul>
+        
+        <pagination></pagination>
     </div>
     
-    <div class="syf-loader text-center" ng-hide="!isSearching">
-        <div class="fa fa-circle-o-notch fa-spin fa-5x"></div>
-    </div>
+    <loader></loader>
 </div>

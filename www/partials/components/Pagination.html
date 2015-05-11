@@ -1,0 +1,21 @@
+<nav class="pagination-wrapper" ng-show="total_pages > 0 && !isSearching">
+    <ul class="pagination pagination-lg">
+        <li>
+            <a href="#" aria-label="Previous">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        
+        <li class="page" ng-repeat="idx in page_range" ng-class="{'active': $index == page}">
+            <a ng-href="#{{GetPaginationPath($index)}}">
+                {{$index + 1}}
+            </a>
+        </li>
+        
+        <li>
+            <a href="#" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    </ul>
+</nav>
