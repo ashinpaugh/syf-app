@@ -122,6 +122,16 @@ var SYF = (function ($)
             return false;
         });
     }
+    
+    Page.EnableOverlay = function (message)
+    {
+        $('#overlay-message h3').text(message);
+    };
+    
+    Page.DisableOverlay = function ()
+    {
+        $('#overlay-message').modal('hide');
+    };
 
     /**
      * Look for switch toggles and animate them.

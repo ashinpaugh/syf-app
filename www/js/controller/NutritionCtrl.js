@@ -62,6 +62,8 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             return;
         }
         
+        $scope.EnableOverlay('Adding ' + food.name + ' to your log..');
+        
         if (!serving) {
             serving = food.servings[0];
         }
@@ -71,6 +73,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             name:       food.name,
             serving_id: serving.serving_id
         }, function (result) {
+            $scope.DisableOverlay();
             if (!result.hasOwnProperty('value')) {
                 return;
             }
@@ -133,8 +136,12 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             for (var idx = 0; idx < results.length; idx++) {
                 var result, food, servings;
                 
-                result   = results[idx];
-                food     = GetFood(result.food_id);
+                result = results[idx];
+                food   = GetFood(result.food_id);
+                if (!food) {
+                    console.log(result.food_id);
+                    continue;
+                }
                 servings = result.servings.serving;
                 servings = $.isArray(servings) ? servings : [servings];
                 

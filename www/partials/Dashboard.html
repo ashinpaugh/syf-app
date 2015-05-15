@@ -10,7 +10,9 @@
             <h5>Steps Taken</h5>
         </div>
         <div class="col-xs-4">
-            <h3 id="net-calories" ng-class="{inNegative: !tracker.hasConsumedLess(), inPositive: tracker.hasConsumedLess()}">{{tracker.getNet() | number}}</h3>
+            <h3 id="net-calories" ng-class="{inNegative: !getTracker().hasConsumedLess(), inPositive: getTracker().hasConsumedLess()}">
+                {{getTracker().getNet() | number}}
+            </h3>
             <h5>Net Calories</h5>
         </div>
     </div>
@@ -25,7 +27,7 @@
         </div>
         
         <div class="col-xs-4">
-            <a href="#/exercise" class="util" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
+            <a ng-href="#/exercise" class="util" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
                 <span class="fa fa-5x fa-forward"></span>
                 <h4>Pedometer</h4>
             </a>

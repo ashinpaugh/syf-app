@@ -41,6 +41,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     $scope.UploadEntry = function ()
     {
+        console.log($scope.Pedometer.getSteps());
         $scope.getTracker().addSteps($scope.Pedometer.getSteps());
         $scope.getTracker().addBurnedCalories($scope.Pedometer.getCaloriesBurned());
 

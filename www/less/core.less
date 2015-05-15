@@ -1,9 +1,6 @@
 @import "app-nav.less";
-@import "app-top-nav.less";
 
 body {
-  color: #FFF;
-  background: rgb(00, 171, 239);
   overflow-x: hidden;
   
   /* For the sliding navbar */
@@ -28,6 +25,10 @@ body {
       text-align: center;
     }
     
+    nav.app-top-nav li a {
+      text-align: center;
+    }
+    
     .row {
       margin: 0;
     }
@@ -48,16 +49,12 @@ body {
           width: 80%;
           text-align: center;
           opacity: 0.7;
-          color: #FFF;
+          color: #e8e8e8;
         }
       }
-      
-      /*.utilities {
-        overflow: hidden;
-      }*/
     }
     
-    ul {
+    ul.list {
       list-style: none;
       
       li {
@@ -88,8 +85,17 @@ body {
       }
     }
     
+    #overlay-message {
+      &.modal {
+        width: 50%;
+      }
+      
+      .syf-loader {
+        padding: 1em;
+      }
+    }
+    
     .syf-loader div {
-      color: #FFF;
       margin: 0 auto;
     }
     

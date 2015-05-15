@@ -6,8 +6,8 @@
 
 "use strict";
 
-//{"Calories":"0","Steps":"0","NetCalories":"0","Age":"0","Height":"73","Weight":"230"}
 okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GroupApi, SchoolApi) {
+    $scope.$location    = $location;
     $scope.token        = null;
     $scope.user         = null;
     $scope.tracker      = TrackerHandler;
@@ -16,9 +16,13 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     $scope.eaten_today  = [];
     $scope.redirect_url = '';
     $scope.previous_data = {};
-    $scope.isSearching   = false;
-    $scope.$location     = $location;
     
+    // Overlay.
+    $scope.isSearching     = false;
+    $scope.overlay         = false;
+    $scope.overlay_message = '';
+    
+    // Pagination.
     $scope.page        = 0;
     $scope.page_range  = {};
     $scope.total_pages = 0;
@@ -46,6 +50,28 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         return UserHandler.meta()
             && UserHandler.meta().hasOwnProperty('username')
         ;
+    };
+    
+    $scope.EnableOverlay = function (message)
+    {
+        $scope.isSearching     = true;
+        $scope.overlay_message = message;
+        
+        $('#overlay-message')
+            .modal('show')
+            .position({
+                'of' : $(window)
+            })
+        ;
+        
+    };
+    
+    $scope.DisableOverlay = function ()
+    {
+        $scope.isSearching     = false;
+        $scope.overlay_message = '';
+        
+        $('#overlay-message').modal('hide');
     };
     
     $scope.EnforceLogin = function ($event, message)

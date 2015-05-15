@@ -15,8 +15,6 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
      */
     $scope.doLogin = function (btn)
     {
-        btn.disabled = true;
-        
         var username, password;
         
         //username = $scope.credentials.username;
@@ -25,11 +23,15 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         username = !$scope.credentials.username ? 'ashinpaugh' : $scope.credentials.username;
         password = !$scope.credentials.password ? 'password1'  : $scope.credentials.password;
         
+        btn.disabled = true;
+        $scope.EnableOverlay('Logging in...');
+        
         AccountApi.login({
             '_username': username,
             '_password': password
         }, function (data) {
             btn.disabled = false;
+            $scope.DisableOverlay();
             
             if (typeof data !== 'object') {
                 $scope.message = 'Invalid login credentials provided!';
@@ -42,6 +44,8 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             if (!$scope.RedirectUser()) {
                 $location.url('/dashboard');
             }
+        }, function () {
+            alert('Invalid login detected.');
         });
     };
 

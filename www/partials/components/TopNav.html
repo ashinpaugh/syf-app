@@ -1,31 +1,35 @@
-<nav class="navbar app-top-nav" role="navigation">
-    <ul class="row nav navbar-default">
-        <li class="col-xs-3">
-            <a href="#/dashboard">
-                <span class="fa fa-home"></span>
-                <span class="text">Dashboard</span>
-            </a>
-        </li>
-        
-        <li class="col-xs-3">
-            <a href="#/nutrition">
-                <span class="fa fa-cutlery"></span>
-                <span class="text">Nutrition</span>
-            </a>
-        </li>
-        
-        <li class="col-xs-3" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
-            <a href="#/exercise">
-                <span class="fa fa-fast-forward"></span>
-                <span class="text">Exercise</span>
-            </a>
-        </li>
-        
-        <li class="col-xs-3">
-            <a href="#/board">
-                <span class="fa fa-list"></span>
-                <span class="text">Leaderboards</span>
-            </a>
-        </li>
-    </ul>
+<nav class="navbar navbar-inverse app-top-nav">
+    <div class="container-fluid">
+        <div class="navbar-collapse">
+            <ul class="nav navbar-nav row">
+                <li class="col-xs-3" ng-class="{'active':'/dashboard' == $location.path()}">
+                    <a href="#/dashboard">
+                        <span class="fa fa-home"></span>
+                        <span class="hidden-xs">Dashboard</span>
+                    </a>
+                </li>
+                
+                <li class="col-xs-3" ng-class="{'active':'/nutrition/lookup' == $location.path()}">
+                    <a href="#/nutrition">
+                        <span class="fa fa-cutlery"></span>
+                        <span class="hidden-xs">Nutrition</span>
+                    </a>
+                </li>
+                
+                <li class="col-xs-3" ng-class="{'active':'/exercise' == $location.path()}" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
+                    <a href="#/exercise">
+                        <span class="fa fa-fast-forward"></span>
+                        <span class="hidden-xs">Exercise</span>
+                    </a>
+                </li>
+                
+                <li class="col-xs-3" ng-class="{'active':'/board' == $location.path()}">
+                    <a href="#/board">
+                        <span class="fa fa-list"></span>
+                        <span class="hidden-xs">Leaderboards</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>

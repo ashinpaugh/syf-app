@@ -6,7 +6,8 @@
 
 "use strict";
 
-var ApiEndpoint, ApiResponseFormat,
+var ApiEndpoint_Dev, ApiEndpoint_Stage, ApiEndpoint_Prod,
+    ApiEndpoint, ApiResponseFormat,
     okHealthApp, okHealthControllers,
     okHealthServices, okHealthFilters
 ;
@@ -19,9 +20,11 @@ var ApiEndpoint, ApiResponseFormat,
  * 
  * @type {string}
  */
-//ApiEndpoint = 'http://syfok.azurewebsites.net/api';
-//ApiEndpoint = 'http://okshapeyourfuture.azurewebsites.net';
-ApiEndpoint       = 'http://api.mis-health.dev/app_dev.php/v1';
+ApiEndpoint_Dev   = 'http://api.mis-health.dev/app_dev.php/v1';
+ApiEndpoint_Stage = 'http://api.health.moop.test/app_stage.php/v1';
+ApiEndpoint_Prod  = 'http://api.health.moop.ly/v1';
+
+ApiEndpoint       = ApiEndpoint_Stage;
 ApiResponseFormat = 'json';
 
 
@@ -30,17 +33,12 @@ okHealthServices    = angular.module('okHealthServices', ['ngRoute', 'ngResource
 okHealthFilters     = angular.module('okHealthFilters', []);
 okHealthApp         = angular.module('okHealthApp', [
     'ngRoute',
-    //'ngTouch',
-    //'ngHref',
     'okHealthServices',
     'okHealthControllers',
     'okHealthFilters'
 ]);
 
 okHealthApp.config(['$routeProvider', function ($routeProvider) {
-    //$locationProvider.html5Mode(true);
-    //$httpProvider.defaults.withCredentials = true;
-
     $routeProvider
         .when('/dashboard', {
             templateUrl: 'partials/Dashboard.html'
@@ -66,12 +64,17 @@ okHealthApp.config(['$routeProvider', function ($routeProvider) {
     ;
 }]);
 
-
-
 okHealthApp.directive('appNav', function () {
     return {
         'restrict'    : 'E',
         'templateUrl' : 'partials/components/AppNav.html'
+    };
+});
+
+okHealthApp.directive('overlay', function () {
+    return {
+        'restrict'    : 'E',
+        'templateUrl' : 'partials/components/Overlay.html'
     };
 });
 
@@ -307,6 +310,12 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
             TokenHandler.set(response.headers('X-AUTH-TOKEN'));
             
             return response;
+        },
+        responseError : function (rejection)
+        {
+            console.log('response error');
+            console.log(rejection);
+            console.log(rejection.headers());
         }
     };
 });
@@ -401,14 +410,14 @@ okHealthServices.factory('TrackerHandler', function () {
         
         addSteps : function (s)
         {
-            meta.steps += s;
+            meta.steps += parseInt(s);
         },
         
         addBurnedCalories : function (s) {
             meta.burned += s;
         },
         
-        clear : function (user) {
+        clear : function () {
             reset();
         }
     }

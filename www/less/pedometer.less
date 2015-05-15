@@ -4,7 +4,6 @@ body {
   }
   
   .pedometer-wrapper {
-    color: #FFF;
     text-align: center;
     
     .pedo-button button {
@@ -18,10 +17,9 @@ body {
       .counter-wrapper {
         margin:     0.25em 0.5em;
         display:    inline-block;
-        background: #FFF;
+        border-style: inset;
         
         .counter {
-          color: #000;
           margin: 0.5em 0.25em;
         }
       }
@@ -29,8 +27,11 @@ body {
     
     .statistics {
       width: 85%;
-      color: #FFF;
       margin: 0 auto;
+      
+      h4 {
+        color: #000;
+      }
       
       div.row div {
         display: inline-block;

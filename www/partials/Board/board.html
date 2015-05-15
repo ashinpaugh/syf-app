@@ -1,7 +1,7 @@
 <div class="board-wrapper" ng-controller="BoardCtrl">
     <app-nav-top></app-nav-top>
     
-    <ul class="board-list">
+    <ul class="board-list list">
         <li class="board-list-headers">
             <div class="row">
                 <div class="col-xs-4" ng-click="ToggleSort('username'); SortByProperty(null, 'username', 'display_name');">
@@ -16,6 +16,8 @@
                     <h5>Points</h5>
                 </div>
             </div>
+            
+            <hr/>
         </li>
         
         <board-user-item></board-user-item>

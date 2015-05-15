@@ -21,7 +21,7 @@
     <div class="search-results">
         <h4 ng-hide="!resultSet && !isSearching">Results</h4>
         
-        <ul class="results well" ng-hide="!resultSet">
+        <ul class="results list well" ng-hide="!resultSet">
             <li data-food-id="{{food.food_id}}" class="row result swipe-able" ng-repeat="food in resultSet" ng-class-even="'list-alt'">
                 <div class="col-xs-12" ng-init="food.closed = true; food.swiping = false;">
                     <div class="row item-display" ng-swipe-right="food.swiping = true;" ng-swipe-left="food.swiping = true;">
