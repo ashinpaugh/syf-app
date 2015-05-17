@@ -1,5 +1,3 @@
-"use strict";
-
 okHealthApp.config(['$routeProvider', function ($routeProvider) {
     $routeProvider
         .when('/dashboard', {

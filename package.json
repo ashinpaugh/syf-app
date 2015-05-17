@@ -24,7 +24,9 @@
     "gulp-concat": "^2.5.2",
     "gulp-jshint": "^1.10.0",
     "gulp-less": "^3.0.3",
+    "gulp-minify-css": "^1.1.1",
     "gulp-rename": "^1.2.2",
+    "gulp-sequence": "^0.3.2",
     "gulp-watch-less": "^1.0.1"
   }
 }

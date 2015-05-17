@@ -4,10 +4,10 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
-
 okHealthControllers.controller('DashboardCtrl', [function ()
 {
+    'use strict';
+    
     angular.element(document).ready(function () {
         App.Page.SetSubtitle("Dashboard");
     });

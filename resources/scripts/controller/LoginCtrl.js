@@ -5,9 +5,9 @@
  * @author  Austin Shinpaugh
  */
 
-"use strict";
-
 okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', 'TrackerHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler, TrackerHandler) {
+    'use strict';
+    
     $scope.user      = {};
     $scope.show_pass = false;
     $scope.page      = 1;
@@ -78,7 +78,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
                 
                 $location.url('/dashboard');
             });
-        })
+        });
     };
 
     /**
@@ -110,7 +110,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             }
         }
         
-        return $('.registration').filter('.ng-invalid').length == 0;
+        return 0 === $('.registration').filter('.ng-invalid').length;
     }
 
     /**

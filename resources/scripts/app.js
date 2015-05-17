@@ -70,10 +70,11 @@ var App = (function ($)
         }
         
         //path = 'file:///android_asset/www/' + path;
-        'js' === path.substring(path.indexOf('.') + 1)
-            ? LoadScript(path)
-            : LoadCSS(path)
-        ; 
+        if ('js' === path.substring(path.indexOf('.') + 1)) {
+            LoadScript(path);
+        } else {
+            LoadCSS(path);
+        }
     };
 
     /**
@@ -138,5 +139,5 @@ var App = (function ($)
     return {
         'Resources' : Resources,
         'Page'      : Page
-    }
+    };
 }) (jQuery);

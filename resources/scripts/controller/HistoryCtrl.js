@@ -63,12 +63,12 @@ okHealthApp.directive('historyDateWrapper', function () {
     return {
         'restrict'    : 'E',
         'templateUrl' : 'partials/History/HistoryDateWrapper.html'
-    }
+    };
 });
 
 okHealthApp.directive('historyMealWrapper', function () {
     return {
         'restrict'    : 'E',
         'templateUrl' : 'partials/History/HistoryMealWrapper.html'
-    }
+    };
 });

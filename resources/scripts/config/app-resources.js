@@ -1,5 +1,3 @@
-"use strict";
-
 okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
     var base = ApiEndpoint + '/account';
 

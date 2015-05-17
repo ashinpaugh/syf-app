@@ -4,10 +4,10 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
-
 okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'PedometerApi', function ($scope, $interval, PedometerApi)
 {
+    'use strict';
+    
     var appTick, tickStop;
     
     $scope.display = '00:00:00';

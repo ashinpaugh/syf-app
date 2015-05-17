@@ -4,8 +4,6 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
-
 var ApiEndpoint_Dev, ApiEndpoint_Stage, ApiEndpoint_Prod,
     ApiEndpoint, ApiResponseFormat,
     okHealthApp, okHealthControllers,

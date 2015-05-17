@@ -1,5 +1,3 @@
-"use strict";
-
 okHealthServices.config(['$httpProvider', function ($httpProvider) {
     $httpProvider.interceptors.push('httpInterceptor');
 }]);
@@ -30,9 +28,11 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
         },
         responseError : function (rejection)
         {
-            console.log('response error');
-            console.log(rejection);
-            console.log(rejection.headers());
+            if (console) {
+                console.log('response error');
+                console.log(rejection);
+                console.log(rejection.headers());
+            }
         }
     };
 });

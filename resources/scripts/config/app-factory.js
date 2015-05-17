@@ -4,8 +4,6 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
-
 okHealthServices.factory('TokenHandler', function () {
     var token, date;
     token = null;
@@ -122,5 +120,5 @@ okHealthServices.factory('TrackerHandler', function () {
         clear : function () {
             reset();
         }
-    }
+    };
 });

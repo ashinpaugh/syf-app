@@ -4,9 +4,9 @@
  * @author Austin Shinpaugh
  */
 
-"use strict";
-
 okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GroupApi, SchoolApi) {
+    'use strict';
+    
     $scope.$location    = $location;
     $scope.token        = null;
     $scope.user         = null;
@@ -174,7 +174,7 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     {
         var data, params, param;
         data   = $scope.previous_data[controller] || {};
-        params = ChildOnlyParams($s);
+        params = childOnlyParams($s);
         
         for (var i = 0; i < params.length; i++) {
             param       = params[i];
@@ -194,7 +194,7 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         
         var data, params, param;
         data   = $scope.previous_data[controller];
-        params = ChildOnlyParams($s);
+        params = childOnlyParams($s);
         
         for (var i = 0; i < params.length; i++) {
             param = params[i];
@@ -207,7 +207,7 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         return true;
     };
     
-    var ChildOnlyParams = function ($s)
+    var childOnlyParams = function ($s)
     {
         var params = [];
         
@@ -280,5 +280,5 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         $scope.HandleNav({
             type: 'swipeleft'
         });
-    }
+    };
 }]);

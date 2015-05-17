@@ -7,7 +7,7 @@
 var gulp = require('gulp'),
     less = require('gulp-less'),
     lint = require('gulp-jshint'),
-    run  = require('run-sequence'),
+    run  = require('gulp-sequence'),
     concat = require('gulp-concat'),
     cssMinify = require('gulp-minify-css')
 ;
