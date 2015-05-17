@@ -259,10 +259,6 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
     };
     
     angular.element(document).ready(function () {
-        SYF.Resources.Load([
-            'css/nutrition.css'
-        ]);
-        
         if ($scope.HasBackupData('nutrition')) {
             $scope.QuickFillScope('nutrition', $scope);
         }

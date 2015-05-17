@@ -1,8 +1,13 @@
 /**
- *
+ * Handles user login and logout actions.
+ * 
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
 
-okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler) {
+"use strict";
+
+okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', 'TrackerHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler, TrackerHandler) {
     $scope.user      = {};
     $scope.show_pass = false;
     $scope.page      = 1;
@@ -39,7 +44,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             }
             
             UserHandler.set(data.user_meta);
-            $scope.tracker.set(data.food_meta);
+            TrackerHandler.set(data.food_meta);
             
             if (!$scope.RedirectUser()) {
                 $location.url('/dashboard');
@@ -69,7 +74,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
                 _password: $scope.user.password
             }, function (data) {
                 UserHandler.set(data.user_meta);
-                $scope.tracker.set(data.food_meta);
+                TrackerHandler.set(data.food_meta);
                 
                 $location.url('/dashboard');
             });
@@ -107,15 +112,17 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
         
         return $('.registration').filter('.ng-invalid').length == 0;
     }
-    
+
+    /**
+     * @event OnDocumentReady
+     */
     angular.element(document).ready(function () {
         if ($scope.getUser().meta()) {
+            // Log a user out if they visit the login page.
             $scope.getUser().logout();
+            $location.url('/dashboard');
         }
         
         SYF.Page.SetSubtitle('Login');
-        SYF.Resources.Load([
-            'css/login.css'
-        ]);
     });
 }]);

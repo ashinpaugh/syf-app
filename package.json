@@ -1,0 +1,30 @@
+{
+  "name": "mis-health-mobile",
+  "version": "1.0.0",
+  "description": "Front end for MIS Health application.",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@bitbucket.org:okhealth/mobile.git"
+  },
+  "keywords": [
+    "mobile",
+    "health",
+    "app",
+    "android",
+    "iphone"
+  ],
+  "author": "Austin Shinpaugh",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-jshint": "^1.10.0",
+    "gulp-less": "^3.0.3",
+    "gulp-rename": "^1.2.2",
+    "gulp-watch-less": "^1.0.1"
+  }
+}

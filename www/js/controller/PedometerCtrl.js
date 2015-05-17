@@ -41,7 +41,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     $scope.UploadEntry = function ()
     {
-        console.log($scope.Pedometer.getSteps());
         $scope.getTracker().addSteps($scope.Pedometer.getSteps());
         $scope.getTracker().addBurnedCalories($scope.Pedometer.getCaloriesBurned());
 
@@ -66,7 +65,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         SYF.Resources.Load([
             'js/CalorieCounter.js',
             'js/StepDetector.js',
-            'css/pedometer.css',
             'js/Pedometer.js'
         ]);
         
@@ -74,7 +72,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         SYF.Page.AnimateSwitches();
     });
     
-    $('.pedomter-wrapper .btn-warning').on('click', function (e) {
+    $('#stop-pedometer').on('click', function () {
         $scope.UploadEntry();
     });
 }]);

@@ -1,11 +1,7 @@
 
 
-okHealthControllers.controller('LocationCtrl', ['$scope', '$location', function ($scope, $location) {
+okHealthControllers.controller('LocationCtrl', [function () {
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle('Meals');
-        
-        SYF.Resources.Load([
-            'css/location.css'
-        ]);
     });
 }]);

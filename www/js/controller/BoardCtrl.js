@@ -89,12 +89,8 @@ okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams
     angular.element(document).ready(function () {
         SYF.Page.SetSubtitle("Leaderboards");
         
-        SYF.Resources.Load([
-            'css/board.css'
-        ]);
-        
         $scope.isSearching = true;
-        $scope.resultSet = BoardApi.getLeaderBoard({}, function () {
+        $scope.resultSet   = BoardApi.getLeaderBoard({}, function () {
             $scope.isSearching = false;
         });
     });

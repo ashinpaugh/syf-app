@@ -4,6 +4,7 @@ www/css/*
 
 plugins/
 platforms/
+node_modules/
 
 npm-*
 
