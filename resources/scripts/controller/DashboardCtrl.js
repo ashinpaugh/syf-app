@@ -9,6 +9,6 @@
 okHealthControllers.controller('DashboardCtrl', [function ()
 {
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle("Dashboard");
+        App.Page.SetSubtitle("Dashboard");
     });
 }]);

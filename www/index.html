@@ -20,9 +20,9 @@
         <link rel="stylesheet" type="text/css" href="css/font-awesome.min.css" />
         <link rel="stylesheet" type="text/css" href="css/core.css" />
         
-        <script type="text/javascript" src="js/lib/jquery/jquery.min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery/jquery.mobile.custom.min.js"></script>
-        <script type="text/javascript" src="js/lib/jquery/jquery-ui.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/jquery/jquery.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/jquery/jquery.mobile.custom.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/jquery/jquery-ui.min.js"></script>
         
         <script type="text/javascript" src="cordova.js"></script>
         
@@ -62,35 +62,41 @@
         </div>
         
         
-        <script type="text/javascript" src="js/lib/bootstrap/bootstrap.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/bootstrap/bootstrap.min.js"></script>
         
         <!--
             <script type="text/javascript" src="js/lib/angular/angular.js"></script>
             <script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
         -->
-        <script type="text/javascript" src="js/lib/angular/angular.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular.min.js"></script>
         
-        <script type="text/javascript" src="js/lib/angular/angular-animate.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular-loader.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular-route.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular-resource.min.js"></script>
-        <script type="text/javascript" src="js/lib/angular/angular-touch.min.js"></script>
-        <script type="text/javascript" src="js/lib/bootstrap/bootstrap-switch.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular-animate.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular-loader.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular-route.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular-resource.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/angular/angular-touch.min.js"></script>
+        <script type="text/javascript" src="scripts/lib/bootstrap/bootstrap-switch.min.js"></script>
         
-        <script type="text/javascript" src="js/core.js"></script>
-        <script type="text/javascript" src="js/app.js"></script>
+        <!--
+        <script type="text/javascript" src="../resources/scripts/app.js"></script>
+        <script type="text/javascript" src="../resources/scripts/app-bootstrap.js"></script>
+        -->
+        <!-- This won't load with the App Loader.. I have no idea why. -->
+        <!--
+        <script type="text/javascript" src="../resources/scripts/StepDetector.js"></script>
         
-        <!-- This won't load with the SYF Loader.. I have no idea why. -->
-        <script type="text/javascript" src="js/StepDetector.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/AppCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/DashboardCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/PedometerCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/NutritionCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/LocationCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/LoginCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/BoardCtrl.js"></script>
+        <script type="text/javascript" src="../resources/scripts/controller/HistoryCtrl.js"></script>
+        -->
         
-        <script type="text/javascript" src="js/controller/AppCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/DashboardCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/PedometerCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/NutritionCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/LocationCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/LoginCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/BoardCtrl.js"></script>
-        <script type="text/javascript" src="js/controller/HistoryCtrl.js"></script>
-        
+        <script type="text/javascript" src="scripts/app-bootstrap.js"></script>
+        <script type="text/javascript" src="scripts/utilities.js"></script>
+        <script type="text/javascript" src="scripts/controllers.js"></script>
     </body>
 </html>

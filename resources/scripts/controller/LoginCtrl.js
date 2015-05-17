@@ -123,6 +123,6 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             $location.url('/dashboard');
         }
         
-        SYF.Page.SetSubtitle('Login');
+        App.Page.SetSubtitle('Login');
     });
 }]);

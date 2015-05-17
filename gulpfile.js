@@ -13,13 +13,10 @@ var gulp = require('gulp'),
 ;
 
 /**
- * Check for stupid javascript.
+ * Check for dumb javascript.
  */
 gulp.task('js-lint', function () {
-    return gulp.src([
-            'www/js/**/*.js',
-            '!www/js/lib/*'
-        ])
+    return gulp.src('resources/scripts/**/*.js')
         .pipe(lint())
         .pipe(lint.reporter('default'))
     ;
@@ -29,7 +26,7 @@ gulp.task('js-lint', function () {
  * Compile the less files.
  */
 gulp.task('build-less', function () {
-    return gulp.src('www/less/*.less')
+    return gulp.src('resources/less/*.less')
         .pipe(less())
         .pipe(cssMinify())
         .pipe(gulp.dest('www/css'))
@@ -40,33 +37,43 @@ gulp.task('build-less', function () {
  * Concatenate the javascript files.
  */
 gulp.task('build-js', function () {
-    gulp.src(['www/js/app.js', 'www/js/core.js'])
-        .pipe(concat('core.js'))
-        .pipe(gulp.dest('www/js'))
-    ;
-    
-    return run('build-js-pedometer-utility', 'build-js-controllers');
+    return run(
+        'build-js-utilities',
+        'build-js-bootstrap',
+        'build-js-controllers'
+    );
 });
 
-gulp.task('build-js-pedometer-utility', ['build-js'], function () {
+gulp.task('build-js-bootstrap', function () {
     return gulp.src([
-            'www/js/CalorieCounter.js',
-            'www/js/StepDetector.js',
-            'www/js/Pedometer.js'
+            'resources/scripts/app-bootstrap.js',
+            'resources/scripts/config/*.js'
         ])
-        .pipe(concat('PedometerUtilities.js'))
-        .pipe(gulp.dest('www/js'))
+        .pipe(concat('app-config.js'))
+        .pipe(gulp.dest('www/scripts'))
+    ;
 });
 
-gulp.task('build-js-controllers', ['build-js', 'build-js-pedometer-utility'], function () {
-    return gulp.src('www/js/controller/*.js')
+gulp.task('build-js-core', function () {
+    return gulp.src([
+            'resources/scripts/app.js',
+            'resources/scripts/CalorieCounter.js',
+            'resources/scripts/StepDetector.js',
+            'resources/scripts/Pedometer.js'
+        ])
+        .pipe(concat('utilities.js'))
+        .pipe(gulp.dest('www/scripts'))
+});
+
+gulp.task('build-js-controllers', ['build-js-bootstrap', 'build-js-utilities'], function () {
+    return gulp.src('resources/scripts/controller/*.js')
         .pipe(concat('controllers.js'))
-        .pipe(gulp.dest('www/js'))
+        .pipe(gulp.dest('www/scripts'))
 });
 
 gulp.task('watch', function () {
     gulp.watch('www/less/*.less', ['build-less']);
-    gulp.watch(['www/js/*.js', '!www/js/lib/*'], ['build-js']);
+    gulp.watch(['resources/scripts/*.js'], ['build-js']);
 });
 
 /*gulp.watch('www/less/*.less', function (event) {

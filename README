@@ -6,7 +6,7 @@ SDK v19 and above are supported.
 
 All functionality is based off of services provided by the website, aka the API
 endpoint. That being said should the API endpoint change, you must update the
-'ApiEndpoint' variable found in app.js to reflect the new url.
+'ApiEndpoint' variable found in app-bootstrap.js to reflect the new url.
 
 It is also important to note that this program was build using LESS CSS. Any
 changes should be made to the less files and recompiled.

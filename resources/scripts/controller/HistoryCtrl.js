@@ -51,7 +51,7 @@ okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', f
     }
     
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle('Meal History');
+        App.Page.SetSubtitle('Meal History');
         
         if ($scope.HasBackupData('history')) {
             $scope.QuickFillScope('history', $scope);
