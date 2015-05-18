@@ -1,5 +1,10 @@
-
-
+/**
+ * The history controller. Used when displaying what a user ate
+ * over the course of a week.
+ * 
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
+ */
 okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', function ($scope, FS, $routeParams) {
     //$scope.resultSet = !$routeParams.view || $routeParams.view == 'food' ? FS.history() : [];
     $scope.resultSet = [];
@@ -25,19 +30,24 @@ okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', f
         }
         
         $scope.isSearching = true;
-        $scope.resultSet = FS.history({q: username}, function () {
+        FS.history({q: username}, function (data) {
             $scope.isSearching = false;
-            CalculateTotals();
+            $scope.resultSet   = calculateTotals(data);
         });
         
         $scope.name = username;
     };
     
-    function CalculateTotals ()
+    var calculateTotals = function (data)
     {
-        for (var idx in $scope.resultSet) {
+        for (var idx in data) {
+            if (data[idx].hasOwnProperty('calories')) {
+                // Sometimes the results aren't returned as an array.
+                data[idx] = [data[idx]];
+            }
+            
             var entries, total;
-            entries = $scope.resultSet[idx];
+            entries = data[idx];
             total   = 0;
             
             for (var i in entries) {
@@ -48,7 +58,9 @@ okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', f
             
             $scope.totals[idx] = total;
         }
-    }
+        
+        return data;
+    };
     
     angular.element(document).ready(function () {
         App.Page.SetSubtitle('Meal History');

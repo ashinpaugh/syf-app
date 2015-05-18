@@ -180,8 +180,8 @@ var StepDetector;
     {
         var vectors = this.vectors;
         
-        return (x < vectors.x.upperThresholdMax)
-            && (z > vectors.z.upperThresholdMin && z < vectors.z.upperThresholdMax);
+        return (x < vectors.x.upperThresholdMax) &&
+            (z > vectors.z.upperThresholdMin && z < vectors.z.upperThresholdMax);
     };
     
     /**

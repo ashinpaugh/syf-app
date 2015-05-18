@@ -1,9 +1,9 @@
 /**
- * The pedometer
+ * The pedometer controller.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
-
 okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'PedometerApi', function ($scope, $interval, PedometerApi)
 {
     'use strict';
@@ -12,7 +12,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     $scope.display = '00:00:00';
     $scope.walking = true;
-
     
     $scope.getSteps = function ()
     {
@@ -49,8 +48,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
             calories:   $scope.Pedometer.getCaloriesBurned(),
             started_on: $scope.Pedometer.getStartTime(),
             ended_on:   $scope.Pedometer.getEndTime()
-        }, function (data, headers) {
-            //console.log([data, headers]);
         });
     };
     

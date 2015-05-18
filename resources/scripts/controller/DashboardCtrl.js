@@ -1,7 +1,8 @@
 /**
  * The homepage / dashboard for the app.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
 
 okHealthControllers.controller('DashboardCtrl', [function ()

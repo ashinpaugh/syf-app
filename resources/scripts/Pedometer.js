@@ -294,9 +294,9 @@ var Pedometer = (function ($) {
                 return ("00" + num).slice(-2);
             };
             
-            display = timerRound(hr)
-                + ':' + timerRound(min)
-                + ':' + timerRound(sec)
+            display = timerRound(hr) +
+                ':' + timerRound(min) +
+                ':' + timerRound(sec)
             ;
             
             return display;

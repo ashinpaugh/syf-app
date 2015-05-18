@@ -23,13 +23,10 @@ var CalorieCounter;
      */
     CalorieCounter.prototype.getCaloriesBurned = function (activity, duration)
     {
-        console.log(this);
-        console.log([(this.BMR / 24), CalorieCounter.getMETValues(activity), (duration / 3600)]);
-        
         return Math.ceil(
-            (this.BMR / 24)
-            * CalorieCounter.getMETValues(activity)
-            * (duration / 3600)
+            (this.BMR / 24) *
+            CalorieCounter.getMETValues(activity) *
+            (duration / 3600)
         );  
     };
     

@@ -1,7 +1,8 @@
 /**
  * Page where the user searches for food and adds it to their calorie diary.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
 
 okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routeParams', 'FS', function ($scope, $swipe, $routeParams, FS)
