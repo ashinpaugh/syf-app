@@ -1,6 +1,6 @@
-OKHealth Mobile App
+# OKHealth Mobile App
 
-This project uses cordova (v3.0) to build native applications in common languages
+This project uses cordova (v4.2) to build native applications in common languages
 such as html and javascript. Currently only Android devices running
 SDK v19 and above are supported.
 
@@ -11,6 +11,15 @@ endpoint. That being said should the API endpoint change, you must update the
 It is also important to note that this program was build using LESS CSS. Any
 changes should be made to the less files and recompiled.
 
-cordova plugin add https://git-wip-us.apache.org/repos/asf/cordova-plugin-inappbrowser.git
+To get started:
+
+    $ cordova platform add android
+    $ npm install gulp --save-dev
+    $ npm install gulp-less gulp-jshint gulp-sequence gulp-copy gulp-concat culp-minify-css --save-dev
+    $ gulp
+    
+In a new terminal:
+
+    $ ripple emulate
 
 
