@@ -4,7 +4,7 @@
  * @author Austin Shinpaugh
  */
 
-var SYF = (function ($)
+var App = (function ($)
 {
     var Page      = function () {};
     var Resources = function () {};
@@ -32,7 +32,7 @@ var SYF = (function ($)
     /**
      * Apply the loading animation.
      * 
-     * @param jQuery target
+     * @param {jQuery} target
      */
     Page.ToggleLoadingAnimation = function (target)
     {
@@ -70,10 +70,11 @@ var SYF = (function ($)
         }
         
         //path = 'file:///android_asset/www/' + path;
-        'js' === path.substring(path.indexOf('.') + 1)
-            ? LoadScript(path)
-            : LoadCSS(path)
-        ; 
+        if ('js' === path.substring(path.indexOf('.') + 1)) {
+            LoadScript(path);
+        } else {
+            LoadCSS(path);
+        }
     };
 
     /**
@@ -116,22 +117,12 @@ var SYF = (function ($)
      */
     function bindExternalLinks ()
     {
-        $(document).on('click', 'a[href^="//"], a[href^="http"]', function (e) {
+        $(document).on('click', 'a[href^="//"], a[href^="http"]', function () {
             window.open(encodeURI(this.href), '_system', 'location=yes');
             
             return false;
         });
     }
-    
-    Page.EnableOverlay = function (message)
-    {
-        $('#overlay-message h3').text(message);
-    };
-    
-    Page.DisableOverlay = function ()
-    {
-        $('#overlay-message').modal('hide');
-    };
 
     /**
      * Look for switch toggles and animate them.
@@ -148,5 +139,5 @@ var SYF = (function ($)
     return {
         'Resources' : Resources,
         'Page'      : Page
-    }
+    };
 }) (jQuery);

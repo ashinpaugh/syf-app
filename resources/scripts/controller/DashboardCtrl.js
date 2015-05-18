@@ -1,14 +1,15 @@
 /**
  * The homepage / dashboard for the app.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
-
-"use strict";
 
 okHealthControllers.controller('DashboardCtrl', [function ()
 {
+    'use strict';
+    
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle("Dashboard");
+        App.Page.SetSubtitle("Dashboard");
     });
 }]);

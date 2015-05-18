@@ -5,7 +5,7 @@
  */
 
 var Pedometer = (function ($) {
-    "use strict";
+    'use strict';
 
     /**
      * @var StepDetector
@@ -26,27 +26,26 @@ var Pedometer = (function ($) {
      */
     function init ()
     {
-        ResetPedometer();
+        resetPedometer();
         bindEvents();
     }
 
     /**
      * Binds the requisite pedometer events.
      */
-    function bindEvents ()
+    var bindEvents = function ()
     {
         bindCounterEvents();
         
-        $('.counter-wrapper').click(function ($e) {
-            console.log('clicked');
+        $('.counter-wrapper').click(function () {
             detector.OnStep();
         });
-    }
+    };
     
     /**
      * Reset the pedometer variables.
      */
-    function ResetPedometer ()
+    var resetPedometer = function ()
     {
         activity   = 'walking';
         start_time = null;
@@ -57,7 +56,7 @@ var Pedometer = (function ($) {
         activity_started = 0;
         activity_ended   = 0;
         last_step        = 0;
-    }
+    };
 
     /**
      * Binds the events associated to the counter.
@@ -89,16 +88,16 @@ var Pedometer = (function ($) {
     /**
      * Tracks the start / end times of this workout session.
      */
-    function StartExerciseTimer ()
+    var startExerciseTimer = function ()
     {
         ended_time = null;
         start_time = new Date();
-    }
+    };
     
     /**
      * Activity timestamps monitor when a user went from walking, jogging, and running.
      */
-    function ResetActivityTimer (act)
+    var resetActivityTimer = function (act)
     {
         if (act) {
             calories += tracker.getCaloriesBurned(
@@ -112,24 +111,24 @@ var Pedometer = (function ($) {
         
         activity_ended   = null;
         activity_started = null;
-    }
+    };
 
     /**
      * Stop tracking the exercise.
      */
-    function StopExercise ()
+    var stopExercise = function ()
     {
         activity_ended = new Date();
         ended_time     = new Date();
         
         calories += tracker.getCaloriesBurned(activity, getActivityDuration());
-    }
+    };
     
     /**
      * Returns the duration of the exercise in seconds.
      * @return {number}
      */
-    function getActivityDuration ()
+    var getActivityDuration = function ()
     {
         if (!activity_started) {
             return 0;
@@ -137,16 +136,16 @@ var Pedometer = (function ($) {
         
         var ended = activity_ended ? activity_ended : new Date();
         return Math.ceil(ended.getTime() - activity_started.getTime()) / 1000;
-    }
+    };
     
 
     /**
      * Turns off activity and calorie monitoring when the user is inactive.
      */
-    function monitorActivity ()
+    var monitorActivity = function ()
     {
-        if (!(steps % 10)) {
-            ResetActivityTimer(activity);
+        if (0 === (steps % 10)) {
+            resetActivityTimer(activity);
         }
         
         if (1 == steps || !activity_started) {
@@ -157,31 +156,31 @@ var Pedometer = (function ($) {
         if (last_step && ((new Date().getTime() - last_step) > 10000)) {
             console.log('resetting');
             activity_ended = new Date(last_step);
-            ResetActivityTimer(activity);
+            resetActivityTimer(activity);
             activity_started = new Date();
         }
         
         last_step = new Date().getTime();
-    }
+    };
 
     /**
      * Determine if the Pedometer is enabled.
      * 
      * @returns {boolean}
      */
-    function isTracking ()
+    var isTracking = function ()
     {
         return detector instanceof StepDetector && detector.IsEnabled();
-    }
+    };
 
     /**
      * Called when a step was taken.
      */
-    function OnStepTaken ()
+    var onStepTaken = function ()
     {
         steps++;
         $('.counter-wrapper:last').trigger('increment_counter');
-    }
+    };
     
     /**
      * On document ready binding.
@@ -196,7 +195,7 @@ var Pedometer = (function ($) {
                 return false;
             }
             
-            ResetActivityTimer(act);
+            resetActivityTimer(act);
             
             return true;
         },
@@ -239,9 +238,9 @@ var Pedometer = (function ($) {
          */
         start : function (user)
         {
-            ResetPedometer();
-            StartExerciseTimer();
-            ResetActivityTimer();
+            resetPedometer();
+            startExerciseTimer();
+            resetActivityTimer();
             
             detector = new StepDetector();
             tracker  = new CalorieCounter(
@@ -252,7 +251,7 @@ var Pedometer = (function ($) {
             );
             
             detector
-                .addListener(OnStepTaken)
+                .addListener(onStepTaken)
                 .addListener(monitorActivity)
                 .Start()
             ;
@@ -263,7 +262,7 @@ var Pedometer = (function ($) {
          */
         stop : function ()
         {
-            StopExercise();
+            stopExercise();
             
             detector.Stop();
         },
@@ -295,9 +294,9 @@ var Pedometer = (function ($) {
                 return ("00" + num).slice(-2);
             };
             
-            display = timerRound(hr)
-                + ':' + timerRound(min)
-                + ':' + timerRound(sec)
+            display = timerRound(hr) +
+                ':' + timerRound(min) +
+                ':' + timerRound(sec)
             ;
             
             return display;

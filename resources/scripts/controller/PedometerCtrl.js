@@ -1,18 +1,17 @@
 /**
- * The pedometer
+ * The pedometer controller.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
-
-"use strict";
-
 okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'PedometerApi', function ($scope, $interval, PedometerApi)
 {
+    'use strict';
+    
     var appTick, tickStop;
     
     $scope.display = '00:00:00';
     $scope.walking = true;
-
     
     $scope.getSteps = function ()
     {
@@ -49,8 +48,6 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
             calories:   $scope.Pedometer.getCaloriesBurned(),
             started_on: $scope.Pedometer.getStartTime(),
             ended_on:   $scope.Pedometer.getEndTime()
-        }, function (data, headers) {
-            //console.log([data, headers]);
         });
     };
     
@@ -61,15 +58,15 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     });
     
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle('Pedometer');
-        SYF.Resources.Load([
+        App.Page.SetSubtitle('Pedometer');
+        App.Resources.Load([
             'js/CalorieCounter.js',
             'js/StepDetector.js',
             'js/Pedometer.js'
         ]);
         
         $scope.Pedometer = Pedometer;
-        SYF.Page.AnimateSwitches();
+        App.Page.AnimateSwitches();
     });
     
     $('#stop-pedometer').on('click', function () {

@@ -4,7 +4,10 @@ www/css/*
 
 plugins/
 platforms/
+
+# Gulp
 node_modules/
+www/scripts/
 
 npm-*
 

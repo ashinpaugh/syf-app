@@ -1,5 +1,10 @@
-
-
+/**
+ * The leader board controller.
+ * Used to show who's leading in points.
+ * 
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
+ */
 okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams', function ($scope, BoardApi, $routeParams) {
     $scope.resultSet = {};
     $scope.columns   = {
@@ -7,44 +12,6 @@ okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams
         school:   'ASC',
         points:   'DESC'
     };
-    
-    /*$scope.resultSet = [
-        {
-            display_name: 'ashinpaugh',
-            school_initials:   'OU',
-            total_points:   10
-        },
-        
-        {
-            display_name: 'crispy',
-            school_initials:   'OU',
-            total_points:   22
-        },
-        
-        {
-            display_name: 'derp',
-            school_initials:   'UNM',
-            total_points:   9
-        },
-        
-        {
-            display_name: 'smurf',
-            school_initials:   'OU',
-            total_points:   18
-        },
-        
-        {
-            display_name: 'daunte',
-            school_initials:   'OU',
-            total_points:   100
-        },
-        
-        {
-            display_name: 'geodude',
-            school_initials:   'OU',
-            total_points:   1000
-        }
-    ];*/
     
     $scope.ToggleSort = function (col)
     {
@@ -87,7 +54,7 @@ okHealthControllers.controller('BoardCtrl', ['$scope', 'BoardApi', '$routeParams
     };
     
     angular.element(document).ready(function () {
-        SYF.Page.SetSubtitle("Leaderboards");
+        App.Page.SetSubtitle("Leaderboards");
         
         $scope.isSearching = true;
         $scope.resultSet   = BoardApi.getLeaderBoard({}, function () {
@@ -100,5 +67,5 @@ okHealthApp.directive('boardUserItem', function () {
     return {
         'restrict'    : 'E',
         'templateUrl' : 'partials/Board/BoardUserItem.html'
-    }
+    };
 });

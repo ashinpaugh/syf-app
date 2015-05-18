@@ -1,13 +1,14 @@
 /**
  * Page where the user searches for food and adds it to their calorie diary.
  * 
- * @author Austin Shinpaugh
+ * @extends AppCtrl
+ * @author  Austin Shinpaugh
  */
-
-"use strict";
 
 okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routeParams', 'FS', function ($scope, $swipe, $routeParams, FS)
 {
+    'use strict';
+    
     $scope.page      = $routeParams.hasOwnProperty('page') ? $routeParams.page : 0;
     $scope.search    = $routeParams.hasOwnProperty('search') ? $routeParams.search : '';
     $scope.resultSet = null;
@@ -23,7 +24,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             return;
         }
         
-        if (InvalidInput()) {
+        if (invalidInput()) {
             $scope.userError = 2;
             return;
         }
@@ -41,10 +42,10 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
                 result.total_results
             );
             
-            $scope.resultSet   = CleanFoodData(result.food);
+            $scope.resultSet   = cleanFoodData(result.food);
             $scope.isSearching = false;
             $scope.userError   = false;
-            LoadServings();
+            loadServings();
         });
     };
     
@@ -104,7 +105,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
     /**
      * Collects all the food objects' food_id's for batch processing.
      */
-    var LoadServings = function ()
+    var loadServings = function ()
     {
         var food_ids = [];
         
@@ -118,7 +119,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             food_ids.push(food.food_id);
         }
         
-        UpdateServings(food_ids);
+        updateServings(food_ids);
     };
 
     /**
@@ -130,14 +131,14 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      * 
      * @param food_ids
      */
-    var UpdateServings = function (food_ids)
+    var updateServings = function (food_ids)
     {
         FS.batch({'food_ids': food_ids.join(',')}, function (results) {
             for (var idx = 0; idx < results.length; idx++) {
                 var result, food, servings;
                 
                 result = results[idx];
-                food   = GetFood(result.food_id);
+                food   = getFood(result.food_id);
                 if (!food) {
                     console.log(result.food_id);
                     continue;
@@ -145,9 +146,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
                 servings = result.servings.serving;
                 servings = $.isArray(servings) ? servings : [servings];
                 
-                food.servings = CleanServingsData(servings);
+                food.servings = cleanServingsData(servings);
             }
-        })
+        });
     };
 
     /**
@@ -156,7 +157,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      * @param food
      * @returns {Array}
      */
-    var CleanFoodData = function (food)
+    var cleanFoodData = function (food)
     {
         var output = [];
         
@@ -196,7 +197,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      * @param servings
      * @returns {Array}
      */
-    var CleanServingsData = function (servings)
+    var cleanServingsData = function (servings)
     {
         var output = [];
         
@@ -225,7 +226,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      * 
      * @returns {boolean}
      */
-    var InvalidInput = function ()
+    var invalidInput = function ()
     {
         var idx, letter;
         
@@ -246,7 +247,7 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      * @param food_id
      * @returns {Object}
      */
-    var GetFood = function (food_id)
+    var getFood = function (food_id)
     {
         for (var idx in $scope.resultSet) {
             var food = $scope.resultSet[idx];
@@ -273,5 +274,5 @@ okHealthApp.directive('userEatenButton', function () {
     return {
         'restrict'    : 'E',
         'templateUrl' : 'partials/Nutrition/UserEatenButton.html'
-    }
+    };
 });
