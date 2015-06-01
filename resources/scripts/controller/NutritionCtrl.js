@@ -37,9 +37,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
         $scope.isSearching = true;
         FS.search(query, function (result) {
             $scope.SetupPagination(
-                result.page_number,
-                result.max_results,
-                result.total_results
+                parseInt(result.page_number),
+                parseInt(result.max_results),
+                parseInt(result.total_results)
             );
             
             $scope.resultSet   = cleanFoodData(result.food);
@@ -140,9 +140,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
                 result = results[idx];
                 food   = getFood(result.food_id);
                 if (!food) {
-                    console.log(result.food_id);
                     continue;
                 }
+                
                 servings = result.servings.serving;
                 servings = $.isArray(servings) ? servings : [servings];
                 

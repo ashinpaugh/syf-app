@@ -59,14 +59,11 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
     
     angular.element(document).ready(function () {
         App.Page.SetSubtitle('Pedometer');
-        App.Resources.Load([
-            'js/CalorieCounter.js',
-            'js/StepDetector.js',
-            'js/Pedometer.js'
-        ]);
+        App.Page.AnimateSwitches();
         
         $scope.Pedometer = Pedometer;
-        App.Page.AnimateSwitches();
+        
+        $scope.EnforceLogin(null, "Please login before using the pedometer.")
     });
     
     $('#stop-pedometer').on('click', function () {

@@ -26,13 +26,15 @@ okHealthServices.factory('httpInterceptor', function (TokenHandler) {
             
             return response;
         },
-        responseError : function (rejection)
+        responseError : function (response)
         {
             if (console) {
                 console.log('response error');
-                console.log(rejection);
-                console.log(rejection.headers());
+                console.log(response);
+                console.log(response.headers());
             }
+            
+            return response;
         }
     };
 });

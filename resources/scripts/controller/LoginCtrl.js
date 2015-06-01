@@ -4,14 +4,43 @@
  * @extends AppCtrl
  * @author  Austin Shinpaugh
  */
-
 okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParams', 'AccountApi', 'UserHandler', 'TrackerHandler', function ($scope, $location, $routeParams, AccountApi, UserHandler, TrackerHandler) {
     'use strict';
     
-    $scope.user      = {};
-    $scope.show_pass = false;
-    $scope.page      = 1;
-    $scope.message   = $routeParams.message;
+    $scope.user    = {};
+    $scope.page    = 1;
+    $scope.message = $routeParams.message;
+    
+    
+    $scope.pageIsValid = function ($e)
+    {
+        var button, input, watcher;
+        button = $($e.currentTarget);
+        input  = $('.page-' + ($scope.page - 1) + ' .ng-invalid');
+        
+        if (!input[0]) {
+            return true;
+        }
+        
+        watcher = function () {
+            var item = $(this);
+            
+            if (item.hasClass('ng-invalid')) {
+                return;
+            }
+            
+            button.removeAttr('disabled');
+            input.off('blur', ':input', watcher);
+        };
+        
+        button.attr('disabled', 'disabled');
+        input.on('blur', ':input', watcher);
+        
+        input.first().focus();
+        $scope.page -= 1;
+        
+        return false;
+    };
     
     /**
      * Perform user sign-in.
@@ -22,11 +51,11 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
     {
         var username, password;
         
-        //username = $scope.credentials.username;
-        //password = $scope.credentials.password;
-        // TODO: Remove before sending off to production.
-        username = !$scope.credentials.username ? 'ashinpaugh' : $scope.credentials.username;
-        password = !$scope.credentials.password ? 'password1'  : $scope.credentials.password;
+        username = $scope.credentials.username;
+        password = $scope.credentials.password;
+        
+        //username = !$scope.credentials.username ? 'ashinpaugh' : $scope.credentials.username;
+        //password = !$scope.credentials.password ? 'password1'  : $scope.credentials.password;
         
         btn.disabled = true;
         $scope.EnableOverlay('Logging in...');
@@ -59,7 +88,7 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
      */
     $scope.doRegistration = function ()
     {
-        if (!validateProperties()) {
+        if ($('.ng-invalid')[0]) {
             return;
         }
         
@@ -80,38 +109,6 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             });
         });
     };
-
-    /**
-     * Performs some lightweight client-side input validation.
-     * 
-     * @returns {boolean}
-     */
-    function validateProperties()
-    {
-        var u = $scope.user;
-        
-        if (!u.hasOwnProperty('password')) {
-            alert('Invalid password.');
-            return false;
-        }
-        
-        if (!$scope.show_pass) {
-            if (!u.hasOwnProperty('password2')) {
-                alert("Please enter re-enter your password.");
-                $('#password2').focus();
-                return false;
-            }
-            
-            if (u.password != u.password2) {
-                alert("The passwords you provided did not match.");
-                $('#password, #password2').val('');
-                $('#password').focus();
-                return false;
-            }
-        }
-        
-        return 0 === $('.registration').filter('.ng-invalid').length;
-    }
 
     /**
      * @event OnDocumentReady

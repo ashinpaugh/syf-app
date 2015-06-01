@@ -142,11 +142,11 @@ okHealthServices.factory('BoardApi', ['$resource', function ($resource) {
 }]);
 
 okHealthServices.factory('GroupApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/group.json';
+    var base = ApiEndpoint + '/group';
     
     return $resource('', {}, {
         getAll : {
-            url: base,
+            url: base + '.json',
             method: 'GET',
             isArray: true
         }
@@ -155,13 +155,24 @@ okHealthServices.factory('GroupApi', ['$resource', function ($resource) {
 
 
 okHealthServices.factory('SchoolApi', ['$resource', function ($resource) {
-    var base = ApiEndpoint + '/school.json';
+    var base = ApiEndpoint + '/school';
     
     return $resource('', {}, {
         getAll : {
-            url: base,
+            url: base + '.json',
             method: 'GET',
             isArray: true
+        }
+    });
+}]);
+
+okHealthServices.factory('GeneralApi', ['$resource', function ($resource) {
+    var base = ApiEndpoint + '/app';
+    
+    return $resource('', {}, {
+        fetch : {
+            url: base + '/init.json',
+            method: 'GET'
         }
     });
 }]);

@@ -1,12 +1,12 @@
-<div class="dash-wrapper" ng-controller="DashboardCtrl">
+<div class="dash-wrapper">
     
     <div class="row stats well" ng-hide="!EnsureValidUser()">
         <div class="col-xs-4">
-            <h3>{{tracker.getConsumed() | number}}</h3>
+            <h3>{{getTracker().getConsumed() | number}}</h3>
             <h5>Calories Consumed</h5>
         </div>
         <div class="col-xs-4">
-            <h3>{{tracker.getSteps() | number}}</h3>
+            <h3>{{getTracker().getSteps() | number}}</h3>
             <h5>Steps Taken</h5>
         </div>
         <div class="col-xs-4">
@@ -27,7 +27,7 @@
         </div>
         
         <div class="col-xs-4">
-            <a ng-href="#/exercise" class="util" ng-mousedown="EnforceLogin($event, 'Please login before using the pedometer.')">
+            <a ng-href="#/exercise" class="util">
                 <span class="fa fa-5x fa-forward"></span>
                 <h4>Pedometer</h4>
             </a>

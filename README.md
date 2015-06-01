@@ -13,6 +13,9 @@ changes should be made to the less files and recompiled.
 
 To get started:
 
+    $ sudo apt-get install npm cordova
+    $ sudo npm install -g gulp less ripple-emulator weinre
+
     $ cordova platform add android
     $ npm install gulp --save-dev
     $ npm install gulp-less gulp-jshint gulp-sequence gulp-copy gulp-concat culp-minify-css --save-dev

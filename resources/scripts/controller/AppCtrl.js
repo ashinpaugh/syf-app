@@ -4,15 +4,16 @@
  * @author Austin Shinpaugh
  */
 
-okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GroupApi', 'SchoolApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GroupApi, SchoolApi) {
+okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$swipe', 'UserHandler', 'TrackerHandler', 'GeneralApi', function ($window, $location, $scope, $swipe, UserHandler, TrackerHandler, GeneralApi) {
     'use strict';
     
     $scope.$location    = $location;
     $scope.token        = null;
     $scope.user         = null;
     $scope.tracker      = TrackerHandler;
-    $scope.groups       = GroupApi.getAll();
-    $scope.schools      = SchoolApi.getAll();
+    $scope.groups       = [];
+    $scope.schools      = [];
+    $scope.board        = [];
     $scope.eaten_today  = [];
     $scope.redirect_url = '';
     $scope.previous_data = {};
@@ -102,7 +103,7 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     {
         $scope.page        = page;
         $scope.total_pages = Math.ceil(max_items / max_results);
-        $scope.page_range  = $scope.pageRange(1, $scope.total_pages);
+        $scope.page_range  = findRange(page, $scope.total_pages);
     };
 
     /**
@@ -112,7 +113,7 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
      * @param step
      * @returns {Array}
      */
-    $scope.range = function(min, max, step)
+    var buildRange = function(min, max, step)
     {
         var input, i;
         step  = step || 1;
@@ -125,32 +126,41 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         return input;
     };
     
-    $scope.pageRange = function(page, max_pages)
+    var findRange = function(page, max_pages)
     {
-        var range = {
-            min: page < 1 ? 1 : page,
-            max: max_pages < 5 ? max_pages : 5
+        page      = parseInt(page) + 1;
+        max_pages = parseInt(max_pages);
+        
+        var visible, offset, range;
+        visible = 5;
+        offset  = (visible - 1) / 2;
+        range   = {
+            min: 1,
+            max: 5
         };
         
-        if (page - 2 >= 1) {
-            range.min = page - 2;
+        if ((page - offset) > 1) {
+            range.min  = page - offset;
         }
         
-        if (page + 2 <= max_pages && page + 2 > range.max) {
-            range.max = page + 2;
+        if (range.max < (page + offset) && (page + offset) > visible) {
+            range.max = page + offset;
         }
-        console.log(range);
-        return $scope.range(range.min, range.max);
+        
+        if (range.max > max_pages) {
+            range.max = max_pages;
+        }
+        
+        if ((range.max - range.min) < visible && range.min > visible) {
+            range.min = range.max - visible;
+        }
+
+        return buildRange(range.min, range.max);
     };
     
     $scope.SaveLocation = function (path)
     {
-        if (path) {
-            $scope.redirect_url = path;
-            return;
-        }
-        
-        $scope.redirect_url = $location.url();
+        $scope.redirect_url = path ? path : $location.url();
     };
     
     $scope.RedirectUser = function ()
@@ -281,4 +291,10 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
             type: 'swipeleft'
         });
     };
+    
+    GeneralApi.fetch(function (data) {
+        $scope.schools = data.schools;
+        $scope.groups  = data.groups;
+        $scope.board   = data.board;
+    });
 }]);
