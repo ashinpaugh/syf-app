@@ -16,18 +16,26 @@
     <access origin="geo:*" launch-external="yes" />
     -->
     
-    <preference name="loglevel" value="DEBUG" />
+    <preference name="LogLevel" value="INFO" />
     <preference name="DisallowOverscroll" value="true"/>
     <preference name="AndroidLaunchMode" value="singleTop" />
     
     <feature name="App">
-        <param name="android-package" value="org.apache.cordova.App" />
+        <param name="android-package" value="cordova-plugin-app" />
     </feature>
-    
+    <!--
+    <feature name="Device">
+        <param name="android-package" value="cordova-plugin-device" />
+    </feature>
+    -->
     <feature name="InAppBrowser">
-        <param name="android-package" value="org.apache.cordova.inappbrowser" />
+        <param name="android-package" value="cordova-plugin-inappbrowser" />
     </feature>
-    
+    <!--
+    <feature name="Network Information">
+        <param name="android-package" value="cordova-plugin-network-information" />
+    </feature>
+    -->
     <icon src="resources/images/icons/icon_36.png" density="ldpi"  width="36" height="36" />
     <icon src="resources/images/icons/icon_48.png" density="mdpi"  width="48" height="48" />
     <icon src="resources/images/icons/icon_72.png" density="hdpi"  width="72" height="72" />

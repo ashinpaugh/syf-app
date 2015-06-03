@@ -14,11 +14,16 @@
                         }
                     ]
                 }
+            },
+            "AndroidManifest.xml": {
+                "parents": {
+                    "/*": []
+                }
             }
         }
     },
     "installed_plugins": {
-        "org.apache.cordova.inappbrowser": {
+        "cordova-plugin-inappbrowser": {
             "PACKAGE_NAME": "io.okhealth.healthandfitness"
         }
     },

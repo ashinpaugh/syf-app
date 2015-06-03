@@ -15,13 +15,11 @@ okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', f
     $scope.LoadHistory = function ()
     {
         var username = $routeParams.username;
-        if (!username && $scope.getUser()) {
+        if (!username && $scope.EnsureValidUser()) {
             username = $scope.getUser().meta().username;
         }
         
         if (!username || 'undefined' == username) {
-            $scope.SaveLocation('/history/nutrition');
-            $scope.EnforceLogin(null, 'You must login before viewing your history.');
             return;
         }
         
@@ -63,11 +61,13 @@ okHealthControllers.controller('HistoryCtrl', ['$scope', 'FS', '$routeParams', f
     };
     
     angular.element(document).ready(function () {
+        if ($scope.EnforceLogin(null, 'You must login before viewing your history.')) {
+            return;
+        }
+        
         App.Page.SetSubtitle('Meal History');
         
-        if ($scope.HasBackupData('history')) {
-            $scope.QuickFillScope('history', $scope);
-        }
+        $scope.fillScope('history', $scope);
     });
 }]);
 

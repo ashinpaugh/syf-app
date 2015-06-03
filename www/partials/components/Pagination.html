@@ -1,4 +1,4 @@
-<nav class="pagination-wrapper" ng-show="total_pages > 0 && !isSearching">
+<nav class="pagination-wrapper" ng-show="resultSet && total_pages > 0 && !isSearching">
     <ul class="pagination pagination-lg">
         <li>
             <a ng-show="(page - 1) > 0" ng-href="#{{GetPaginationPath(page - 1)}}" aria-label="Previous">

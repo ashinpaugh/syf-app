@@ -58,8 +58,9 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
      */
     $scope.AddToEaten = function ($event, food, serving)
     {
-        if ($scope.EnforceLogin($event, 'Please login before tracking your meals.')) {
-            $scope.BackupData('nutrition', $scope);
+        if (!$scope.EnsureValidUser()) {
+            App.Page.BackupData('nutrition', $scope);
+            $scope.EnforceLogin($event, 'Please login before tracking your meals.');
             return;
         }
         
@@ -85,7 +86,10 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
             $scope.tracker.addCalories(serving.calories);
         });
     };
-    
+
+    /**
+     * {@inheritdoc}
+     */
     $scope.GetPaginationPath = function (page)
     {
         return $scope.$location.path() + '?search=' + $scope.search + '&page=' + page;
@@ -260,13 +264,13 @@ okHealthControllers.controller('NutritionCtrl', ['$scope', '$swipe', '$routePara
     };
     
     angular.element(document).ready(function () {
-        if ($scope.HasBackupData('nutrition')) {
-            $scope.QuickFillScope('nutrition', $scope);
-        }
+        $scope.fillScope('nutrition', $scope);
         
         if ($scope.search.length) {
             $scope.doLookup();
         }
+        
+        App.Page.SetSubtitle('Meal Tracking');
     });
 }]);
 

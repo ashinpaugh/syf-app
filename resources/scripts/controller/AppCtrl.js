@@ -8,7 +8,6 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     'use strict';
     
     $scope.$location    = $location;
-    $scope.token        = null;
     $scope.user         = null;
     $scope.tracker      = TrackerHandler;
     $scope.groups       = [];
@@ -16,7 +15,6 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     $scope.board        = [];
     $scope.eaten_today  = [];
     $scope.redirect_url = '';
-    $scope.previous_data = {};
     
     // Overlay.
     $scope.isSearching     = false;
@@ -27,20 +25,36 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
     $scope.page        = 0;
     $scope.page_range  = {};
     $scope.total_pages = 0;
-    
+
+    /**
+     * Navigate the user backward using their history.
+     */
     $scope.$back = function () {
         $window.history.back();
     };
-    
+
+    /**
+     * Navigate the user forward along their history.
+     */
     $scope.$forward = function () {
         $window.history.forward();
     };
-    
+
+    /**
+     * Return the UserHandler.
+     * 
+     * @returns {UserHandler}
+     */
     $scope.getUser = function ()
     {
         return UserHandler;
     };
-    
+
+    /**
+     * Return the TrackerHandler.
+     * 
+     * @returns {TrackerHandler}
+     */
     $scope.getTracker = function ()
     {
         return TrackerHandler;
@@ -89,16 +103,32 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
             $scope.redirect_url = $location.url();
         }
         
-        $location.url('/login?message=' + encodeURIComponent(message));
+        $location.url('/login').search({'message': message});
         
         return true;
     };
     
+    $scope.fillScope = function (location, $child)
+    {
+        App.Page.QuickFillScope(location, $scope, $child);
+    };
+
+    /**
+     * Override-able method to determine what the pagination should link to.
+     * @returns {string}
+     */
     $scope.GetPaginationPath = function ()
     {
         return $location.path();
     };
-    
+
+    /**
+     * Sets the global values to build pagination.
+     * 
+     * @param page
+     * @param max_results
+     * @param max_items
+     */
     $scope.SetupPagination = function (page, max_results, max_items)
     {
         $scope.page        = page;
@@ -125,7 +155,15 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         
         return input;
     };
-    
+
+    /**
+     * Find the start and end points for the pagination.
+     * 
+     * @param page
+     * @param max_pages
+     * 
+     * @returns {Array}
+     */
     var findRange = function(page, max_pages)
     {
         page      = parseInt(page) + 1;
@@ -157,12 +195,22 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
 
         return buildRange(range.min, range.max);
     };
-    
+
+    /**
+     * Save the user's current location.
+     * 
+     * @param path
+     */
     $scope.SaveLocation = function (path)
     {
         $scope.redirect_url = path ? path : $location.url();
     };
-    
+
+    /**
+     * Redirect the user to their {@see SaveLocation}.
+     * 
+     * @returns {boolean}
+     */
     $scope.RedirectUser = function ()
     {
         if (!$scope.redirect_url.length) {
@@ -175,60 +223,6 @@ okHealthControllers.controller('AppCtrl', ['$window', '$location', '$scope', '$s
         return true;
     };
     
-    $scope.HasBackupData = function (controller)
-    {
-        return $scope.previous_data.hasOwnProperty(controller);
-    };
-    
-    $scope.BackupData = function (controller, $s)
-    {
-        var data, params, param;
-        data   = $scope.previous_data[controller] || {};
-        params = childOnlyParams($s);
-        
-        for (var i = 0; i < params.length; i++) {
-            param       = params[i];
-            data[param] = $s[param];
-        }
-        
-        $scope.previous_data[controller] = data;
-        
-        return true;
-    };
-    
-    $scope.QuickFillScope = function (controller, $s)
-    {
-        if (!$scope.HasBackupData(controller)) {
-            return false;
-        }
-        
-        var data, params, param;
-        data   = $scope.previous_data[controller];
-        params = childOnlyParams($s);
-        
-        for (var i = 0; i < params.length; i++) {
-            param = params[i];
-            
-            if (data.hasOwnProperty(param)) {
-                $s[param] = data[param];
-            }
-        }
-        
-        return true;
-    };
-    
-    var childOnlyParams = function ($s)
-    {
-        var params = [];
-        
-        for (var idx in $s) {
-            if (!$scope.hasOwnProperty(idx) && ('$' != idx.substr(0, 1)) && !($s[idx] instanceof Function)) {
-                params.push(idx);
-            }
-        }
-        
-        return params;
-    };
     
     $scope.HandleNav = function (e)
     {

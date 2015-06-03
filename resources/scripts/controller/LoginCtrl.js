@@ -10,8 +10,14 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
     $scope.user    = {};
     $scope.page    = 1;
     $scope.message = $routeParams.message;
-    
-    
+
+    /**
+     * Forces the user to fill out all the registration inputs before
+     * moving on.
+     * 
+     * @param $e
+     * @returns {boolean}
+     */
     $scope.pageIsValid = function ($e)
     {
         var button, input, watcher;
@@ -92,8 +98,11 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
             return;
         }
         
+        $scope.EnableOverlay('Creating account...');
         AccountApi.register($scope.user, function (data) {
             if (!data.hasOwnProperty('success')) {
+                $scope.DisableOverlay();
+                
                 alert('An error occurred. Please make sure you are using unique values for your username, email, and student ID.');
                 return;
             }
@@ -102,6 +111,8 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
                 _username: $scope.user.username,
                 _password: $scope.user.password
             }, function (data) {
+                $scope.DisableOverlay();
+                
                 UserHandler.set(data.user_meta);
                 TrackerHandler.set(data.food_meta);
                 
@@ -114,10 +125,11 @@ okHealthControllers.controller('LoginCtrl', ['$scope', '$location', '$routeParam
      * @event OnDocumentReady
      */
     angular.element(document).ready(function () {
-        if ($scope.getUser().meta()) {
-            // Log a user out if they visit the login page.
+        // Log a user out if they visit the login page.
+        if ($scope.EnsureValidUser()) {
             $scope.getUser().logout();
-            $location.url('/dashboard');
+            
+            $scope.message = "You are now logged out.";
         }
         
         App.Page.SetSubtitle('Login');

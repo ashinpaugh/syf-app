@@ -2,17 +2,21 @@
     <app-nav-top></app-nav-top>
     
     <ul class="board-list list">
-        <li class="board-list-headers">
+        <li class="board-list-headers text-center">
             <div class="row">
-                <div class="col-xs-4" ng-click="ToggleSort('username'); SortByProperty(null, 'username', 'display_name');">
+                <div class="col-xs-2">
+                    <h5>Rank</h5>
+                </div>
+                
+                <div class="col-xs-5" ng-click="ToggleSort('username'); SortByProperty(null, 'username', 'display_name');">
                     <h5>Username</h5>
                 </div>
                 
-                <div class="col-xs-4" ng-click="ToggleSort('school'); SortByProperty(null, 'school', 'school_initials');">
+                <div class="col-xs-3" ng-click="ToggleSort('school'); SortByProperty(null, 'school', 'school_initials');">
                     <h5>School</h5>
                 </div>
                 
-                <div class="col-xs-4" ng-click="ToggleSort('points'); SortByProperty(null, 'points', 'total_points');">
+                <div class="col-xs-2" ng-click="ToggleSort('points'); SortByProperty(null, 'points', 'total_points');">
                     <h5>Points</h5>
                 </div>
             </div>

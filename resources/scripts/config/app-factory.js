@@ -45,7 +45,7 @@ okHealthServices.factory('UserHandler', ['TrackerHandler', function (TrackerHand
             user = computeAge(u);
         },
         logout : function () {
-            user = null;
+            user = {};
             TrackerHandler.clear();
         }
     };

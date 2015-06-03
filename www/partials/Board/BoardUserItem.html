@@ -1,15 +1,19 @@
 <li class="board-user" ng-repeat="player in resultSet" ng-class-even="'list-alt'">
     <div class="row">
         <a href="#/history/nutrition/{{player.username}}/{{player.display_name}}">
-            <span class="col-xs-4 username">
+            <span class="col-xs-2 rank">
+                {{$index + 1}}
+            </span>
+            
+            <span class="col-xs-5 username">
                 {{player.display_name}}
             </span>
             
-            <span class="col-xs-4 initials">
+            <span class="col-xs-3 initials">
                 {{player.school_initials}}
             </span>
             
-            <span class="col-xs-4 points">
+            <span class="col-xs-2 points">
                 {{player.total_points}}
             </span>
         </a>

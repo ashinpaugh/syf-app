@@ -63,7 +63,7 @@ okHealthControllers.controller('PedometerCtrl', ['$scope', '$interval', 'Pedomet
         
         $scope.Pedometer = Pedometer;
         
-        $scope.EnforceLogin(null, "Please login before using the pedometer.")
+        $scope.EnforceLogin(null, "Please login before using the pedometer.");
     });
     
     $('#stop-pedometer').on('click', function () {

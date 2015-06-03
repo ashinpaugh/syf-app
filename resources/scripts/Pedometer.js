@@ -154,7 +154,6 @@ var Pedometer = (function ($) {
         }
         
         if (last_step && ((new Date().getTime() - last_step) > 10000)) {
-            console.log('resetting');
             activity_ended = new Date(last_step);
             resetActivityTimer(activity);
             activity_started = new Date();
@@ -186,7 +185,7 @@ var Pedometer = (function ($) {
      * On document ready binding.
      */
     $(function () {
-        document.addEventListener('deviceready', init, false);
+        init();
     });
     
     return {
@@ -222,12 +221,6 @@ var Pedometer = (function ($) {
         },
         
         getCaloriesBurned: function () {
-            /*var burnt = calories;
-            if (isTracking()) {
-                burnt = tracker.getCaloriesBurned(activity, getActivityDuration());
-            }
-            
-            return Math.round(burnt);*/
             return calories;
         },
 
