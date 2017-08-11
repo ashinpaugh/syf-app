@@ -22,5 +22,5 @@ ApiEndpoint_Dev   = 'http://api.health.moop.dev/app_dev.php/v1';
 ApiEndpoint_Stage = 'http://api.health.moop.stage/app_stage.php/v1';
 ApiEndpoint_Prod  = 'http://api.health.moop.ly/v1';
 
-ApiEndpoint       = ApiEndpoint_Prod;
+ApiEndpoint       = ApiEndpoint_Stage;
 ApiResponseFormat = 'json';

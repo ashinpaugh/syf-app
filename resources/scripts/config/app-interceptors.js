@@ -7,22 +7,24 @@ okHealthServices.config(['$httpProvider', function ($httpProvider) {
  * back and forth between API calls.
  */
 okHealthServices.factory('httpInterceptor', function (TokenHandler) {
+    var CorsAuthHeader = 'Authorization';
+    
     return {
         request : function (config) {
             if (!TokenHandler.get()) {
                 return config;
             }
             
-            config.headers['X-AUTH-TOKEN'] = TokenHandler.get();
+            config.headers[CorsAuthHeader] = TokenHandler.getFull();
             
             return config;
         },
         response : function (response) {
-            if (!response.headers('X-AUTH-TOKEN')) {
+            if (!response.headers(CorsAuthHeader)) {
                 return response;
             }
             
-            TokenHandler.set(response.headers('X-AUTH-TOKEN'));
+            TokenHandler.set(response.headers(CorsAuthHeader));
             
             return response;
         },

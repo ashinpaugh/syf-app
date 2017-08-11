@@ -22,7 +22,7 @@ okHealthServices.factory('AccountApi', ['$resource', function ($resource) {
         },
         
         login : {
-            url: ApiEndpoint + '/login.json',
+            url: ApiEndpoint + '/login/check.json',
             method: 'POST'
         },
         

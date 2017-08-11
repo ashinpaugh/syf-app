@@ -11,10 +11,10 @@
     
     <app-nav-top></app-nav-top>
     
-    <form class="form-inline form-search">
+    <form class="form-inline form-search" ng-submit="doLookup();">
         <div class="form-group">
             <label class="sr-only" for="nutrition-search">Search</label>
-            <input ng-model="search" class="form-control" id="nutrition-search" type="text" placeholder="Lookup Food - (i.e. 'chicken')" ng-keypress="$event.keyCode == 13 ? doLookup() : void();" />
+            <input ng-model="search" class="form-control" id="nutrition-search" type="text" placeholder="Lookup Food - (i.e. 'chicken')" />
         </div>
     </form>
     

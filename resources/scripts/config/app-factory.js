@@ -13,14 +13,20 @@ okHealthServices.factory('TokenHandler', function () {
         get : function () {
             return token;
         },
+        getFull : function () {
+            return 'Bearer ' + token;
+        },
         set : function (t) {
             token = t;
             date  = new Date();
+        },
+        clear : function () {
+            token = date = null;
         }
     };
 });
 
-okHealthServices.factory('UserHandler', ['TrackerHandler', function (TrackerHandler) {
+okHealthServices.factory('UserHandler', ['TokenHandler', 'TrackerHandler', function (TokenHandler, TrackerHandler) {
     var user = {};
 
     /**
@@ -46,6 +52,7 @@ okHealthServices.factory('UserHandler', ['TrackerHandler', function (TrackerHand
         },
         logout : function () {
             user = {};
+            TokenHandler.clear();
             TrackerHandler.clear();
         }
     };
